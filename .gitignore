@@ -1,0 +1,21 @@
+# OS / editor
+.DS_Store
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Local env / secrets
+.env.local
+.env.*.local
+.env.secrets
+
+# Downloaded data / artifacts
+datasets/
+
+# Collector outputs
+out/
+
+# Codex-generated prompt artifacts
+AGENTS_INSTRUCTIONS_AND_SKILLS.txt
