@@ -32,6 +32,32 @@ _smoke_out/
 _live_test_out_*/
 tmp/
 tmp_*
+tmp_*.log
+
+# Local research documents / packaged exports
+/*.pdf
+/*.pptx
+/*.zip
+/*.sqlite
+/*.sqlite-*
+/*_extracted.txt
+
+# Slide build outputs
+Slide2/*.pptx
+Slide2/*.pdf
+Slide2/data_run_*.zip
+Slide2/_assets/
+Slide2/_thumbs/
+Slide2/data_run_*/
+Slide2/deck_versions/
+Slide2/prof_build/
+Slides/*.pptx
+Slides/PPTXWT2/*.pptx
+Slides/Story1/*.pptx
+Slides/Story1/_render/
+Slides/Story1/_render_latest/
+Slides/Story1/assets/
+Slides/assert/*.pptx
 
 # Codex-generated prompt artifacts
 AGENTS_INSTRUCTIONS_AND_SKILLS.txt
