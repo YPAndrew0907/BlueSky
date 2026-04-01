@@ -1,21 +1,41 @@
 # OS / editor
 .DS_Store
+._*
+.vscode/
 
 # Python
 .venv/
+.venv-win/
 __pycache__/
 *.py[cod]
+.pytest_cache/
+*.egg-info/
+dist/
 
 # Local env / secrets
 .env.local
 .env.*.local
 .env.secrets
+auth.env
 
 # Downloaded data / artifacts
 datasets/
+data v1/
+data_v2*/
 
 # Collector outputs
 out/
+data_v2_full/
+output/
+_build/
+_smoke_out/
+_live_test_out_*/
+tmp/
+tmp_*
 
 # Codex-generated prompt artifacts
 AGENTS_INSTRUCTIONS_AND_SKILLS.txt
+.codex_research/
+.playwright-cli/
+.tmp/
+.sixth/

@@ -1,0 +1,22 @@
+[project]
+name = "bsky-collector-v2"
+version = "2.1.0"
+description = "Bluesky Collector v2 (data_v2_full) - crash-resilient, write-as-you-go data pipeline."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "httpx>=0.27.0",
+  "python-dotenv>=1.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bsky_collector_v2*"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
