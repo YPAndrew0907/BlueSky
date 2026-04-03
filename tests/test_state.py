@@ -121,3 +121,22 @@ def test_control_state_rq1_hydration_helpers(tmp_path: Path) -> None:
         shard1 = set(s.select_posts_to_backfill_rq1(limit=10, include_hydrated=True, shard_index=1, shard_count=2))
         assert shard0.isdisjoint(shard1)
         assert shard0 | shard1 == {str(post_a), str(post_b), str(post_c)}
+
+
+def test_control_state_backfill_indexes_exist(tmp_path: Path) -> None:
+    db_path = tmp_path / "control" / "control_state.db"
+
+    with ControlState.open(db_path) as s:
+        post_registry_indexes = {
+            str(row[1]) for row in s.conn.execute("PRAGMA index_list(post_registry)").fetchall()
+        }
+        interaction_indexes = {
+            str(row[1]) for row in s.conn.execute("PRAGMA index_list(post_interaction_registry)").fetchall()
+        }
+        rq1_indexes = {
+            str(row[1]) for row in s.conn.execute("PRAGMA index_list(post_rq1_factor_registry)").fetchall()
+        }
+
+    assert "idx_post_registry_first_seen_post_uri" in post_registry_indexes
+    assert "idx_post_interaction_registry_last_hydrated_post_uri" in interaction_indexes
+    assert "idx_post_rq1_factor_registry_last_hydrated_post_uri" in rq1_indexes

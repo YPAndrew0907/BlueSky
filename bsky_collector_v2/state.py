@@ -374,6 +374,15 @@ class ControlState:
               last_error TEXT,
               PRIMARY KEY (collection, date_utc, part_index)
             );
+
+            CREATE INDEX IF NOT EXISTS idx_post_registry_first_seen_post_uri
+              ON post_registry(first_seen_utc, post_uri);
+
+            CREATE INDEX IF NOT EXISTS idx_post_interaction_registry_last_hydrated_post_uri
+              ON post_interaction_registry(last_hydrated_utc, post_uri);
+
+            CREATE INDEX IF NOT EXISTS idx_post_rq1_factor_registry_last_hydrated_post_uri
+              ON post_rq1_factor_registry(last_hydrated_utc, post_uri);
             """
         )
         self.conn.commit()
@@ -693,18 +702,24 @@ class ControlState:
         if not include_hydrated:
             conditions.append("prr.last_hydrated_utc IS NULL")
 
-        cur = self.conn.execute(
-            f"""
+        query = f"""
             SELECT pr.post_uri, pr.first_seen_utc
             FROM post_registry AS pr
             LEFT JOIN post_rq1_factor_registry AS prr ON prr.post_uri = pr.post_uri
             WHERE {' AND '.join(conditions)}
             ORDER BY pr.first_seen_utc ASC, pr.post_uri ASC
-            """,
-            tuple(args),
-        )
+        """
+
+        if shard_count == 1:
+            cur = self.conn.execute(f"{query}\nLIMIT ?", tuple([*args, limit]))
+            return [
+                SelectedPost(post_uri=str(row["post_uri"]), first_seen_utc=str(row["first_seen_utc"]))
+                for row in cur.fetchall()
+            ]
+
+        cur = self.conn.execute(query, tuple(args))
         out: list[SelectedPost] = []
-        for row in cur.fetchall():
+        for row in cur:
             post_uri = str(row["post_uri"])
             if _stable_shard(post_uri, shard_count) != shard_index:
                 continue
