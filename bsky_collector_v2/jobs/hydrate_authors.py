@@ -10,6 +10,7 @@ from bsky_collector_v2.http_client import AsyncHttpClient, HttpRetryConfig, Xrpc
 from bsky_collector_v2.instrumentation import enrich_manifest
 from bsky_collector_v2.layout import Layout
 from bsky_collector_v2.progress import ProgressReporter, ProgressState
+from bsky_collector_v2.public_views import flatten_profile_view_detailed
 from bsky_collector_v2.quality import assess_authors_day
 from bsky_collector_v2.request_provenance import JobRequestContextFactory, RequestProvenanceWriter
 from bsky_collector_v2.state import ControlState
@@ -26,9 +27,21 @@ _AUTHOR_FIELDS: tuple[str, ...] = (
     "author_did",
     "handle",
     "display_name",
+    "description",
+    "website",
+    "avatar",
+    "banner",
     "followers_count",
     "follows_count",
     "posts_count",
+    "associated_json",
+    "joined_via_starter_pack_uri",
+    "indexed_at",
+    "created_at",
+    "labels_json",
+    "pinned_post_uri",
+    "verification_json",
+    "status_json",
     "captured_at_utc",
 )
 
@@ -170,11 +183,7 @@ async def run_hydrate_authors(
                                 "run_id": str(run_id),
                                 "vantage_id": str(vantage_id).strip() or "unauth",
                                 "author_did": did,
-                                "handle": p.get("handle"),
-                                "display_name": p.get("displayName"),
-                                "followers_count": p.get("followersCount"),
-                                "follows_count": p.get("followsCount"),
-                                "posts_count": p.get("postsCount"),
+                                **flatten_profile_view_detailed(p),
                                 "captured_at_utc": captured_at_utc,
                             }
                         )

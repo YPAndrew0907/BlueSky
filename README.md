@@ -2,9 +2,139 @@
 
 Production-grade, crash-resilient, write-as-you-go collector for feed impressions + discovery metadata.
 
+## Research Focus
+
+This repo exists to support two research questions, not a generic crawler:
+
+- `RQ1`: within monitored Bluesky/custom-feed top-K panels, after controlling timing and panel context, do semantically same or near-duplicate posts receive systematically different observed exposure opportunity, and which observable post/author/feed/viewer factors correlate with the residual?
+- `RQ2`: within political topic/event clusters, does monitored top-K exposure track observed frame supply, and how does any residual frame disparity vary by feed type, viewer mode, and moderation environment?
+
+Canonical constraints:
+
+- `data_v2_full/` is the canonical data root
+- do not rename `data_v2_full`
+- do not delete historical raw data
+- do not break the existing output layout: `hourly/`, `wide/`, `micro5/`, `interactions/`, `metadata/`, `effective_csv/`
+- when multiple jobs may touch `control/control_state.db`, prefer `state-writer` / `BSKY_STATE_WRITER_SOCKET`
+
+## Canonical Collector Modes
+
+### Paper-grade fixed-panel mainline
+
+This remains the main study path:
+
+- wrapper: `scripts/collector_daemon.sh`
+- support wrappers: `scripts/collector_study_daemon.sh`, `scripts/collector_screen_ctl.sh`
+- default study: `micro10_full_live_20260319`
+- design: fixed 1500-feed panel, Top50, 10-minute cadence
+- viewer modes: `unauth` + `auth`
+
+### Public-only omnivore
+
+This is a separate public-only path:
+
+- wrapper: `scripts/collector_public_omnivore_daemon.sh`
+- job entry: `python -m bsky_collector_v2 collect-public-omnibus`
+- viewer mode is forced to `unauth`
+- useful for public discovery, hydration, public-state backfill, and optional public-only micro windows
+
+Do not describe public-only omnivore as equivalent to the auth+unauth fixed-panel study.
+
+## Recommended Start Commands
+
+Recommended operator wrapper:
+
+- fixed-panel collection: `./scripts/collector_rq_daemon.sh fixed-panel`
+- realtime backfill: `./scripts/collector_rq_daemon.sh realtime-backfill`
+- history backfill: `./scripts/collector_rq_daemon.sh history-backfill`
+- full research stack: `./scripts/collector_rq_daemon.sh full-stack`
+
+Compatibility is preserved. The existing `collector_daemon.sh`, `collector_public_omnivore_daemon.sh`, and manual history backfill commands still work.
+
+For wrapper-managed shared state, `SOCKET_PATH` / `BSKY_STATE_WRITER_SOCKET` can be either a unix socket path or `tcp://HOST:PORT`.
+
+The Bash wrappers now auto-detect a working repo-local interpreter from `.venv/bin/python` or `.venv-win/Scripts/python.exe`. Override with `PYTHON_BIN` when needed.
+
+## Honest RQ Readiness
+
+### RQ1
+
+Current honest status: close to answerable in a serious monitored observational sense, but not complete.
+
+Why it is close:
+
+- top-K appearance + rank
+- timing/window/feed/bucket/viewer/vantage context
+- author hydration
+- interaction backfill
+- richer RQ1 factor backfill
+- duplicate/DCED analysis scripts
+
+Why it is still incomplete:
+
+- multimodal near-duplicates such as same text with different image/context are not fully hardened
+- public-only collection cannot recover private viewer preferences, home-timeline effects, or private moderation state
+- historical backfill reflects current public state, not perfect historical-time snapshots
+- graph remains graph-lite rather than full timestamped graph history
+
+Safe wording: enough to support a serious monitored observational RQ1, but not enough to claim that every driver of exposure disparity is observed.
+
+### RQ2
+
+Current honest status: the collection base exists, and there is now a first-class workflow for topic/frame processing, but it is not fully productionized.
+
+What exists:
+
+- `topic_probe`
+- `topic_batch`
+- `content_bias`
+- `annotation_sampling`
+- `cluster_label_apply`
+- `annotation_merge`
+- basic frame exposure vs supply tables
+
+What is still incomplete:
+
+- frame labeling still depends partly on manual annotation
+- declared-objective adjustment is not yet standardized into a definitive final analysis table
+- viewer-mode and moderation comparisons still depend on which collection design actually captured those conditions
+
+## RQ2 Workflow
+
+Canonical CLI:
+
+```bash
+python -m bsky_collector_v2 rq2-pipeline \
+  --out-base /Volumes/T9/BlueSky/data_v2_full \
+  --out-dir /Volumes/T9/BlueSky/output/rq2_pipeline \
+  --annotation-dir /Volumes/T9/BlueSky/output/rq2_pipeline/annotations \
+  --preset politics_v1
+```
+
+Compatibility wrapper:
+
+```bash
+python scripts/run_rq2_pipeline.py \
+  --data-root /Volumes/T9/BlueSky/data_v2_full \
+  --out-dir /Volumes/T9/BlueSky/output/rq2_pipeline \
+  --annotation-dir /Volumes/T9/BlueSky/output/rq2_pipeline/annotations \
+  --preset politics_v1
+```
+
+The workflow covers:
+
+1. topic probing / topic batch
+2. event clustering
+3. annotation candidate sampling
+4. cluster label application when `*_cluster_labels*.csv` is available
+5. annotation merge when `*_annotations.csv` is available
+6. basic `frame_tables/` generation for exposure vs supply
+
+The final `frame_tables/` layer is intentionally basic. It is a monitored exposure-vs-supply summary, not a finished causal adjustment layer.
+
 ## Hard guarantees
 
-- Writes incrementally to disk under `/Volumes/T9/BlueSky/data_v2_full` (no “write everything at the end”).
+- Writes incrementally to disk under `/Volumes/T9/BlueSky/data_v2_full` (no "write everything at the end").
 - `kill -9` at any time does **not** delete already-written parts/logs/DBs.
 - Resume is the default: reruns continue from per-run SQLite state with minimal duplication.
 - Fails fast if `--out-base` is missing or not writable (never silently writes elsewhere).
@@ -108,6 +238,26 @@ authors/YYYY-MM-DD/
   http_stats.csv
   request_provenance.csv
   author_profiles_part_000.csv
+
+feed_generators/YYYY-MM-DD/
+  run_manifest.json
+  progress.json
+  http_stats.csv
+  request_provenance.csv
+  feed_generator_profiles_part_000.csv
+
+interactions/YYYY-MM-DD/
+  run_manifest.json
+  progress.json
+  http_stats.csv
+  request_provenance.csv
+  post_views_part_000.csv
+  post_interaction_summary_part_000.csv
+  post_likes_part_000.csv
+  post_quotes_part_000.csv
+  post_reposted_by_part_000.csv
+  relationship_edges_part_000.csv
+  interaction_actor_profiles_part_000.csv
 
 control/
   control_state.db
@@ -286,18 +436,26 @@ Subcommands:
 - `refresh-discovery`
 - `index-feed-generators` (resumable; uses `--relay-host` for `com.atproto.sync.*` repo enumeration, `--pds-host` for `com.atproto.repo.listRecords`)
 - `build-panel`
+- `build-labelerexp-panel`
 - `snapshot-panel` (`--snapshot-hour-utc 2026-02-13T01:00:00Z` optional)
 - `study-benchmark` (`--panel-path ...`, writes `studies/benchmarks/bench_<id>.json`)
 - `study-init` (`--benchmark-path ... --sample-family micro5_core_full|micro5_extended_sharded`)
 - `micro-snapshot-study` (`--study-id ... --scheduled-window-start-utc 2026-03-17T00:00:00Z`)
+  - add `--public-only` to force unauth-only execution for public collector workflows
 - `wide-sweep` (`--n-feeds 5000`)
 - `hydrate-authors` (`--max-authors 50000`, `--batch-size 25`)
   - `--seen-after-utc YYYY-MM-DDTHH:MM:SSZ`: only hydrate authors first seen at/after this UTC timestamp
   - `--seen-before-utc YYYY-MM-DDTHH:MM:SSZ`: only hydrate authors first seen before this UTC timestamp
+- `hydrate-feed-generators`
+- `seed-post-registry` (scan `hourly/`, `wide/`, `micro5/`, and `posts_first_seen` history into `control/control_state.db`)
+- `collect-public-omnibus` (public-only discovery/panel/snapshot/wide/hydrate/backfill/micro orchestration)
+- `backfill-interactions` (stateful public interaction backfill for seeded posts)
+- `backfill-rq1-factors` (stateful richer RQ1 factor backfill for seeded posts)
 - `state-writer` (`--socket-path /tmp/bsky_state_writer.sock` or `--tcp 127.0.0.1:9911`)
 - `sync-effective-csv` (rebuild `effective_csv/` from current outputs, including flattened `micro5` window exports)
 - `backfill-run-artifacts` (retrofit legacy `data_v2_full` runs with enriched manifest fields, quality reports, and best-effort request provenance)
-- `backfill-interactions` (optional; currently a no-op placeholder)
+- `rq2-pipeline` (canonical topic/frame pipeline from raw collection to basic frame exposure vs supply tables)
+- `rq2-generate-frame-tables` (materialize the final basic `frame_tables/` layer from topic batch + labels)
 
 ## Frozen Micro5 Study Mode
 
@@ -506,12 +664,12 @@ Daemon behavior:
 - Defaults to **full collection on each daemon start** (resets schedule stamps so all job types are attempted immediately once)
 - Uses interval scheduling:
   - `micro-snapshot-study`: every 10 minutes in default `micro5` mode, using the preferred frozen study (`micro10_full_live_20260319`) when available
-  - `index-feed-generators`: hourly
   - `hydrate-authors`: every 3 hours
-  - `refresh-discovery`: daily
-  - `wide-sweep`: daily
+  - `index-feed-generators`: hourly when explicitly enabled
+  - `refresh-discovery`: daily when explicitly enabled
+  - `wide-sweep`: daily when explicitly enabled
 - After each completed `micro-snapshot-study` window, the daemon path also writes flattened exports under `effective_csv/timeseries/micro5/...`
-- Keeps `build-panel` **off by default** in `micro5` mode so the active mutable panel does not overwrite the frozen study design.
+- Keeps `build-panel`, `index-feed-generators`, `refresh-discovery`, and `wide-sweep` **off by default** in `micro5` mode so the frozen 1500-feed study remains the active path.
 - To return to the old hourly collector as the main path, start the daemon with `COLLECTOR_MODE=legacy_hourly`.
 
 Main daemon log:

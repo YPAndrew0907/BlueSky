@@ -46,6 +46,31 @@ def _run(cmd: list[str], *, cwd: Path) -> subprocess.CompletedProcess[str]:
     )
 
 
+
+
+def _wait_for_success_row(status_path: Path, *, timeout_s: float = 20.0) -> None:
+    deadline = time.time() + timeout_s
+    last_err: Exception | None = None
+    while time.time() < deadline:
+        if status_path.exists():
+            try:
+                conn = sqlite3.connect(str(status_path))
+                try:
+                    row = conn.execute(
+                        "SELECT 1 FROM feed_tasks WHERE status='success' LIMIT 1"
+                    ).fetchone()
+                finally:
+                    conn.close()
+                if row is not None:
+                    return
+            except Exception as err:  # noqa: BLE001
+                last_err = err
+        time.sleep(0.05)
+    if last_err is not None:
+        raise last_err
+    raise AssertionError(f"timed out waiting for successful task in {status_path}")
+
+
 def _write_panel_csv(path: Path, *, feed_uris: list[str], panel_version_id: str = "2026-03-17") -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
@@ -331,8 +356,10 @@ def test_micro5_incremental_writes_survive_kill_restart(tmp_path: Path) -> None:
             "unauth",
         ]
         proc = subprocess.Popen(cmd, cwd=str(root), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        window_dir = out_base / "micro5" / study_id / "micro5_core_full" / "2026-03-17" / "12" / "00"
+        status_path = window_dir / "snapshot_status.sqlite"
         try:
-            time.sleep(1.5)
+            _wait_for_success_row(status_path)
             os.kill(proc.pid, signal.SIGKILL)
         finally:
             try:
@@ -340,8 +367,6 @@ def test_micro5_incremental_writes_survive_kill_restart(tmp_path: Path) -> None:
             except subprocess.TimeoutExpired:
                 proc.kill()
 
-        window_dir = out_base / "micro5" / study_id / "micro5_core_full" / "2026-03-17" / "12" / "00"
-        status_path = window_dir / "snapshot_status.sqlite"
         assert status_path.exists()
 
         conn = sqlite3.connect(str(status_path))

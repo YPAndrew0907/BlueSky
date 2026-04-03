@@ -265,6 +265,7 @@ async def run_micro_snapshot_study(
     feed_time_budget_s: float,
     resume: bool,
     dry_run: bool,
+    public_only: bool = False,
 ) -> None:
     study_manifest = load_study_manifest(layout.study_manifest_json(study_id))
     sample_family = str(study_manifest["sample_family"])
@@ -351,9 +352,19 @@ async def run_micro_snapshot_study(
     panel_version_id = str(study_manifest.get("panel_version_id") or "").strip() or None
 
     auth_env: AuthEnv | None = None
-    if env_path is not None and env_path.exists():
+    if not public_only and env_path is not None and env_path.exists():
         auth_env = load_auth_env(env_path)
-    enabled_modes = _enabled_viewer_modes(tuple(str(mode) for mode in study_manifest.get("viewer_modes") or ()), auth_env=auth_env)
+    requested_viewer_modes = tuple(str(mode) for mode in study_manifest.get("viewer_modes") or ())
+    if public_only:
+        enabled_modes = ["unauth"]
+        if requested_viewer_modes and "unauth" not in requested_viewer_modes:
+            logger.info(
+                "micro study forcing public-only unauth mode study=%s requested_modes=%s",
+                study_id,
+                list(requested_viewer_modes),
+            )
+    else:
+        enabled_modes = _enabled_viewer_modes(requested_viewer_modes, auth_env=auth_env)
 
     started_at_utc = format_utc(now_utc())
     randomization_seed = deterministic_randomization_seed(
@@ -378,6 +389,7 @@ async def run_micro_snapshot_study(
         "rps": float(rps),
         "concurrency": int(concurrency),
         "feed_time_budget_s": float(feed_time_budget_s),
+        "public_only": bool(public_only),
         "accept_language": study_manifest.get("accept_language"),
         "accept_labelers": study_manifest.get("accept_labelers"),
         "include_author_labels": bool(study_manifest.get("include_author_labels")),

@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="${ROOT:-/Volumes/T9/BlueSky}"
 OUT_BASE="${OUT_BASE:-$ROOT/data_v2_full}"
 ENV_PATH="${ENV_PATH:-$ROOT/auth.env}"
-PYTHON_BIN="${PYTHON_BIN:-$ROOT/.venv/bin/python}"
+PYTHON_BIN="${PYTHON_BIN:-}"
 COLLECTOR_MODE="${COLLECTOR_MODE:-micro5}"
 DEFAULT_STUDY_ID="${DEFAULT_STUDY_ID:-micro10_full_live_20260319}"
 STUDY_ID="${STUDY_ID:-}"
@@ -27,11 +27,76 @@ INTERVAL_REFRESH_S="${INTERVAL_REFRESH_S:-86400}"       # daily
 INTERVAL_BUILD_PANEL_S="${INTERVAL_BUILD_PANEL_S:-86400}"  # daily
 INTERVAL_WIDE_S="${INTERVAL_WIDE_S:-86400}"             # daily
 FORCE_FULL_COLLECTION_ON_START="${FORCE_FULL_COLLECTION_ON_START:-1}"
-ENABLE_INDEX_FEED_GENERATORS="${ENABLE_INDEX_FEED_GENERATORS:-1}"
+# In micro5 mode the active collection path is the frozen 1500-feed study. Keep discovery-style
+# auxiliary jobs opt-in so the fixed-panel loop does not drift or report unrelated health noise.
+DEFAULT_AUX_JOBS_ENABLED="1"
+if [[ "$COLLECTOR_MODE" == "micro5" ]]; then
+  DEFAULT_AUX_JOBS_ENABLED="0"
+fi
+ENABLE_INDEX_FEED_GENERATORS="${ENABLE_INDEX_FEED_GENERATORS:-$DEFAULT_AUX_JOBS_ENABLED}"
 ENABLE_HYDRATE_AUTHORS="${ENABLE_HYDRATE_AUTHORS:-1}"
-ENABLE_REFRESH_DISCOVERY="${ENABLE_REFRESH_DISCOVERY:-1}"
+ENABLE_REFRESH_DISCOVERY="${ENABLE_REFRESH_DISCOVERY:-$DEFAULT_AUX_JOBS_ENABLED}"
 ENABLE_BUILD_PANEL="${ENABLE_BUILD_PANEL:-0}"
-ENABLE_WIDE_SWEEP="${ENABLE_WIDE_SWEEP:-1}"
+ENABLE_WIDE_SWEEP="${ENABLE_WIDE_SWEEP:-$DEFAULT_AUX_JOBS_ENABLED}"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  ./scripts/collector_daemon.sh
+
+Environment highlights:
+  ROOT                 Repo root. Default: /Volumes/T9/BlueSky
+  OUT_BASE             Canonical data root. Default: $ROOT/data_v2_full
+  ENV_PATH             Optional auth env file for auth+unauth study mode.
+  PYTHON_BIN           Python executable. Auto-detects .venv and .venv-win.
+  COLLECTOR_MODE       micro5 | legacy_hourly. Default: micro5
+  STUDY_ID             Frozen study id for micro5 mode.
+  DEFAULT_STUDY_ID     Preferred study id when auto-discovering.
+  SOCKET_PATH          Shared state-writer target. Unix path or tcp://HOST:PORT.
+
+Notes:
+  - micro5 mode is the paper-grade fixed-panel path.
+  - in micro5 mode, discovery/index/wide auxiliary jobs are off by default.
+  - on Windows/native Git Bash, prefer tcp://HOST:PORT for SOCKET_PATH.
+EOF
+}
+
+case "${1:-}" in
+  help|-h|--help)
+    usage
+    exit 0
+    ;;
+esac
+
+resolve_python_bin() {
+  local -a candidates=()
+  # Prefer repo-local interpreters over bare shell aliases like "python3" on Windows.
+  if [[ -n "$PYTHON_BIN" && "$PYTHON_BIN" == *[\\/]* ]]; then
+    candidates+=("$PYTHON_BIN")
+  fi
+  candidates+=("$ROOT/.venv/bin/python" "$ROOT/.venv-win/Scripts/python.exe")
+  if [[ -n "$PYTHON_BIN" && "$PYTHON_BIN" != *[\\/]* ]]; then
+    candidates+=("$PYTHON_BIN")
+  fi
+  if [[ -n "${PYTHON_BIN_FALLBACK:-}" ]]; then
+    candidates+=("$PYTHON_BIN_FALLBACK")
+  fi
+  candidates+=(python3 python)
+
+  local candidate
+  for candidate in "${candidates[@]}"; do
+    [[ -n "$candidate" ]] || continue
+    if "$candidate" --version >/dev/null 2>&1; then
+      printf '%s\n' "$candidate"
+      return 0
+    fi
+  done
+
+  printf 'collector_daemon.sh could not resolve a working python interpreter\n' >&2
+  exit 2
+}
+
+PYTHON_BIN="$(resolve_python_bin)"
 
 # Re-anchor to the mounted repo before touching any paths. External-drive ejects
 # can leave the wrapper shell in a deleted cwd, which breaks resumable Python jobs.
@@ -64,6 +129,35 @@ remove_state_writer_metadata() {
   rm -f "$CONTROL_DIR/state_writer.pid" \
     "$CONTROL_DIR/state_writer.socket" \
     "$CONTROL_DIR/state_writer.logpath"
+}
+
+state_writer_target_kind() {
+  case "$SOCKET_PATH" in
+    tcp://*) printf '%s\n' "tcp" ;;
+    unix://*|*/*|*\\*) printf '%s\n' "unix" ;;
+    *:*) printf '%s\n' "tcp" ;;
+    *) printf '%s\n' "unix" ;;
+  esac
+}
+
+state_writer_socket_path() {
+  case "$SOCKET_PATH" in
+    unix://*) printf '%s\n' "${SOCKET_PATH#unix://}" ;;
+    *) printf '%s\n' "$SOCKET_PATH" ;;
+  esac
+}
+
+state_writer_tcp_target() {
+  case "$SOCKET_PATH" in
+    tcp://*) printf '%s\n' "${SOCKET_PATH#tcp://}" ;;
+    *) printf '%s\n' "$SOCKET_PATH" ;;
+  esac
+}
+
+remove_state_writer_target_artifact() {
+  if [[ "$(state_writer_target_kind)" == "unix" ]]; then
+    rm -f "$(state_writer_socket_path)"
+  fi
 }
 
 stop_state_writer_process() {
@@ -152,6 +246,14 @@ pid_file_for() {
 is_pid_alive() {
   local pid="$1"
   [[ -n "$pid" ]] || return 1
+  if [[ "${OS:-}" == "Windows_NT" ]] && command -v powershell.exe >/dev/null 2>&1; then
+    local matched
+    matched="$(
+      JOB_PID="$pid" powershell.exe -NoProfile -Command '$proc = Get-CimInstance Win32_Process -Filter ("ProcessId = " + [int]$env:JOB_PID); if ($proc) { Write-Output 1 }' 2>/dev/null | tr -d '\r' | head -n 1
+    )"
+    [[ "$matched" == "1" ]]
+    return
+  fi
   kill -0 "$pid" 2>/dev/null
 }
 
@@ -164,15 +266,75 @@ job_command_pattern() {
   printf '%s\n' "-m bsky_collector_v2 $job"
 }
 
+find_windows_child_pid() {
+  local parent_pid="$1"
+  local pattern="$2"
+  [[ "${OS:-}" == "Windows_NT" ]] || return 1
+  command -v powershell.exe >/dev/null 2>&1 || return 1
+  local child_pid
+  child_pid="$(
+    JOB_PARENT_PID="$parent_pid" JOB_PATTERN="$pattern" powershell.exe -NoProfile -Command '$parentPid = [int]$env:JOB_PARENT_PID; $pattern = $env:JOB_PATTERN; $proc = Get-CimInstance Win32_Process | Where-Object { $_.ParentProcessId -eq $parentPid -and $_.CommandLine -like ("*" + $pattern + "*") } | Sort-Object CreationDate -Descending | Select-Object -First 1 -ExpandProperty ProcessId; if ($proc) { Write-Output $proc }' 2>/dev/null | tr -d '\r' | head -n 1
+  )"
+  [[ -n "$child_pid" ]] || return 1
+  printf '%s\n' "$child_pid"
+}
+
+find_recent_windows_pid_by_pattern() {
+  local pattern="$1"
+  local lookback_s="${2:-30}"
+  [[ "${OS:-}" == "Windows_NT" ]] || return 1
+  command -v powershell.exe >/dev/null 2>&1 || return 1
+  local recent_pid
+  recent_pid="$(
+    JOB_PATTERN="$pattern" JOB_LOOKBACK_S="$lookback_s" powershell.exe -NoProfile -Command '$pattern = $env:JOB_PATTERN; $cutoff = (Get-Date).AddSeconds(-[int]$env:JOB_LOOKBACK_S); $proc = Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like ("*" + $pattern + "*") -and $_.CreationDate -ge $cutoff } | Sort-Object CreationDate -Descending | Select-Object -First 1 -ExpandProperty ProcessId; if ($proc) { Write-Output $proc }' 2>/dev/null | tr -d '\r' | head -n 1
+  )"
+  [[ -n "$recent_pid" ]] || return 1
+  printf '%s\n' "$recent_pid"
+}
+
 is_job_pid_alive() {
   local job="$1"
   local pid="$2"
   is_pid_alive "$pid" || return 1
-  local cmd
-  cmd="$(ps -p "$pid" -o command= 2>/dev/null || true)"
   local pattern
   pattern="$(job_command_pattern "$job")"
+  if [[ "${OS:-}" == "Windows_NT" ]] && command -v powershell.exe >/dev/null 2>&1; then
+    local matched
+    matched="$(
+      JOB_PID="$pid" JOB_PATTERN="$pattern" powershell.exe -NoProfile -Command '$proc = Get-CimInstance Win32_Process -Filter ("ProcessId = " + [int]$env:JOB_PID); if ($proc -and $proc.CommandLine -like ("*" + $env:JOB_PATTERN + "*")) { Write-Output 1 }' 2>/dev/null | tr -d '\r' | head -n 1
+    )"
+    [[ "$matched" == "1" ]]
+    return
+  fi
+
+  local cmd
+  cmd="$(ps -p "$pid" -o command= 2>/dev/null || true)"
   [[ "$cmd" == *"$pattern"* ]]
+}
+
+adopt_job_pid() {
+  local job="$1"
+  local pid="$2"
+  local pattern
+  pattern="$(job_command_pattern "$job")"
+  local recent_pid
+  recent_pid="$(find_recent_windows_pid_by_pattern "$pattern" 30 2>/dev/null || true)"
+  if [[ -n "$recent_pid" ]] && is_job_pid_alive "$job" "$recent_pid"; then
+    printf '%s\n' "$recent_pid"
+    return 0
+  fi
+  if is_job_pid_alive "$job" "$pid"; then
+    printf '%s\n' "$pid"
+    return 0
+  fi
+  local child_pid
+  child_pid="$(find_windows_child_pid "$pid" "$pattern" 2>/dev/null || true)"
+  [[ -n "$child_pid" ]] || return 1
+  if is_job_pid_alive "$job" "$child_pid"; then
+    printf '%s\n' "$child_pid"
+    return 0
+  fi
+  return 1
 }
 
 read_pid() {
@@ -190,34 +352,61 @@ clear_stale_pid() {
   [[ -f "$pf" ]] || return 0
   local pid
   pid="$(cat "$pf" 2>/dev/null || true)"
-  if ! is_job_pid_alive "$job" "$pid"; then
-    rm -f "$pf"
-    log_msg "stale pid removed job=$job pid=$pid"
+  local active_pid=""
+  if active_pid="$(adopt_job_pid "$job" "$pid" 2>/dev/null)"; then
+    if [[ "$active_pid" != "$pid" ]]; then
+      printf '%s\n' "$active_pid" > "$pf"
+      log_msg "adopted child pid job=$job old_pid=$pid new_pid=$active_pid"
+    fi
+    return 0
   fi
+  rm -f "$pf"
+  log_msg "stale pid removed job=$job pid=$pid"
 }
 
 state_writer_responding() {
-  [[ -S "$SOCKET_PATH" ]] || return 1
   "$PYTHON_BIN" - "$SOCKET_PATH" <<'PY' >/dev/null 2>&1
 from __future__ import annotations
 
 import json
 import socket
 import sys
+from urllib.parse import urlparse
 
-socket_path = sys.argv[1]
+target = sys.argv[1].strip()
 request = {
-    "method": "list_feed_catalog_uris",
+    "method": "ping",
     "args": [],
-    "kwargs": {"limit": 1},
+    "kwargs": {},
 }
 payload = (json.dumps(request, ensure_ascii=False) + "\n").encode("utf-8")
 
-with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as conn:
-    conn.settimeout(2.0)
-    conn.connect(socket_path)
-    conn.sendall(payload)
-    data = conn.recv(65536)
+def target_kind(raw: str) -> tuple[str, str]:
+    if raw.startswith("tcp://"):
+        return ("tcp", raw.removeprefix("tcp://"))
+    if raw.startswith("unix://"):
+        return ("unix", raw.removeprefix("unix://"))
+    if ("/" in raw) or ("\\" in raw):
+        return ("unix", raw)
+    parsed = urlparse("tcp://" + raw)
+    if parsed.hostname and parsed.port is not None:
+        return ("tcp", raw)
+    return ("unix", raw)
+
+kind, value = target_kind(target)
+if kind == "unix":
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as conn:
+        conn.settimeout(2.0)
+        conn.connect(value)
+        conn.sendall(payload)
+        data = conn.recv(65536)
+else:
+    parsed = urlparse("tcp://" + value)
+    if not parsed.hostname or parsed.port is None:
+        raise SystemExit(1)
+    with socket.create_connection((parsed.hostname, parsed.port), timeout=2.0) as conn:
+        conn.sendall(payload)
+        data = conn.recv(65536)
 
 if not data:
     raise SystemExit(1)
@@ -290,20 +479,51 @@ ensure_state_writer() {
     if is_job_pid_alive "state-writer" "$pid" && state_writer_responding; then
       return 0
     fi
-    log_msg "state-writer unhealthy pid=$pid socket_present=$([[ -S "$SOCKET_PATH" ]] && echo 1 || echo 0)"
+    if state_writer_responding; then
+      log_msg "state-writer metadata stale pid=$pid target=$SOCKET_PATH kind=$(state_writer_target_kind) reusing_external_listener=1"
+      remove_state_writer_metadata
+      local active_pid=""
+      active_pid="$(adopt_job_pid "state-writer" "$pid" 2>/dev/null || true)"
+      if [[ -n "$active_pid" ]]; then
+        printf '%s\n' "$active_pid" > "$CONTROL_DIR/state_writer.pid"
+      fi
+      printf '%s\n' "$SOCKET_PATH" > "$CONTROL_DIR/state_writer.socket"
+      return 0
+    fi
+    log_msg "state-writer unhealthy pid=$pid target=$SOCKET_PATH kind=$(state_writer_target_kind)"
     stop_state_writer_process "$pid"
     remove_state_writer_metadata
   fi
 
-  rm -f "$SOCKET_PATH"
+  if state_writer_responding; then
+    log_msg "state-writer already responding target=$SOCKET_PATH kind=$(state_writer_target_kind) reusing_external_listener=1"
+    local active_pid=""
+    active_pid="$(find_recent_windows_pid_by_pattern "$(job_command_pattern "state-writer")" 120 2>/dev/null || true)"
+    if [[ -n "$active_pid" ]]; then
+      printf '%s\n' "$active_pid" > "$CONTROL_DIR/state_writer.pid"
+    fi
+    printf '%s\n' "$SOCKET_PATH" > "$CONTROL_DIR/state_writer.socket"
+    return 0
+  fi
+
+  remove_state_writer_target_artifact
   local ts
   ts="$(ts_utc_compact)"
   local log_file="$LOG_DIR/state-writer_${ts}.log"
+  local target_kind
+  target_kind="$(state_writer_target_kind)"
 
-  "$PYTHON_BIN" -m bsky_collector_v2 state-writer \
-    --out-base "$OUT_BASE" \
-    --socket-path "$SOCKET_PATH" \
-    > "$log_file" 2>&1 &
+  if [[ "$target_kind" == "tcp" ]]; then
+    "$PYTHON_BIN" -m bsky_collector_v2 state-writer \
+      --out-base "$OUT_BASE" \
+      --tcp "$(state_writer_tcp_target)" \
+      > "$log_file" 2>&1 &
+  else
+    "$PYTHON_BIN" -m bsky_collector_v2 state-writer \
+      --out-base "$OUT_BASE" \
+      --socket-path "$(state_writer_socket_path)" \
+      > "$log_file" 2>&1 &
+  fi
   local writer_pid=$!
 
   printf '%s\n' "$writer_pid" > "$CONTROL_DIR/state_writer.pid"
@@ -313,7 +533,13 @@ ensure_state_writer() {
   local ready=0
   local _attempt
   for _attempt in $(seq 1 20); do
-    if is_job_pid_alive "state-writer" "$writer_pid" && state_writer_responding; then
+    if state_writer_responding; then
+      local active_pid=""
+      active_pid="$(adopt_job_pid "state-writer" "$writer_pid" 2>/dev/null || true)"
+      if [[ -n "$active_pid" ]]; then
+        writer_pid="$active_pid"
+      fi
+      printf '%s\n' "$writer_pid" > "$CONTROL_DIR/state_writer.pid"
       ready=1
       break
     fi
@@ -321,12 +547,12 @@ ensure_state_writer() {
   done
 
   if [[ "$ready" == "1" ]]; then
-    log_msg "state-writer started pid=$writer_pid socket=$SOCKET_PATH log=$log_file"
+    log_msg "state-writer started pid=$writer_pid target=$SOCKET_PATH kind=$target_kind log=$log_file"
   else
     stop_state_writer_process "$writer_pid"
     remove_state_writer_metadata
-    rm -f "$SOCKET_PATH"
-    log_msg "state-writer failed_to_start log=$log_file"
+    remove_state_writer_target_artifact
+    log_msg "state-writer failed_to_start target=$SOCKET_PATH kind=$target_kind log=$log_file"
   fi
 }
 
@@ -342,17 +568,26 @@ start_job_now() {
   printf '%s\n' "$pid" > "$(pid_file_for "$job")"
   mark_started "$job"
 
-  sleep 1
-  if is_job_pid_alive "$job" "$pid"; then
-    log_msg "job_started job=$job pid=$pid log=$log_file"
-  else
-    # Quick-fail: retry soon instead of waiting full interval.
-    local sf
-    sf="$(stamp_file_for "$job")"
-    echo $(( $(now_epoch) - 300 )) > "$sf"
-    rm -f "$(pid_file_for "$job")"
-    log_msg "job_failed_fast job=$job log=$log_file"
-  fi
+  local attempt
+  for attempt in $(seq 1 20); do
+    local active_pid=""
+    active_pid="$(adopt_job_pid "$job" "$pid" 2>/dev/null || true)"
+    if [[ -n "$active_pid" ]]; then
+      if [[ "$active_pid" != "$pid" ]]; then
+        printf '%s\n' "$active_pid" > "$(pid_file_for "$job")"
+      fi
+      log_msg "job_started job=$job pid=$active_pid log=$log_file"
+      return 0
+    fi
+    sleep 0.5
+  done
+
+  # Quick-fail: retry soon instead of waiting full interval.
+  local sf
+  sf="$(stamp_file_for "$job")"
+  echo $(( $(now_epoch) - 300 )) > "$sf"
+  rm -f "$(pid_file_for "$job")"
+  log_msg "job_failed_fast job=$job log=$log_file"
 }
 
 maybe_start_interval_job() {

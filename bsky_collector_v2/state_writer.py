@@ -133,26 +133,30 @@ def run_state_writer(*, cfg: StateWriterConfig) -> None:
             while True:
                 conn, _addr = server.accept()
                 with conn:
-                    req = _recv_json_line(conn)
-                    if req is None:
-                        _send_json_line(
-                            conn, {"ok": False, "error_type": "ValueError", "error": "invalid request"}
-                        )
+                    try:
+                        req = _recv_json_line(conn)
+                        if req is None:
+                            _send_json_line(
+                                conn, {"ok": False, "error_type": "ValueError", "error": "invalid request"}
+                            )
+                            continue
+
+                        method = str(req.get("method", ""))
+                        args = req.get("args", [])
+                        kwargs = req.get("kwargs", {})
+                        if not isinstance(args, list):
+                            args = []
+                        if not isinstance(kwargs, dict):
+                            kwargs = {}
+
+                        resp = dispatch_state_rpc(state, method=method, args=args, kwargs=kwargs)
+                        _send_json_line(conn, resp)
+                        if method == "shutdown" and bool(resp.get("ok")):
+                            logger.info("state-writer shutdown requested")
+                            return
+                    except OSError as err:
+                        logger.warning("state-writer client connection error err=%r", err)
                         continue
-
-                    method = str(req.get("method", ""))
-                    args = req.get("args", [])
-                    kwargs = req.get("kwargs", {})
-                    if not isinstance(args, list):
-                        args = []
-                    if not isinstance(kwargs, dict):
-                        kwargs = {}
-
-                    resp = dispatch_state_rpc(state, method=method, args=args, kwargs=kwargs)
-                    _send_json_line(conn, resp)
-                    if method == "shutdown" and bool(resp.get("ok")):
-                        logger.info("state-writer shutdown requested")
-                        return
     finally:
         if server is not None:
             try:

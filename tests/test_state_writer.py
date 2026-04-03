@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import os
 import socket
+import threading
 import time
 from multiprocessing import Process
 from pathlib import Path
 
 import pytest
 
+import bsky_collector_v2.state_writer as state_writer_module
 from bsky_collector_v2.state import ControlState, RemoteControlState
 from bsky_collector_v2.state_writer import StateWriterConfig, run_state_writer
 from bsky_collector_v2.time_utils import format_utc, now_utc
@@ -220,3 +222,49 @@ def test_state_writer_instance_lock_prevents_dupes(tmp_path: Path) -> None:
     if proc_1.is_alive():
         proc_1.terminate()
         proc_1.join(timeout=5)
+
+
+def test_state_writer_survives_client_disconnect_during_response(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    db_path = tmp_path / "control" / "control_state.db"
+    host = "127.0.0.1"
+    port = _pick_free_tcp_port()
+    thread_errors: list[Exception] = []
+
+    def _runner() -> None:
+        try:
+            run_state_writer(cfg=StateWriterConfig(db_path=db_path, tcp_host=host, tcp_port=port))
+        except Exception as err:  # noqa: BLE001
+            thread_errors.append(err)
+
+    thread = threading.Thread(target=_runner, daemon=True)
+    thread.start()
+    _wait_for_tcp(host, port)
+
+    remote = RemoteControlState(path=db_path, tcp_host=host, tcp_port=port)
+    assert remote._rpc("ping") == {"status": "ok"}
+
+    real_send = state_writer_module._send_json_line
+    fail_once = {"pending": True}
+
+    def _flaky_send(conn: socket.socket, obj: dict[str, object]) -> None:
+        if fail_once["pending"]:
+            fail_once["pending"] = False
+            raise ConnectionResetError(10054, "simulated client reset")
+        real_send(conn, obj)
+
+    monkeypatch.setattr(state_writer_module, "_send_json_line", _flaky_send)
+
+    with pytest.raises((RuntimeError, ConnectionResetError, ConnectionAbortedError, BrokenPipeError, TimeoutError)):
+        remote._rpc("ping")
+
+    assert thread.is_alive()
+    assert remote._rpc("ping") == {"status": "ok"}
+    assert not thread_errors
+
+    remote._rpc("shutdown")
+    thread.join(timeout=5)
+    assert not thread.is_alive()
+    assert not thread_errors

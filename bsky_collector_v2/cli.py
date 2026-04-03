@@ -138,6 +138,125 @@ def build_parser() -> argparse.ArgumentParser:
     authors.add_argument("--seen-after-utc", type=str, default=None)
     authors.add_argument("--seen-before-utc", type=str, default=None)
 
+    feedgens = sub.add_parser("hydrate-feed-generators", parents=[common], add_help=True)
+    feedgens.add_argument("--max-feeds", type=int, default=50000)
+    feedgens.add_argument("--include-hydrated", action=argparse.BooleanOptionalAction, default=False)
+
+    interactions = sub.add_parser("backfill-interactions", parents=[common], add_help=True)
+    interactions.add_argument("--max-posts", type=int, default=10000)
+    interactions.add_argument("--batch-size", type=int, default=25)
+    interactions.add_argument("--max-items-per-endpoint", type=int, default=200)
+    interactions.add_argument("--seen-after-utc", type=str, default=None)
+    interactions.add_argument("--seen-before-utc", type=str, default=None)
+    interactions.add_argument("--include-hydrated", action=argparse.BooleanOptionalAction, default=False)
+
+    rq1 = sub.add_parser("backfill-rq1-factors", parents=[common], add_help=True)
+    rq1.add_argument("--max-posts", type=int, default=10000)
+    rq1.add_argument("--batch-size", type=int, default=25)
+    rq1.add_argument("--max-items-per-endpoint", type=int, default=0)
+    rq1.add_argument("--max-thread-depth", type=int, default=1000)
+    rq1.add_argument("--max-thread-parent-height", type=int, default=1000)
+    rq1.add_argument("--max-author-feed-items", type=int, default=0)
+    rq1.add_argument("--max-followers-per-actor", type=int, default=0)
+    rq1.add_argument("--max-follows-per-actor", type=int, default=0)
+    rq1.add_argument("--max-follow-records-per-actor", type=int, default=0)
+    rq1.add_argument("--max-actor-feeds-per-actor", type=int, default=0)
+    rq1.add_argument("--max-lists-per-actor", type=int, default=0)
+    rq1.add_argument("--max-list-members-per-list", type=int, default=0)
+    rq1.add_argument("--max-starter-packs-per-actor", type=int, default=0)
+    rq1.add_argument("--seen-after-utc", type=str, default=None)
+    rq1.add_argument("--seen-before-utc", type=str, default=None)
+    rq1.add_argument("--resolve-pds-endpoints", action=argparse.BooleanOptionalAction, default=True)
+    rq1.add_argument("--follow-record-scope", type=str, default="seed+graph")
+    rq1.add_argument("--shard-index", type=int, default=0)
+    rq1.add_argument("--shard-count", type=int, default=1)
+    rq1.add_argument("--include-hydrated", action=argparse.BooleanOptionalAction, default=False)
+
+    seed = sub.add_parser("seed-post-registry", parents=[common], add_help=True)
+    seed.add_argument("--include-hourly", action=argparse.BooleanOptionalAction, default=True)
+    seed.add_argument("--include-wide", action=argparse.BooleanOptionalAction, default=True)
+    seed.add_argument("--include-micro5", action=argparse.BooleanOptionalAction, default=True)
+    seed.add_argument("--include-posts-first-seen", action=argparse.BooleanOptionalAction, default=True)
+    seed.add_argument("--max-files", type=int, default=0)
+    seed.add_argument("--max-rows", type=int, default=0)
+    seed.add_argument("--enqueue-interactions", action=argparse.BooleanOptionalAction, default=True)
+    seed.add_argument("--enqueue-rq1-factors", action=argparse.BooleanOptionalAction, default=True)
+    seed.add_argument("--mark-first-written", action=argparse.BooleanOptionalAction, default=True)
+
+    omnibus = sub.add_parser("collect-public-omnibus", parents=[common], add_help=True)
+    omnibus.add_argument("--study-id", action="append", default=[])
+    omnibus.add_argument("--all-studies", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--seed-registry", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--include-posts-first-seen", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--enqueue-interactions-from-seed", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--enqueue-rq1-factors-from-seed", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--run-index-feed-generators", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--run-refresh-discovery", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--run-build-panel", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--run-snapshot-panel", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--run-wide-sweep", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--run-hydrate-authors", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--run-hydrate-feed-generators", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--run-backfill-interactions", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--run-backfill-rq1-factors", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--run-micro-studies", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--seed-max-files", type=int, default=0)
+    omnibus.add_argument("--seed-max-rows", type=int, default=0)
+    omnibus.add_argument("--n-feeds-wide", type=int, default=5000)
+    omnibus.add_argument("--max-authors", type=int, default=200000)
+    omnibus.add_argument("--max-feed-generators", type=int, default=200000)
+    omnibus.add_argument("--max-posts-interactions", type=int, default=200000)
+    omnibus.add_argument("--max-posts-rq1", type=int, default=200000)
+    omnibus.add_argument("--batch-size-interactions", type=int, default=25)
+    omnibus.add_argument("--batch-size-rq1", type=int, default=25)
+    omnibus.add_argument("--max-items-per-endpoint-interactions", type=int, default=0)
+    omnibus.add_argument("--max-items-per-endpoint-rq1", type=int, default=0)
+    omnibus.add_argument("--max-thread-depth", type=int, default=1000)
+    omnibus.add_argument("--max-thread-parent-height", type=int, default=1000)
+    omnibus.add_argument("--max-author-feed-items", type=int, default=0)
+    omnibus.add_argument("--max-followers-per-actor", type=int, default=0)
+    omnibus.add_argument("--max-follows-per-actor", type=int, default=0)
+    omnibus.add_argument("--max-follow-records-per-actor", type=int, default=0)
+    omnibus.add_argument("--max-actor-feeds-per-actor", type=int, default=0)
+    omnibus.add_argument("--max-lists-per-actor", type=int, default=0)
+    omnibus.add_argument("--max-list-members-per-list", type=int, default=0)
+    omnibus.add_argument("--max-starter-packs-per-actor", type=int, default=0)
+    omnibus.add_argument("--seen-after-utc", type=str, default=None)
+    omnibus.add_argument("--seen-before-utc", type=str, default=None)
+    omnibus.add_argument("--include-hydrated-interactions", action=argparse.BooleanOptionalAction, default=False)
+    omnibus.add_argument("--include-hydrated-rq1", action=argparse.BooleanOptionalAction, default=False)
+    omnibus.add_argument("--resolve-pds-endpoints", action=argparse.BooleanOptionalAction, default=True)
+    omnibus.add_argument("--follow-record-scope", type=str, default="seed+graph")
+    omnibus.add_argument("--shard-index", type=int, default=0)
+    omnibus.add_argument("--shard-count", type=int, default=1)
+    omnibus.add_argument("--panel-k1-popular", type=int, default=700)
+    omnibus.add_argument("--panel-k2-onboarding", type=int, default=300)
+    omnibus.add_argument("--panel-k3-suggested", type=int, default=300)
+    omnibus.add_argument("--panel-k4-longtail", type=int, default=200)
+
+    rq2 = sub.add_parser("rq2-pipeline", parents=[common], add_help=True)
+    rq2.add_argument("--data-root", type=Path, default=None)
+    rq2.add_argument("--out-dir", type=Path, required=True)
+    rq2.add_argument("--annotation-dir", type=Path, default=None)
+    rq2.add_argument("--preset", type=str, default="politics_v1")
+    rq2.add_argument("--topic", action="append", default=[])
+    rq2.add_argument("--surface", action="append", default=[])
+    rq2.add_argument("--start-date", type=str, default=None)
+    rq2.add_argument("--end-date", type=str, default=None)
+    rq2.add_argument("--include-labelerexp", action=argparse.BooleanOptionalAction, default=False)
+    rq2.add_argument("--run-topic-batch", action=argparse.BooleanOptionalAction, default=True)
+    rq2.add_argument("--run-sampling", action=argparse.BooleanOptionalAction, default=True)
+    rq2.add_argument("--run-label-application", action=argparse.BooleanOptionalAction, default=True)
+    rq2.add_argument("--run-annotation-merge", action=argparse.BooleanOptionalAction, default=True)
+    rq2.add_argument("--run-frame-table", action=argparse.BooleanOptionalAction, default=True)
+    rq2.add_argument("--run-clustering", action=argparse.BooleanOptionalAction, default=True)
+    rq2.add_argument("--cluster-anchor-kind", action="append", default=[])
+    rq2.add_argument("--cluster-exclude-text-pattern", action="append", default=[])
+    rq2.add_argument("--cluster-time-window-hours", type=int, default=12)
+    rq2.add_argument("--cluster-min-size", type=int, default=2)
+    rq2.add_argument("--max-clusters", type=int, default=25)
+    rq2.add_argument("--per-cluster", type=int, default=4)
+
     state_writer = sub.add_parser("state-writer", parents=[common], add_help=True)
     default_socket_path = None if os.name == "nt" else Path("/tmp/bsky_state_writer.sock")
     state_writer.add_argument("--socket-path", type=Path, default=default_socket_path)
@@ -145,7 +264,6 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("sync-effective-csv", parents=[common], add_help=True)
     sub.add_parser("backfill-run-artifacts", parents=[common], add_help=True)
-    sub.add_parser("backfill-interactions", parents=[common], add_help=True)
 
     study_bench = sub.add_parser("study-benchmark", parents=[common], add_help=True)
     study_bench.add_argument("--panel-path", type=Path, default=None)
@@ -174,6 +292,12 @@ def build_parser() -> argparse.ArgumentParser:
     micro.add_argument("--sleep-until-window", action="store_true")
     micro.add_argument("--sample-family", choices=["micro5_core_full", "micro5_extended_sharded"], default=None)
     micro.add_argument("--frozen-panel-path", type=Path, default=None)
+    micro.add_argument("--public-only", action=argparse.BooleanOptionalAction, default=False)
+
+    rq2_tables = sub.add_parser("rq2-generate-frame-tables", parents=[common], add_help=True)
+    rq2_tables.add_argument("--batch-dir", type=Path, required=True)
+    rq2_tables.add_argument("--label-rows-path", type=Path, required=True)
+    rq2_tables.add_argument("--out-dir", type=Path, required=True)
 
     return parser
 
@@ -428,6 +552,27 @@ def main(argv: Sequence[str] | None = None) -> int:
                     )
                 )
                 return 0
+            case "hydrate-feed-generators":
+                from bsky_collector_v2.jobs.hydrate_feed_generators import HydrateFeedGeneratorsConfig, run_hydrate_feed_generators
+
+                asyncio.run(
+                    run_hydrate_feed_generators(
+                        layout=layout,
+                        hosts=hosts,
+                        run_id=new_run_id(),
+                        rps=g.rps,
+                        concurrency=g.concurrency,
+                        dry_run=g.dry_run,
+                        cfg=HydrateFeedGeneratorsConfig(
+                            max_feeds=int(args.max_feeds),
+                            include_hydrated=bool(args.include_hydrated),
+                        ),
+                        accept_language=g.accept_language,
+                        accept_labelers=g.accept_labelers,
+                        vantage_id=g.vantage_id_unauth,
+                    )
+                )
+                return 0
             case "state-writer":
                 from bsky_collector_v2.state_writer import StateWriterConfig, run_state_writer
 
@@ -456,8 +601,222 @@ def main(argv: Sequence[str] | None = None) -> int:
                 summary = run_backfill_run_artifacts(layout=layout, dry_run=g.dry_run)
                 logger.info("backfill run artifacts summary=%s", summary.to_dict())
                 return 0
+            case "seed-post-registry":
+                from bsky_collector_v2.jobs.seed_post_registry import SeedPostRegistryConfig, run_seed_post_registry
+
+                summary = run_seed_post_registry(
+                    layout=layout,
+                    run_id=new_run_id(),
+                    dry_run=g.dry_run,
+                    cfg=SeedPostRegistryConfig(
+                        include_hourly=bool(args.include_hourly),
+                        include_wide=bool(args.include_wide),
+                        include_micro5=bool(args.include_micro5),
+                        include_posts_first_seen=bool(args.include_posts_first_seen),
+                        max_files=int(args.max_files),
+                        max_rows=int(args.max_rows),
+                        enqueue_interactions=bool(args.enqueue_interactions),
+                        enqueue_rq1_factors=bool(args.enqueue_rq1_factors),
+                        mark_first_written=bool(args.mark_first_written),
+                    ),
+                )
+                logger.info("seed post registry summary=%s", summary.to_dict())
+                return 0
+            case "collect-public-omnibus":
+                from bsky_collector_v2.jobs.public_omnibus import PublicOmnibusConfig, run_public_omnibus
+
+                summary = asyncio.run(
+                    run_public_omnibus(
+                        layout=layout,
+                        hosts=hosts,
+                        relay_host=g.relay_host,
+                        run_id=new_run_id(),
+                        rps=g.rps,
+                        concurrency=g.concurrency,
+                        posts_per_feed=g.posts_per_feed,
+                        time_budget_minutes=g.time_budget_minutes,
+                        feed_time_budget_s=g.feed_time_budget_s,
+                        dry_run=g.dry_run,
+                        resume=g.resume,
+                        accept_language=g.accept_language,
+                        accept_labelers=g.accept_labelers,
+                        include_author_labels=g.include_author_labels,
+                        vantage_id_unauth=g.vantage_id_unauth,
+                        cfg=PublicOmnibusConfig(
+                            seed_registry=bool(args.seed_registry),
+                            include_posts_first_seen=bool(args.include_posts_first_seen),
+                            enqueue_interactions_from_seed=bool(args.enqueue_interactions_from_seed),
+                            enqueue_rq1_factors_from_seed=bool(args.enqueue_rq1_factors_from_seed),
+                            run_index_feed_generators=bool(args.run_index_feed_generators),
+                            run_refresh_discovery=bool(args.run_refresh_discovery),
+                            run_build_panel=bool(args.run_build_panel),
+                            run_snapshot_panel=bool(args.run_snapshot_panel),
+                            run_wide_sweep=bool(args.run_wide_sweep),
+                            run_hydrate_authors=bool(args.run_hydrate_authors),
+                            run_hydrate_feed_generators=bool(args.run_hydrate_feed_generators),
+                            run_backfill_interactions=bool(args.run_backfill_interactions),
+                            run_backfill_rq1_factors=bool(args.run_backfill_rq1_factors),
+                            run_micro_studies=bool(args.run_micro_studies),
+                            all_studies=bool(args.all_studies),
+                            study_ids=tuple(str(item) for item in (args.study_id or []) if str(item).strip()),
+                            seed_max_files=int(args.seed_max_files),
+                            seed_max_rows=int(args.seed_max_rows),
+                            n_feeds_wide=int(args.n_feeds_wide),
+                            max_authors=int(args.max_authors),
+                            max_feed_generators=int(args.max_feed_generators),
+                            max_posts_interactions=int(args.max_posts_interactions),
+                            max_posts_rq1=int(args.max_posts_rq1),
+                            batch_size_interactions=int(args.batch_size_interactions),
+                            batch_size_rq1=int(args.batch_size_rq1),
+                            max_items_per_endpoint_interactions=int(args.max_items_per_endpoint_interactions),
+                            max_items_per_endpoint_rq1=int(args.max_items_per_endpoint_rq1),
+                            max_thread_depth=int(args.max_thread_depth),
+                            max_thread_parent_height=int(args.max_thread_parent_height),
+                            max_author_feed_items=int(args.max_author_feed_items),
+                            max_followers_per_actor=int(args.max_followers_per_actor),
+                            max_follows_per_actor=int(args.max_follows_per_actor),
+                            max_follow_records_per_actor=int(args.max_follow_records_per_actor),
+                            max_actor_feeds_per_actor=int(args.max_actor_feeds_per_actor),
+                            max_lists_per_actor=int(args.max_lists_per_actor),
+                            max_list_members_per_list=int(args.max_list_members_per_list),
+                            max_starter_packs_per_actor=int(args.max_starter_packs_per_actor),
+                            seen_after_utc=args.seen_after_utc,
+                            seen_before_utc=args.seen_before_utc,
+                            include_hydrated_interactions=bool(args.include_hydrated_interactions),
+                            include_hydrated_rq1=bool(args.include_hydrated_rq1),
+                            resolve_pds_endpoints=bool(args.resolve_pds_endpoints),
+                            follow_record_scope=str(args.follow_record_scope),
+                            shard_index=int(args.shard_index),
+                            shard_count=int(args.shard_count),
+                            panel_k1_popular=int(args.panel_k1_popular),
+                            panel_k2_onboarding=int(args.panel_k2_onboarding),
+                            panel_k3_suggested=int(args.panel_k3_suggested),
+                            panel_k4_longtail=int(args.panel_k4_longtail),
+                        ),
+                    )
+                )
+                logger.info("public omnibus summary=%s", summary.to_dict())
+                return 0
+            case "rq2-pipeline":
+                from bsky_collector_v2.rq2_pipeline import (
+                    DEFAULT_CLUSTER_EXCLUDE_PATTERNS,
+                    Rq2PipelineConfig,
+                    run_rq2_pipeline,
+                )
+
+                raw_surfaces = [str(item).strip() for item in (args.surface or []) if str(item).strip()]
+                raw_anchor_kinds = [
+                    str(item).strip()
+                    for item in (args.cluster_anchor_kind or [])
+                    if str(item).strip()
+                ]
+                raw_exclude_patterns = [
+                    str(item).strip()
+                    for item in (args.cluster_exclude_text_pattern or [])
+                    if str(item).strip()
+                ]
+                out_dir = Path(getattr(args, "out_dir"))
+                annotation_dir = (
+                    Path(getattr(args, "annotation_dir"))
+                    if getattr(args, "annotation_dir", None)
+                    else out_dir / "annotations"
+                )
+                summary = run_rq2_pipeline(
+                    Rq2PipelineConfig(
+                        data_root=Path(getattr(args, "data_root") or g.out_base),
+                        out_dir=out_dir,
+                        annotation_dir=annotation_dir,
+                        preset=str(getattr(args, "preset")),
+                        topics=tuple(
+                            str(item).strip()
+                            for item in (getattr(args, "topic", None) or [])
+                            if str(item).strip()
+                        ),
+                        surfaces=tuple(dict.fromkeys(raw_surfaces or ["hourly", "wide"])),
+                        start_date=getattr(args, "start_date", None),
+                        end_date=getattr(args, "end_date", None),
+                        include_labelerexp=bool(getattr(args, "include_labelerexp", False)),
+                        run_topic_batch=bool(getattr(args, "run_topic_batch", True)),
+                        run_sampling=bool(getattr(args, "run_sampling", True)),
+                        run_label_application=bool(getattr(args, "run_label_application", True)),
+                        run_annotation_merge=bool(getattr(args, "run_annotation_merge", True)),
+                        run_frame_table=bool(getattr(args, "run_frame_table", True)),
+                        run_clustering=bool(getattr(args, "run_clustering", True)),
+                        cluster_anchor_kinds=tuple(dict.fromkeys(raw_anchor_kinds or ["tokens"])),
+                        cluster_exclude_text_patterns=tuple(
+                            dict.fromkeys(raw_exclude_patterns or list(DEFAULT_CLUSTER_EXCLUDE_PATTERNS))
+                        ),
+                        cluster_time_window_hours=int(getattr(args, "cluster_time_window_hours", 12)),
+                        cluster_min_size=int(getattr(args, "cluster_min_size", 2)),
+                        max_clusters=int(getattr(args, "max_clusters", 25)),
+                        per_cluster=int(getattr(args, "per_cluster", 4)),
+                    )
+                )
+                logger.info("rq2 pipeline summary=%s", summary)
+                return 0
             case "backfill-interactions":
-                logger.warning("backfill-interactions is optional and not implemented yet")
+                from bsky_collector_v2.jobs.backfill_interactions import BackfillInteractionsConfig, run_backfill_interactions
+
+                asyncio.run(
+                    run_backfill_interactions(
+                        layout=layout,
+                        hosts=hosts,
+                        run_id=new_run_id(),
+                        rps=g.rps,
+                        concurrency=g.concurrency,
+                        dry_run=g.dry_run,
+                        cfg=BackfillInteractionsConfig(
+                            max_posts=int(args.max_posts),
+                            batch_size=int(args.batch_size),
+                            max_items_per_endpoint=int(args.max_items_per_endpoint),
+                            seen_after_utc=args.seen_after_utc,
+                            seen_before_utc=args.seen_before_utc,
+                            include_hydrated=bool(args.include_hydrated),
+                        ),
+                        accept_language=g.accept_language,
+                        accept_labelers=g.accept_labelers,
+                        vantage_id=g.vantage_id_unauth,
+                    )
+                )
+                return 0
+            case "backfill-rq1-factors":
+                from bsky_collector_v2.jobs.backfill_rq1_factors import BackfillRq1FactorsConfig, run_backfill_rq1_factors
+
+                asyncio.run(
+                    run_backfill_rq1_factors(
+                        layout=layout,
+                        hosts=hosts,
+                        run_id=new_run_id(),
+                        rps=g.rps,
+                        concurrency=g.concurrency,
+                        dry_run=g.dry_run,
+                        cfg=BackfillRq1FactorsConfig(
+                            max_posts=int(args.max_posts),
+                            batch_size=int(args.batch_size),
+                            max_items_per_endpoint=int(args.max_items_per_endpoint),
+                            max_thread_depth=int(args.max_thread_depth),
+                            max_thread_parent_height=int(args.max_thread_parent_height),
+                            max_author_feed_items=int(args.max_author_feed_items),
+                            max_followers_per_actor=int(args.max_followers_per_actor),
+                            max_follows_per_actor=int(args.max_follows_per_actor),
+                            max_follow_records_per_actor=int(args.max_follow_records_per_actor),
+                            max_actor_feeds_per_actor=int(args.max_actor_feeds_per_actor),
+                            max_lists_per_actor=int(args.max_lists_per_actor),
+                            max_list_members_per_list=int(args.max_list_members_per_list),
+                            max_starter_packs_per_actor=int(args.max_starter_packs_per_actor),
+                            seen_after_utc=args.seen_after_utc,
+                            seen_before_utc=args.seen_before_utc,
+                            include_hydrated=bool(args.include_hydrated),
+                            resolve_pds_endpoints=bool(args.resolve_pds_endpoints),
+                            follow_record_scope=str(args.follow_record_scope),
+                            shard_index=int(args.shard_index),
+                            shard_count=int(args.shard_count),
+                        ),
+                        accept_language=g.accept_language,
+                        accept_labelers=g.accept_labelers,
+                        vantage_id=g.vantage_id_unauth,
+                    )
+                )
                 return 0
             case "study-benchmark":
                 from bsky_collector_v2.jobs.study_benchmark import StudyBenchmarkConfig, run_study_benchmark
@@ -606,8 +965,19 @@ def main(argv: Sequence[str] | None = None) -> int:
                             feed_time_budget_s=g.feed_time_budget_s,
                             resume=g.resume,
                             dry_run=g.dry_run,
+                            public_only=bool(getattr(args, "public_only", False)),
                         )
                     )
+                return 0
+            case "rq2-generate-frame-tables":
+                from bsky_collector_v2.rq2_frame_tables import generate_frame_exposure_supply_tables
+
+                summary = generate_frame_exposure_supply_tables(
+                    batch_dir=Path(getattr(args, "batch_dir")),
+                    label_rows_path=Path(getattr(args, "label_rows_path")),
+                    out_dir=Path(getattr(args, "out_dir")),
+                )
+                logger.info("rq2 frame tables summary=%s", summary)
                 return 0
             case _:
                 logger.error("unknown subcommand: %s", args.subcommand)

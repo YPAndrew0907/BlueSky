@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from bsky_collector_v2.state import ControlState
-from bsky_collector_v2.types import PostUri
+from bsky_collector_v2.types import FeedUri, PostUri
 from bsky_collector_v2.time_utils import format_utc, now_utc
 
 
@@ -37,3 +37,87 @@ def test_control_state_wal_and_post_registry(tmp_path: Path) -> None:
         not_written2 = s.select_not_written(post_uris=[posts[0]])
         assert not_written2 == []
 
+
+
+
+def test_control_state_interaction_and_feed_hydration_helpers(tmp_path: Path) -> None:
+    db_path = tmp_path / "control" / "control_state.db"
+    ts = format_utc(now_utc())
+    post = PostUri("at://did:plc:abc/app.bsky.feed.post/2")
+
+    with ControlState.open(db_path) as s:
+        s.upsert_post_registry_many(post_uris=[post], seen_at_utc=ts)
+        s.ensure_post_interaction_tasks(post_uris=[post], enqueued_at_utc=ts)
+        s.upsert_feed_catalog(
+            feed_uri=FeedUri("at://did:plc:feed/app.bsky.feed.generator/test"),
+            creator_did="did:plc:feed",
+            service_did="did:web:example.com",
+            provider_domain="example.com",
+            like_count_last=1,
+            discovered_from=["test"],
+            seen_at_utc=ts,
+        )
+        s.commit()
+
+        selected_post_rows = s.select_posts_to_backfill_rows(limit=10)
+        assert [(row.post_uri, row.first_seen_utc) for row in selected_post_rows] == [(str(post), ts)]
+
+        selected_posts = s.select_posts_to_backfill(limit=10)
+        assert selected_posts == [str(post)]
+
+        s.mark_posts_interactions_hydrated(post_uris=[post], hydrated_at_utc=ts)
+        s.commit()
+        selected_posts_after = s.select_posts_to_backfill(limit=10)
+        assert selected_posts_after == []
+
+        selected_feeds = s.select_feed_generators_to_hydrate(limit=10)
+        assert selected_feeds == ["at://did:plc:feed/app.bsky.feed.generator/test"]
+
+        s.mark_feed_generators_hydrated(
+            feed_uris=[FeedUri("at://did:plc:feed/app.bsky.feed.generator/test")],
+            hydrated_at_utc=ts,
+        )
+        s.commit()
+        selected_feeds_after = s.select_feed_generators_to_hydrate(limit=10)
+        assert selected_feeds_after == []
+
+
+def test_control_state_rq1_hydration_helpers(tmp_path: Path) -> None:
+    db_path = tmp_path / "control" / "control_state.db"
+    post_a = PostUri("at://did:plc:aaa/app.bsky.feed.post/a")
+    post_b = PostUri("at://did:plc:bbb/app.bsky.feed.post/b")
+    post_c = PostUri("at://did:plc:ccc/app.bsky.feed.post/c")
+
+    with ControlState.open(db_path) as s:
+        s.upsert_post_registry_many(post_uris=[post_a], seen_at_utc="2026-03-01T00:00:00Z")
+        s.upsert_post_registry_many(post_uris=[post_b], seen_at_utc="2026-03-02T00:00:00Z")
+        s.upsert_post_registry_many(post_uris=[post_c], seen_at_utc="2026-03-03T00:00:00Z")
+        s.ensure_post_rq1_factor_tasks(
+            post_uris=[post_a, post_b, post_c],
+            enqueued_at_utc="2026-03-03T01:00:00Z",
+        )
+        s.commit()
+
+        selected_rows = s.select_posts_to_backfill_rq1_rows(limit=10)
+        assert [(row.post_uri, row.first_seen_utc) for row in selected_rows] == [
+            (str(post_a), "2026-03-01T00:00:00Z"),
+            (str(post_b), "2026-03-02T00:00:00Z"),
+            (str(post_c), "2026-03-03T00:00:00Z"),
+        ]
+
+        selected = s.select_posts_to_backfill_rq1(limit=10)
+        assert selected == [str(post_a), str(post_b), str(post_c)]
+
+        s.mark_posts_rq1_factors_hydrated(post_uris=[post_b], hydrated_at_utc="2026-03-04T00:00:00Z")
+        s.commit()
+
+        selected_after = s.select_posts_to_backfill_rq1(limit=10)
+        assert selected_after == [str(post_a), str(post_c)]
+
+        selected_with_hydrated = s.select_posts_to_backfill_rq1(limit=10, include_hydrated=True)
+        assert selected_with_hydrated == [str(post_a), str(post_b), str(post_c)]
+
+        shard0 = set(s.select_posts_to_backfill_rq1(limit=10, include_hydrated=True, shard_index=0, shard_count=2))
+        shard1 = set(s.select_posts_to_backfill_rq1(limit=10, include_hydrated=True, shard_index=1, shard_count=2))
+        assert shard0.isdisjoint(shard1)
+        assert shard0 | shard1 == {str(post_a), str(post_b), str(post_c)}

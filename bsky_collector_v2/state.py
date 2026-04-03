@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import socket
@@ -15,6 +16,30 @@ from bsky_collector_v2.types import FeedUri, PostUri, RunId, ViewerMode
 
 
 _STATE_WRITER_SOCKET_ENV = "BSKY_STATE_WRITER_SOCKET"
+_STATE_WRITER_RPC_TIMEOUT_ENV = "BSKY_STATE_WRITER_RPC_TIMEOUT_S"
+
+
+def _state_writer_rpc_timeout_s() -> float:
+    raw = str(os.getenv(_STATE_WRITER_RPC_TIMEOUT_ENV, "60")).strip()
+    try:
+        value = float(raw)
+    except ValueError:
+        return 60.0
+    return max(1.0, value)
+
+
+_STATE_WRITER_RPC_TIMEOUT_S = _state_writer_rpc_timeout_s()
+
+
+@dataclass(frozen=True)
+class SelectedPost:
+    post_uri: str
+    first_seen_utc: str
+
+
+def _stable_shard(value: str, shard_count: int) -> int:
+    digest = hashlib.sha256(str(value).encode("utf-8")).hexdigest()
+    return int(digest[:16], 16) % max(1, int(shard_count))
 
 
 def _connect_sqlite(path: Path) -> sqlite3.Connection:
@@ -132,9 +157,11 @@ class RemoteControlState:
     def _rpc(self, method: str, *args: Any, **kwargs: Any) -> Any:
         req = {"method": str(method), "args": list(args), "kwargs": dict(kwargs)}
         payload = (json.dumps(req, ensure_ascii=False) + "\n").encode("utf-8")
+        timeout_s = _STATE_WRITER_RPC_TIMEOUT_S
 
         if self.socket_path is not None:
             with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as conn:
+                conn.settimeout(timeout_s)
                 conn.connect(str(self.socket_path))
                 conn.sendall(payload)
 
@@ -150,7 +177,8 @@ class RemoteControlState:
             host = str(self.tcp_host or "").strip()
             if not host or self.tcp_port is None:
                 raise RuntimeError("state-writer tcp target not configured")
-            with socket.create_connection((host, int(self.tcp_port)), timeout=10.0) as conn:
+            with socket.create_connection((host, int(self.tcp_port)), timeout=timeout_s) as conn:
+                conn.settimeout(timeout_s)
                 conn.sendall(payload)
                 buf = bytearray()
                 while True:
@@ -252,6 +280,22 @@ class ControlState:
               last_seen_utc TEXT NOT NULL,
               seen_count INTEGER NOT NULL,
               first_written INTEGER NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS post_interaction_registry (
+              post_uri TEXT PRIMARY KEY,
+              first_enqueued_utc TEXT NOT NULL,
+              last_hydrated_utc TEXT,
+              hydrated_count INTEGER NOT NULL DEFAULT 0,
+              FOREIGN KEY(post_uri) REFERENCES post_registry(post_uri) ON DELETE CASCADE
+            );
+
+            CREATE TABLE IF NOT EXISTS post_rq1_factor_registry (
+              post_uri TEXT PRIMARY KEY,
+              first_enqueued_utc TEXT NOT NULL,
+              last_hydrated_utc TEXT,
+              hydrated_count INTEGER NOT NULL DEFAULT 0,
+              FOREIGN KEY(post_uri) REFERENCES post_registry(post_uri) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS queue_posts (
@@ -423,6 +467,31 @@ class ControlState:
         )
         yield from cur
 
+    def select_feed_generators_to_hydrate(self, *, limit: int, include_hydrated: bool = False) -> list[str]:
+        conditions = []
+        if not include_hydrated:
+            conditions.append("last_hydrated_utc IS NULL")
+        where_sql = f"WHERE {' AND '.join(conditions)}" if conditions else ""
+        cur = self.conn.execute(
+            f"""
+            SELECT feed_uri
+            FROM feed_catalog
+            {where_sql}
+            ORDER BY (like_count_last IS NULL) ASC, like_count_last DESC, first_seen_utc ASC, feed_uri ASC
+            LIMIT ?
+            """,
+            (int(limit),),
+        )
+        return [str(r["feed_uri"]) for r in cur.fetchall()]
+
+    def mark_feed_generators_hydrated(self, *, feed_uris: Sequence[FeedUri], hydrated_at_utc: str) -> None:
+        if not feed_uris:
+            return
+        self.conn.executemany(
+            "UPDATE feed_catalog SET last_hydrated_utc=? WHERE feed_uri=?",
+            [(hydrated_at_utc, str(uri)) for uri in feed_uris],
+        )
+
     def list_feed_catalog_uris(
         self,
         *,
@@ -485,6 +554,10 @@ class ControlState:
             rows,
         )
 
+    def count_post_registry_rows(self) -> int:
+        row = self.conn.execute("SELECT COUNT(*) AS n FROM post_registry").fetchone()
+        return int(row["n"]) if row is not None else 0
+
     def select_not_written(self, *, post_uris: Sequence[PostUri]) -> list[PostUri]:
         if not post_uris:
             return []
@@ -503,6 +576,178 @@ class ControlState:
             [(str(p),) for p in post_uris],
         )
 
+    def ensure_post_interaction_tasks(self, *, post_uris: Sequence[PostUri], enqueued_at_utc: str) -> None:
+        rows = [(str(p), enqueued_at_utc) for p in post_uris if str(p)]
+        if not rows:
+            return
+        self.conn.executemany(
+            """
+            INSERT OR IGNORE INTO post_interaction_registry(post_uri, first_enqueued_utc, last_hydrated_utc, hydrated_count)
+            VALUES (?, ?, NULL, 0)
+            """,
+            rows,
+        )
+
+    def select_posts_to_backfill_rows(
+        self,
+        *,
+        limit: int,
+        seen_after_utc: str | None = None,
+        seen_before_utc: str | None = None,
+        include_hydrated: bool = False,
+    ) -> list[SelectedPost]:
+        conditions = ["1=1"]
+        args: list[Any] = []
+        if seen_after_utc is not None:
+            conditions.append("pr.first_seen_utc >= ?")
+            args.append(seen_after_utc)
+        if seen_before_utc is not None:
+            conditions.append("pr.first_seen_utc < ?")
+            args.append(seen_before_utc)
+        if not include_hydrated:
+            conditions.append("pir.last_hydrated_utc IS NULL")
+        query = f"""
+            SELECT pr.post_uri, pr.first_seen_utc
+            FROM post_registry AS pr
+            LEFT JOIN post_interaction_registry AS pir ON pir.post_uri = pr.post_uri
+            WHERE {' AND '.join(conditions)}
+            ORDER BY pr.first_seen_utc ASC, pr.post_uri ASC
+            LIMIT ?
+        """
+        args.append(int(limit))
+        cur = self.conn.execute(query, tuple(args))
+        return [
+            SelectedPost(post_uri=str(row["post_uri"]), first_seen_utc=str(row["first_seen_utc"]))
+            for row in cur.fetchall()
+        ]
+
+    def select_posts_to_backfill(
+        self,
+        *,
+        limit: int,
+        seen_after_utc: str | None = None,
+        seen_before_utc: str | None = None,
+        include_hydrated: bool = False,
+    ) -> list[str]:
+        rows = self.select_posts_to_backfill_rows(
+            limit=limit,
+            seen_after_utc=seen_after_utc,
+            seen_before_utc=seen_before_utc,
+            include_hydrated=include_hydrated,
+        )
+        return [row.post_uri for row in rows]
+
+    def mark_posts_interactions_hydrated(self, *, post_uris: Sequence[PostUri], hydrated_at_utc: str) -> None:
+        rows = [(str(p), hydrated_at_utc) for p in post_uris if str(p)]
+        if not rows:
+            return
+        self.conn.executemany(
+            """
+            INSERT INTO post_interaction_registry(post_uri, first_enqueued_utc, last_hydrated_utc, hydrated_count)
+            VALUES (?, ?, ?, 1)
+            ON CONFLICT(post_uri) DO UPDATE SET
+              last_hydrated_utc = excluded.last_hydrated_utc,
+              hydrated_count = post_interaction_registry.hydrated_count + 1
+            """,
+            [(post_uri, hydrated_at_utc, hydrated_at_utc) for post_uri, hydrated_at_utc in rows],
+        )
+
+    def ensure_post_rq1_factor_tasks(self, *, post_uris: Sequence[PostUri], enqueued_at_utc: str) -> None:
+        rows = [(str(p), enqueued_at_utc) for p in post_uris if str(p)]
+        if not rows:
+            return
+        self.conn.executemany(
+            """
+            INSERT OR IGNORE INTO post_rq1_factor_registry(post_uri, first_enqueued_utc, last_hydrated_utc, hydrated_count)
+            VALUES (?, ?, NULL, 0)
+            """,
+            rows,
+        )
+
+    def select_posts_to_backfill_rq1_rows(
+        self,
+        *,
+        limit: int,
+        seen_after_utc: str | None = None,
+        seen_before_utc: str | None = None,
+        include_hydrated: bool = False,
+        shard_index: int = 0,
+        shard_count: int = 1,
+    ) -> list[SelectedPost]:
+        limit = int(limit)
+        if limit <= 0:
+            return []
+        shard_count = max(1, int(shard_count))
+        shard_index = int(shard_index)
+        if shard_index < 0 or shard_index >= shard_count:
+            raise ValueError(f"shard_index must be within [0,{shard_count}), got {shard_index}")
+
+        conditions = ["1=1"]
+        args: list[Any] = []
+        if seen_after_utc is not None:
+            conditions.append("pr.first_seen_utc >= ?")
+            args.append(seen_after_utc)
+        if seen_before_utc is not None:
+            conditions.append("pr.first_seen_utc < ?")
+            args.append(seen_before_utc)
+        if not include_hydrated:
+            conditions.append("prr.last_hydrated_utc IS NULL")
+
+        cur = self.conn.execute(
+            f"""
+            SELECT pr.post_uri, pr.first_seen_utc
+            FROM post_registry AS pr
+            LEFT JOIN post_rq1_factor_registry AS prr ON prr.post_uri = pr.post_uri
+            WHERE {' AND '.join(conditions)}
+            ORDER BY pr.first_seen_utc ASC, pr.post_uri ASC
+            """,
+            tuple(args),
+        )
+        out: list[SelectedPost] = []
+        for row in cur.fetchall():
+            post_uri = str(row["post_uri"])
+            if _stable_shard(post_uri, shard_count) != shard_index:
+                continue
+            out.append(SelectedPost(post_uri=post_uri, first_seen_utc=str(row["first_seen_utc"])))
+            if len(out) >= limit:
+                break
+        return out
+
+    def select_posts_to_backfill_rq1(
+        self,
+        *,
+        limit: int,
+        seen_after_utc: str | None = None,
+        seen_before_utc: str | None = None,
+        include_hydrated: bool = False,
+        shard_index: int = 0,
+        shard_count: int = 1,
+    ) -> list[str]:
+        rows = self.select_posts_to_backfill_rq1_rows(
+            limit=limit,
+            seen_after_utc=seen_after_utc,
+            seen_before_utc=seen_before_utc,
+            include_hydrated=include_hydrated,
+            shard_index=shard_index,
+            shard_count=shard_count,
+        )
+        return [row.post_uri for row in rows]
+
+    def mark_posts_rq1_factors_hydrated(self, *, post_uris: Sequence[PostUri], hydrated_at_utc: str) -> None:
+        rows = [(str(p), hydrated_at_utc) for p in post_uris if str(p)]
+        if not rows:
+            return
+        self.conn.executemany(
+            """
+            INSERT INTO post_rq1_factor_registry(post_uri, first_enqueued_utc, last_hydrated_utc, hydrated_count)
+            VALUES (?, ?, ?, 1)
+            ON CONFLICT(post_uri) DO UPDATE SET
+              last_hydrated_utc = excluded.last_hydrated_utc,
+              hydrated_count = post_rq1_factor_registry.hydrated_count + 1
+            """,
+            [(post_uri, hydrated_at_utc, hydrated_at_utc) for post_uri, hydrated_at_utc in rows],
+        )
+
     def upsert_author_registry_many(self, *, author_dids: Sequence[str], seen_at_utc: str) -> None:
         rows = [(str(d), seen_at_utc, seen_at_utc) for d in author_dids if str(d)]
         if not rows:
@@ -517,6 +762,10 @@ class ControlState:
             """,
             rows,
         )
+
+    def count_author_registry_rows(self) -> int:
+        row = self.conn.execute("SELECT COUNT(*) AS n FROM author_registry").fetchone()
+        return int(row["n"]) if row is not None else 0
 
     def select_authors_to_hydrate(
         self,

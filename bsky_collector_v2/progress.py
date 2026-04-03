@@ -5,7 +5,7 @@ import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from bsky_collector_v2.fs_utils import atomic_write_json
 from bsky_collector_v2.time_utils import format_utc, now_utc
@@ -24,6 +24,7 @@ class ProgressState:
     start_monotonic_s: float = field(default_factory=_now_s)
     last_write_monotonic_s: float = field(default_factory=_now_s)
 
+    unit_label: str = "feeds"
     feeds_total: int | None = None
     feeds_done: int = 0
     feeds_failed: int = 0
@@ -33,6 +34,7 @@ class ProgressState:
 
     http_errors_by_code: dict[str, int] = field(default_factory=dict)
     rows_written: dict[str, int] = field(default_factory=dict)
+    details: dict[str, Any] = field(default_factory=dict)
 
     lock: threading.Lock = field(default_factory=threading.Lock, repr=False)
 
@@ -48,6 +50,7 @@ class ProgressState:
                 "started_at_utc": self.started_at_utc,
                 "updated_at_utc": format_utc(now_utc()),
                 "elapsed_s": round(elapsed_s, 3),
+                "unit_label": self.unit_label,
                 "feeds_total": self.feeds_total,
                 "feeds_done": self.feeds_done,
                 "feeds_failed": self.feeds_failed,
@@ -56,6 +59,7 @@ class ProgressState:
                 "concurrency": self.concurrency,
                 "http_errors_by_code": dict(self.http_errors_by_code),
                 "rows_written": dict(self.rows_written),
+                "details": dict(self.details),
             }
 
     def incr_http_error(self, code: str) -> None:
@@ -67,6 +71,21 @@ class ProgressState:
             return
         with self.lock:
             self.rows_written[key] = int(self.rows_written.get(key, 0)) + int(n)
+
+    def set_detail(self, key: str, value: Any) -> None:
+        with self.lock:
+            if value is None:
+                self.details.pop(key, None)
+            else:
+                self.details[key] = value
+
+    def update_details(self, details: Mapping[str, Any]) -> None:
+        with self.lock:
+            for key, value in details.items():
+                if value is None:
+                    self.details.pop(str(key), None)
+                else:
+                    self.details[str(key)] = value
 
 
 @dataclass
@@ -109,4 +128,3 @@ def read_progress(path: Path) -> dict[str, Any] | None:
         return json.loads(raw)
     except json.JSONDecodeError:
         return None
-

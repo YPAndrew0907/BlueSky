@@ -496,6 +496,50 @@ class Layout:
         return self.authors_day_dir(date_yyyy_mm_dd) / "quality_report.json"
 
     @property
+    def feed_generators_root(self) -> Path:
+        return self.out_base / "feed_generators"
+
+    def feed_generators_day_dir(self, date_yyyy_mm_dd: str) -> Path:
+        return self.feed_generators_root / date_yyyy_mm_dd
+
+    def feed_generators_manifest_json(self, date_yyyy_mm_dd: str) -> Path:
+        return self.feed_generators_day_dir(date_yyyy_mm_dd) / "run_manifest.json"
+
+    def feed_generators_progress_json(self, date_yyyy_mm_dd: str) -> Path:
+        return self.feed_generators_day_dir(date_yyyy_mm_dd) / "progress.json"
+
+    def feed_generators_http_stats_csv(self, date_yyyy_mm_dd: str) -> Path:
+        return self.feed_generators_day_dir(date_yyyy_mm_dd) / "http_stats.csv"
+
+    def feed_generators_request_provenance_csv(self, date_yyyy_mm_dd: str) -> Path:
+        return self.feed_generators_day_dir(date_yyyy_mm_dd) / "request_provenance.csv"
+
+    def feed_generators_quality_report_json(self, date_yyyy_mm_dd: str) -> Path:
+        return self.feed_generators_day_dir(date_yyyy_mm_dd) / "quality_report.json"
+
+    @property
+    def interactions_root(self) -> Path:
+        return self.out_base / "interactions"
+
+    def interactions_day_dir(self, date_yyyy_mm_dd: str) -> Path:
+        return self.interactions_root / date_yyyy_mm_dd
+
+    def interactions_manifest_json(self, date_yyyy_mm_dd: str) -> Path:
+        return self.interactions_day_dir(date_yyyy_mm_dd) / "run_manifest.json"
+
+    def interactions_progress_json(self, date_yyyy_mm_dd: str) -> Path:
+        return self.interactions_day_dir(date_yyyy_mm_dd) / "progress.json"
+
+    def interactions_http_stats_csv(self, date_yyyy_mm_dd: str) -> Path:
+        return self.interactions_day_dir(date_yyyy_mm_dd) / "http_stats.csv"
+
+    def interactions_request_provenance_csv(self, date_yyyy_mm_dd: str) -> Path:
+        return self.interactions_day_dir(date_yyyy_mm_dd) / "request_provenance.csv"
+
+    def interactions_quality_report_json(self, date_yyyy_mm_dd: str) -> Path:
+        return self.interactions_day_dir(date_yyyy_mm_dd) / "quality_report.json"
+
+    @property
     def control_root(self) -> Path:
         return self.out_base / "control"
 

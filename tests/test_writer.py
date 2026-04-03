@@ -11,6 +11,25 @@ from pathlib import Path
 import pytest
 
 
+def _wait_for_parseable_csv_row(path: Path, *, timeout_s: float = 10.0) -> None:
+    deadline = time.time() + timeout_s
+    last_err: Exception | None = None
+    while time.time() < deadline:
+        if path.exists() and path.stat().st_size > 0:
+            try:
+                with path.open("r", encoding="utf-8", newline="") as f:
+                    rows = list(csv.DictReader(f))
+                if rows:
+                    return
+            except Exception as err:  # noqa: BLE001
+                last_err = err
+        time.sleep(0.05)
+    if last_err is not None:
+        raise last_err
+    raise AssertionError(f"timed out waiting for parseable csv rows: {path}")
+
+
+
 def test_csv_part_writer_survives_sigkill(tmp_path: Path) -> None:
     if not hasattr(signal, "SIGKILL"):
         pytest.skip("SIGKILL not available on this platform")
@@ -33,7 +52,7 @@ while True:
 """
     p = subprocess.Popen([sys.executable, "-c", code, str(out)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     try:
-        time.sleep(0.4)
+        _wait_for_parseable_csv_row(out)
         os.kill(p.pid, signal.SIGKILL)
         p.wait(timeout=5)
     finally:

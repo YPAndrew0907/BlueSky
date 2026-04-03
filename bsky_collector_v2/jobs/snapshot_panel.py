@@ -19,6 +19,7 @@ from bsky_collector_v2.http_client import AsyncHttpClient, HttpError, HttpRetryC
 from bsky_collector_v2.instrumentation import enrich_manifest, read_panel_metadata
 from bsky_collector_v2.layout import Layout
 from bsky_collector_v2.progress import ProgressReporter, ProgressState
+from bsky_collector_v2.public_views import extract_feed_item_features, extract_post_record_features
 from bsky_collector_v2.quality import assess_snapshot_hour
 from bsky_collector_v2.request_provenance import (
     RequestContext,
@@ -58,15 +59,34 @@ _FEED_ITEMS_FIELDS: tuple[str, ...] = (
     "request_order_in_sweep",
     "viewer_mode",
     "vantage_id",
+    "surface_type",
+    "surface_id",
+    "labelers_requested",
+    "labelers_included",
     "feed_uri",
     "bucket",
+    "page_no",
+    "cursor_in",
+    "cursor_out",
+    "slot_no",
     "rank",
+    "rank_approx",
     "post_uri",
     "post_cid",
+    "post_indexed_at",
     "author_did",
     "author_handle",
     "reason_type",
     "reason_actor_did",
+    "reason_actor_handle",
+    "reason_repost_uri",
+    "reason_repost_cid",
+    "reason_repost_indexed_at",
+    "reply_root_uri",
+    "reply_parent_uri",
+    "reply_grandparent_author_did",
+    "feed_context",
+    "req_id",
 )
 
 _POSTS_FIRST_SEEN_FIELDS: tuple[str, ...] = (
@@ -90,6 +110,10 @@ _POSTS_FIRST_SEEN_FIELDS: tuple[str, ...] = (
     "request_order_in_sweep",
     "viewer_mode",
     "vantage_id",
+    "surface_type",
+    "surface_id",
+    "labelers_requested",
+    "labelers_included",
     "feed_uri",
     "bucket",
     "post_uri",
@@ -99,6 +123,32 @@ _POSTS_FIRST_SEEN_FIELDS: tuple[str, ...] = (
     "record_created_at",
     "indexed_at",
     "text",
+    "is_reply",
+    "is_quote",
+    "reply_root_uri",
+    "reply_parent_uri",
+    "embed_type",
+    "media_embed_type",
+    "has_image",
+    "has_video",
+    "has_external",
+    "has_record_embed",
+    "external_uri",
+    "external_domain",
+    "lang_primary",
+    "lang_count",
+    "langs_json",
+    "tag_count",
+    "tags_json",
+    "facets_count",
+    "mention_count",
+    "link_count",
+    "hashtag_count",
+    "self_label_values_json",
+    "post_label_values_json",
+    "author_label_values_json",
+    "contains_no_unauthenticated",
+    "contains_hide_like_label",
 )
 
 _POST_METRICS_FIELDS: tuple[str, ...] = (
@@ -122,6 +172,8 @@ _POST_METRICS_FIELDS: tuple[str, ...] = (
     "request_order_in_sweep",
     "viewer_mode",
     "vantage_id",
+    "labelers_requested",
+    "labelers_included",
     "post_uri",
     "like_count",
     "repost_count",
@@ -150,8 +202,11 @@ _POST_LABEL_FIELDS: tuple[str, ...] = (
     "request_order_in_sweep",
     "viewer_mode",
     "vantage_id",
+    "labelers_requested",
+    "labelers_included",
     "post_uri",
     "post_cid",
+    "label_target",
     "label_src",
     "label_val",
     "label_neg",
@@ -840,8 +895,12 @@ async def _snapshot_one_feed(
         metrics_rows: list[dict[str, Any]] = []
         label_rows: list[dict[str, Any]] = []
         first_seen_rows: list[dict[str, Any]] = []
+        _accept_labelers = getattr(http, "accept_labelers", None)
+        labelers_requested = _accept_labelers.strip() if isinstance(_accept_labelers, str) and _accept_labelers.strip() else None
+        labelers_included = resp.content_labelers
+        cursor_out = resp.data.get("cursor") if isinstance(resp.data.get("cursor"), str) else None
 
-        for item in items:
+        for item_idx, item in enumerate(items, start=1):
             if not isinstance(item, dict):
                 continue
             post = item.get("post")
@@ -856,14 +915,6 @@ async def _snapshot_one_feed(
             author_handle = author.get("handle") if isinstance(author.get("handle"), str) else None
             if author_did:
                 author_dids.append(author_did)
-
-            reason = item.get("reason") if isinstance(item.get("reason"), dict) else None
-            reason_type = reason.get("$type") if isinstance(reason, dict) and isinstance(reason.get("$type"), str) else None
-            reason_actor_did = None
-            if isinstance(reason, dict):
-                by = reason.get("by")
-                if isinstance(by, dict) and isinstance(by.get("did"), str):
-                    reason_actor_did = str(by.get("did"))
 
             rank += 1
             row_common = {
@@ -887,26 +938,38 @@ async def _snapshot_one_feed(
                 "request_order_in_sweep": request_order,
                 "viewer_mode": mode,
                 "vantage_id": vantage_id,
+                "surface_type": "feed",
+                "surface_id": str(feed_uri),
+                "labelers_requested": labelers_requested,
+                "labelers_included": labelers_included,
             }
+            feed_features = extract_feed_item_features(item)
+            post_features = extract_post_record_features(post)
+
             feed_rows.append(
                 {
                     **row_common,
                     "feed_uri": str(feed_uri),
                     "bucket": bucket,
+                    "page_no": page_no,
+                    "cursor_in": cursor,
+                    "cursor_out": cursor_out,
+                    "slot_no": rank,
                     "rank": rank,
+                    "rank_approx": rank,
                     "post_uri": post_uri,
                     "post_cid": post_cid,
+                    "post_indexed_at": post_features.get("indexed_at"),
                     "author_did": author_did,
                     "author_handle": author_handle,
-                    "reason_type": reason_type,
-                    "reason_actor_did": reason_actor_did,
+                    **feed_features,
                 }
             )
 
             post_uris.append(PostUri(post_uri))
             metrics_rows.append(
                 {
-                    **row_common,
+                    **{k: v for k, v in row_common.items() if k not in {"surface_type", "surface_id"}},
                     "post_uri": post_uri,
                     "like_count": post.get("likeCount"),
                     "repost_count": post.get("repostCount"),
@@ -922,9 +985,10 @@ async def _snapshot_one_feed(
                         continue
                     label_rows.append(
                         {
-                            **row_common,
+                            **{k: v for k, v in row_common.items() if k not in {"surface_type", "surface_id"}},
                             "post_uri": post_uri,
                             "post_cid": post_cid,
+                            "label_target": "post",
                             "label_src": lab.get("src"),
                             "label_val": lab.get("val"),
                             "label_neg": 1 if lab.get("neg") is True else 0 if lab.get("neg") is False else None,
@@ -943,9 +1007,10 @@ async def _snapshot_one_feed(
                                 continue
                             label_rows.append(
                                 {
-                                    **row_common,
+                                    **{k: v for k, v in row_common.items() if k not in {"surface_type", "surface_id"}},
                                     "post_uri": post_uri,
                                     "post_cid": post_cid,
+                                    "label_target": "author",
                                     "label_src": lab.get("src"),
                                     "label_val": lab.get("val"),
                                     "label_neg": 1 if lab.get("neg") is True else 0 if lab.get("neg") is False else None,
@@ -953,11 +1018,6 @@ async def _snapshot_one_feed(
                                     "label_cts": lab.get("cts"),
                                 }
                             )
-
-            record = post.get("record") if isinstance(post.get("record"), dict) else {}
-            text = record.get("text") if isinstance(record.get("text"), str) else None
-            record_created_at = record.get("createdAt") if isinstance(record.get("createdAt"), str) else None
-            indexed_at = post.get("indexedAt") if isinstance(post.get("indexedAt"), str) else None
 
             first_seen_rows.append(
                 {
@@ -968,9 +1028,7 @@ async def _snapshot_one_feed(
                     "post_cid": post_cid,
                     "author_did": author_did,
                     "author_handle": author_handle,
-                    "record_created_at": record_created_at,
-                    "indexed_at": indexed_at,
-                    "text": text,
+                    **post_features,
                 }
             )
 
