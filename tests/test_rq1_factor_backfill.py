@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+import sqlite3
 import subprocess
 import time
 import sys
@@ -350,20 +351,7 @@ def test_backfill_rq1_factors_full_integration(tmp_path: Path) -> None:
             list_member_rows = list(csv.DictReader(f))
         assert any(str(r.get("list_uri") or "").endswith("pack0-list") for r in list_member_rows)
 
-        first_post_view_count = len(rows)
-        first_surface_count = len(appearance_rows)
-
-        res2 = _run(cmd, cwd=Path.cwd())
-        assert res2.returncode == 0, res2.stdout
-
-        with open(run_root / "post_views_part_000.csv", "r", encoding="utf-8", newline="") as f:
-            rows_after = list(csv.DictReader(f))
-        with open(run_root / "post_surface_appearances_part_000.csv", "r", encoding="utf-8", newline="") as f:
-            appearance_rows_after = list(csv.DictReader(f))
-        assert len(rows_after) == first_post_view_count
-        assert len(appearance_rows_after) == first_surface_count
-
-        called_paths = {entry["path"] for entry in server.request_log}
+        initial_called_paths = {entry["path"] for entry in server.request_log}
         for required in {
             "/xrpc/app.bsky.feed.getPosts",
             "/xrpc/app.bsky.feed.getLikes",
@@ -384,7 +372,106 @@ def test_backfill_rq1_factors_full_integration(tmp_path: Path) -> None:
             "/xrpc/app.bsky.feed.getFeedGenerator",
             "/xrpc/app.bsky.labeler.getServices",
         }:
-            assert required in called_paths, required
+            assert required in initial_called_paths, required
+
+        with open(run_root / "post_rq1_summary_part_000.csv", "r", encoding="utf-8", newline="") as f:
+            summary_rows = list(csv.DictReader(f))
+        assert len(summary_rows) == 2
+        for row in summary_rows:
+            assert int(row["appearance_rows_returned"]) == 3
+            assert int(row["likes_returned"]) == 2
+            assert int(row["quotes_returned"]) == 2
+            assert int(row["reposted_by_returned"]) == 2
+            assert int(row["thread_nodes_returned"]) == 3
+            assert int(row["thread_edges_returned"]) == 2
+
+        first_post_view_count = len(rows)
+        first_surface_count = len(appearance_rows)
+
+        server.request_log.clear()
+        res2 = _run(cmd, cwd=Path.cwd())
+        assert res2.returncode == 0, res2.stdout
+
+        with open(run_root / "post_views_part_000.csv", "r", encoding="utf-8", newline="") as f:
+            rows_after = list(csv.DictReader(f))
+        with open(run_root / "post_surface_appearances_part_000.csv", "r", encoding="utf-8", newline="") as f:
+            appearance_rows_after = list(csv.DictReader(f))
+        assert len(rows_after) == first_post_view_count
+        assert len(appearance_rows_after) == first_surface_count
+
+        rerun_called_paths = {entry["path"] for entry in server.request_log}
+        assert rerun_called_paths == set()
+
+
+def test_backfill_rq1_factors_stage_store_replay_skips_network_after_registry_reset(tmp_path: Path) -> None:
+    post_uris = [
+        "at://did:plc:author000/app.bsky.feed.post/post000",
+        "at://did:plc:author001/app.bsky.feed.post/post001",
+    ]
+    _seed_posts_and_appearances(tmp_path, post_uris)
+
+    with FakeBskyRq1Server() as server:
+        cmd = [
+            sys.executable,
+            "-m",
+            "bsky_collector_v2",
+            "backfill-rq1-factors",
+            "--out-base",
+            str(tmp_path),
+            "--appview-host",
+            server.base_url,
+            "--pds-host",
+            server.base_url,
+            "--relay-host",
+            server.base_url,
+            "--max-posts",
+            "2",
+            "--batch-size",
+            "2",
+            "--max-items-per-endpoint",
+            "2",
+            "--max-author-feed-items",
+            "2",
+            "--max-followers-per-actor",
+            "2",
+            "--max-follows-per-actor",
+            "2",
+            "--max-follow-records-per-actor",
+            "2",
+            "--max-actor-feeds-per-actor",
+            "2",
+            "--max-lists-per-actor",
+            "1",
+            "--max-list-members-per-list",
+            "2",
+            "--max-starter-packs-per-actor",
+            "1",
+            "--no-resolve-pds-endpoints",
+        ]
+        res = _run(cmd, cwd=Path.cwd())
+        assert res.returncode == 0, res.stdout
+
+        run_root = tmp_path / "rq1_factors" / utc_date_str(now_utc()) / "shard_000"
+        stage_counts = _stage_registry_counts(run_root / "rq1_stage_store.sqlite")
+        assert stage_counts.get("author_feed", 0) >= 2
+        assert stage_counts.get("actor_feed_catalog", 0) >= 2
+        assert stage_counts.get("actor_lists", 0) >= 2
+        assert stage_counts.get("starter_packs", 0) >= 2
+        assert stage_counts.get("feed_generators", 0) >= 6
+        assert stage_counts.get("labelers", 0) >= 1
+
+        layout = Layout(tmp_path)
+        with ControlState.open(layout.control_db_path) as control:
+            assert isinstance(control, ControlState)
+            control.conn.execute("UPDATE post_rq1_factor_registry SET last_hydrated_utc=NULL")
+            control.commit()
+
+        server.request_log.clear()
+        res2 = _run(cmd, cwd=Path.cwd())
+        assert res2.returncode == 0, res2.stdout
+
+        rerun_called_paths = {entry["path"] for entry in server.request_log}
+        assert rerun_called_paths == set()
 
 
 def test_backfill_rq1_factors_actor_phase_uses_concurrency(tmp_path: Path) -> None:
@@ -471,3 +558,148 @@ def test_backfill_rq1_factors_actor_phase_uses_concurrency(tmp_path: Path) -> No
         assert fast.returncode == 0, fast.stdout
 
     assert fast_elapsed < slow_elapsed * 0.8, (slow_elapsed, fast_elapsed)
+
+
+def _csv_row_count(path: Path) -> int:
+    with open(path, "r", encoding="utf-8", newline="") as f:
+        return sum(1 for _ in csv.DictReader(f))
+
+
+def _stage_registry_counts(db_path: Path) -> dict[str, int]:
+    if not db_path.exists():
+        return {}
+    try:
+        with sqlite3.connect(db_path) as conn:
+            conn.row_factory = sqlite3.Row
+            rows = conn.execute(
+                "SELECT stage_name, COUNT(*) AS n FROM rq1_stage_registry GROUP BY stage_name"
+            ).fetchall()
+    except sqlite3.OperationalError:
+        return {}
+    return {str(row["stage_name"]): int(row["n"]) for row in rows}
+
+
+def _wait_until(predicate, *, timeout_s: float = 30.0, sleep_s: float = 0.1) -> None:
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        if predicate():
+            return
+        time.sleep(sleep_s)
+    raise AssertionError("condition not met before timeout")
+
+
+def test_backfill_rq1_factors_crash_resume_rebuilds_stage_outputs_without_duplicates(tmp_path: Path) -> None:
+    post_uris = [
+        "at://did:plc:author000/app.bsky.feed.post/post000",
+        "at://did:plc:author001/app.bsky.feed.post/post001",
+    ]
+    _seed_posts_and_appearances(tmp_path, post_uris)
+
+    delay_cfg = FakeBskyRq1Config(
+        delay_by_path_s={
+            "/xrpc/app.bsky.graph.getFollowers": 0.15,
+            "/xrpc/app.bsky.graph.getFollows": 0.15,
+            "/xrpc/app.bsky.feed.getAuthorFeed": 0.15,
+            "/xrpc/app.bsky.feed.getActorFeeds": 0.15,
+            "/xrpc/app.bsky.graph.getLists": 0.15,
+            "/xrpc/app.bsky.graph.getList": 0.15,
+            "/xrpc/app.bsky.graph.getActorStarterPacks": 0.15,
+            "/xrpc/app.bsky.graph.getStarterPack": 0.15,
+            "/xrpc/app.bsky.feed.getFeedGenerator": 0.15,
+            "/xrpc/app.bsky.labeler.getServices": 0.15,
+            "/xrpc/com.atproto.repo.describeRepo": 0.15,
+            "/xrpc/com.atproto.repo.listRecords": 0.15,
+        }
+    )
+
+    with FakeBskyRq1Server(delay_cfg) as server:
+        cmd = [
+            sys.executable,
+            "-m",
+            "bsky_collector_v2",
+            "backfill-rq1-factors",
+            "--out-base",
+            str(tmp_path),
+            "--appview-host",
+            server.base_url,
+            "--pds-host",
+            server.base_url,
+            "--relay-host",
+            server.base_url,
+            "--max-posts",
+            "2",
+            "--batch-size",
+            "2",
+            "--max-items-per-endpoint",
+            "2",
+            "--max-author-feed-items",
+            "2",
+            "--max-followers-per-actor",
+            "2",
+            "--max-follows-per-actor",
+            "2",
+            "--max-follow-records-per-actor",
+            "2",
+            "--max-actor-feeds-per-actor",
+            "2",
+            "--max-lists-per-actor",
+            "1",
+            "--max-list-members-per-list",
+            "2",
+            "--max-starter-packs-per-actor",
+            "1",
+            "--no-resolve-pds-endpoints",
+            "--rps",
+            "500",
+        ]
+
+        run_root = tmp_path / "rq1_factors" / utc_date_str(now_utc()) / "shard_000"
+        stage_db = run_root / "rq1_stage_store.sqlite"
+        proc = subprocess.Popen(
+            cmd,
+            cwd=str(Path.cwd()),
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+        try:
+            _wait_until(
+                lambda: (
+                    stage_db.exists()
+                    and _stage_registry_counts(stage_db).get("post_views", 0) == 2
+                    and _stage_registry_counts(stage_db).get("likes", 0) == 2
+                    and _stage_registry_counts(stage_db).get("quotes", 0) == 2
+                    and _stage_registry_counts(stage_db).get("reposted_by", 0) == 2
+                    and _stage_registry_counts(stage_db).get("thread_nodes", 0) == 2
+                    and _stage_registry_counts(stage_db).get("thread_edges", 0) == 2
+                    and proc.poll() is None
+                ),
+                timeout_s=30.0,
+            )
+        finally:
+            if proc.poll() is None:
+                proc.kill()
+            proc.wait(timeout=10)
+
+        server.request_log.clear()
+        res = _run(cmd, cwd=Path.cwd())
+        assert res.returncode == 0, res.stdout
+
+        counts = {
+            "post_views_part_000.csv": 2,
+            "post_likes_part_000.csv": 4,
+            "post_quotes_part_000.csv": 4,
+            "post_reposted_by_part_000.csv": 4,
+            "thread_nodes_part_000.csv": 6,
+            "thread_edges_part_000.csv": 4,
+            "post_rq1_summary_part_000.csv": 2,
+        }
+        for name, expected in counts.items():
+            assert _csv_row_count(run_root / name) == expected, name
+
+        rerun_paths = {entry["path"] for entry in server.request_log}
+        assert "/xrpc/app.bsky.feed.getPosts" not in rerun_paths
+        assert "/xrpc/app.bsky.feed.getLikes" not in rerun_paths
+        assert "/xrpc/app.bsky.feed.getQuotes" not in rerun_paths
+        assert "/xrpc/app.bsky.feed.getRepostedBy" not in rerun_paths
+        assert "/xrpc/app.bsky.feed.getPostThread" not in rerun_paths
