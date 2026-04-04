@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import json
 import threading
-from dataclasses import dataclass
+import time
+from dataclasses import dataclass, field
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
 from urllib.parse import parse_qs, urlparse
@@ -174,7 +175,7 @@ def _starter_pack_view(actor_did: str, suffix: str = "pack0") -> dict[str, Any]:
 
 @dataclass(frozen=True)
 class FakeBskyRq1Config:
-    pass
+    delay_by_path_s: dict[str, float] = field(default_factory=dict)
 
 
 class FakeBskyRq1Server:
@@ -189,6 +190,7 @@ class FakeBskyRq1Server:
     def _make_handler(self):  # noqa: ANN201
         request_log = self.request_log
         lock = self._lock
+        delay_by_path_s = dict(self.cfg.delay_by_path_s)
 
         class Handler(BaseHTTPRequestHandler):
             def log_message(self, fmt: str, *args: object) -> None:  # noqa: A003
@@ -208,10 +210,14 @@ class FakeBskyRq1Server:
             def do_GET(self) -> None:  # noqa: N802
                 parsed = urlparse(self.path)
                 qs = parse_qs(parsed.query)
+                ts = time.monotonic()
                 with lock:
-                    request_log.append({"method": "GET", "path": parsed.path, "query": {k: list(v) for k, v in qs.items()}})
+                    request_log.append({"method": "GET", "path": parsed.path, "query": {k: list(v) for k, v in qs.items()}, "ts": ts})
 
                 path = parsed.path
+                delay_s = float(delay_by_path_s.get(path, 0.0) or 0.0)
+                if delay_s > 0:
+                    time.sleep(delay_s)
                 if path.endswith("/xrpc/app.bsky.actor.getProfiles"):
                     actors = qs.get("actors") or []
                     self._send_json(200, {"profiles": [_actor_profile(did, idx=i) for i, did in enumerate(actors)]})

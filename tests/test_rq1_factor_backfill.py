@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import json
 import subprocess
+import time
 import sys
 from pathlib import Path
 from typing import Any
@@ -11,7 +12,7 @@ from bsky_collector_v2.jobs.backfill_rq1_factors import _walk_thread
 from bsky_collector_v2.layout import Layout
 from bsky_collector_v2.state import ControlState
 from bsky_collector_v2.time_utils import now_utc, utc_date_str
-from fake_bsky_rq1_server import FakeBskyRq1Server
+from fake_bsky_rq1_server import FakeBskyRq1Config, FakeBskyRq1Server
 
 
 def _run(cmd: list[str], *, cwd: Path) -> subprocess.CompletedProcess[str]:
@@ -345,6 +346,10 @@ def test_backfill_rq1_factors_full_integration(tmp_path: Path) -> None:
         assert len(appearance_rows) >= 3
         assert {r["source_family"] for r in appearance_rows} == {"hourly", "wide", "micro5"}
 
+        with open(run_root / "list_members_part_000.csv", "r", encoding="utf-8", newline="") as f:
+            list_member_rows = list(csv.DictReader(f))
+        assert any(str(r.get("list_uri") or "").endswith("pack0-list") for r in list_member_rows)
+
         first_post_view_count = len(rows)
         first_surface_count = len(appearance_rows)
 
@@ -380,3 +385,89 @@ def test_backfill_rq1_factors_full_integration(tmp_path: Path) -> None:
             "/xrpc/app.bsky.labeler.getServices",
         }:
             assert required in called_paths, required
+
+
+def test_backfill_rq1_factors_actor_phase_uses_concurrency(tmp_path: Path) -> None:
+    post_uris = [
+        "at://did:plc:author000/app.bsky.feed.post/post000",
+        "at://did:plc:author001/app.bsky.feed.post/post001",
+        "at://did:plc:author002/app.bsky.feed.post/post002",
+        "at://did:plc:author003/app.bsky.feed.post/post003",
+    ]
+
+    delayed_paths = {
+        "/xrpc/app.bsky.graph.getRelationships": 0.04,
+        "/xrpc/app.bsky.graph.getFollowers": 0.04,
+        "/xrpc/app.bsky.graph.getFollows": 0.04,
+        "/xrpc/app.bsky.feed.getAuthorFeed": 0.04,
+        "/xrpc/app.bsky.feed.getActorFeeds": 0.04,
+        "/xrpc/app.bsky.graph.getLists": 0.04,
+        "/xrpc/app.bsky.graph.getActorStarterPacks": 0.04,
+        "/xrpc/com.atproto.repo.describeRepo": 0.04,
+        "/xrpc/com.atproto.repo.listRecords": 0.04,
+        "/xrpc/app.bsky.feed.getFeedGenerator": 0.04,
+        "/xrpc/app.bsky.graph.getList": 0.04,
+        "/xrpc/app.bsky.graph.getStarterPack": 0.04,
+    }
+
+    def _cmd(out_base: Path, concurrency: int, server_base_url: str) -> list[str]:
+        return [
+            sys.executable,
+            "-m",
+            "bsky_collector_v2",
+            "backfill-rq1-factors",
+            "--out-base",
+            str(out_base),
+            "--appview-host",
+            server_base_url,
+            "--pds-host",
+            server_base_url,
+            "--relay-host",
+            server_base_url,
+            "--rps",
+            "500",
+            "--concurrency",
+            str(concurrency),
+            "--max-posts",
+            "4",
+            "--batch-size",
+            "4",
+            "--max-items-per-endpoint",
+            "2",
+            "--max-author-feed-items",
+            "2",
+            "--max-followers-per-actor",
+            "2",
+            "--max-follows-per-actor",
+            "2",
+            "--max-follow-records-per-actor",
+            "2",
+            "--max-actor-feeds-per-actor",
+            "2",
+            "--max-lists-per-actor",
+            "1",
+            "--max-list-members-per-list",
+            "2",
+            "--max-starter-packs-per-actor",
+            "1",
+            "--no-resolve-pds-endpoints",
+        ]
+
+    out_base_slow = tmp_path / "slow"
+    out_base_fast = tmp_path / "fast"
+    _seed_posts_and_appearances(out_base_slow, post_uris)
+    _seed_posts_and_appearances(out_base_fast, post_uris)
+
+    with FakeBskyRq1Server(FakeBskyRq1Config(delay_by_path_s=delayed_paths)) as slow_server:
+        t0 = time.monotonic()
+        slow = _run(_cmd(out_base_slow, 1, slow_server.base_url), cwd=Path.cwd())
+        slow_elapsed = time.monotonic() - t0
+        assert slow.returncode == 0, slow.stdout
+
+    with FakeBskyRq1Server(FakeBskyRq1Config(delay_by_path_s=delayed_paths)) as fast_server:
+        t0 = time.monotonic()
+        fast = _run(_cmd(out_base_fast, 8, fast_server.base_url), cwd=Path.cwd())
+        fast_elapsed = time.monotonic() - t0
+        assert fast.returncode == 0, fast.stdout
+
+    assert fast_elapsed < slow_elapsed * 0.8, (slow_elapsed, fast_elapsed)

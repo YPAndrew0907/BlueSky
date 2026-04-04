@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import csv
 import hashlib
 import logging
@@ -1378,10 +1379,19 @@ async def run_backfill_rq1_factors(
                 writers["actor_profiles"].write_rows(out_rows)
                 progress_state.add_rows("actor_profiles", len(out_rows))
 
+        task_concurrency = max(1, int(concurrency or 1))
+        semaphore = asyncio.Semaphore(task_concurrency)
+
+        async def _bounded_call(fn, /, *args, **kwargs):  # noqa: ANN001, ANN202
+            async with semaphore:
+                return await fn(*args, **kwargs)
+
         # Full pairwise public relationship sweep over the seed actor set.
         progress_state.set_detail("phase", "hydrating_seed_relationships")
-        for actor_did in seed_actor_dids:
-            rels = await _get_relationships(http, actor_did, seed_actor_dids, format_utc(now_utc()))
+
+        async def _fetch_seed_actor_relationships(actor_did: str) -> dict[str, Any]:
+            captured_at_utc = format_utc(now_utc())
+            rels = await _get_relationships(http, actor_did, seed_actor_dids, captured_at_utc)
             rows = [
                 _relationship_row(
                     run_id=run_id,
@@ -1390,24 +1400,40 @@ async def run_backfill_rq1_factors(
                     context_scope="seed_actor_pairwise",
                     context_post_uri=None,
                     rel=rel,
-                    captured_at_utc=format_utc(now_utc()),
+                    captured_at_utc=captured_at_utc,
                 )
                 for rel in rels
                 if isinstance(rel, dict) and rel.get("did")
             ]
+            return {
+                "actor_did": actor_did,
+                "rows": rows,
+                "other_dids": [str(row.get("other_did") or "").strip() for row in rows],
+            }
+
+        rel_tasks = [_bounded_call(_fetch_seed_actor_relationships, actor_did) for actor_did in seed_actor_dids]
+        for result in await asyncio.gather(*rel_tasks) if rel_tasks else []:
+            actor_did = str(result.get("actor_did") or "")
+            rows = list(result.get("rows") or [])
             if rows:
                 writers["relationships"].write_rows(rows)
                 progress_state.add_rows("relationships", len(rows))
-                for row in rows:
-                    other_did = row.get("other_did")
+                for other_did in result.get("other_dids") or []:
                     _add_scope(actor_scopes, other_did, "relationship_counterparty")
                 for uri in author_to_posts.get(actor_did, set()):
                     summary_counts[uri]["seed_relationship_edges_returned"] += len(rows)
 
         # First-hop graph for every seed actor.
         progress_state.set_detail("phase", "hydrating_first_hop_graph")
-        for actor_did in seed_actor_dids:
+
+        async def _fetch_seed_actor_graph(actor_did: str) -> dict[str, Any]:
             actor_scope_value = _actor_scope_value(actor_scopes, actor_did)
+            scope_additions: dict[str, set[str]] = {}
+            labelers: set[str] = set()
+            discovered_graph_dids: set[str] = set()
+            follower_rows: list[dict[str, Any]] = []
+            follow_rows: list[dict[str, Any]] = []
+
             if max_followers is None or max_followers > 0:
                 followers = await _fetch_paginated(
                     http=http,
@@ -1419,15 +1445,14 @@ async def run_backfill_rq1_factors(
                     max_items=max_followers,
                     list_keys=("followers",),
                 )
-                rows = []
                 for follower in followers:
                     flat = flatten_actor_view(follower)
                     follower_did = flat.get("did")
-                    _add_scope(actor_scopes, follower_did, "follower_of_seed")
+                    _add_scope(scope_additions, follower_did, "follower_of_seed")
                     if follower_did:
-                        graph_actor_dids.add(str(follower_did))
-                    labeler_dids.update(extract_label_src_dids(follower.get("labels")))
-                    rows.append(
+                        discovered_graph_dids.add(str(follower_did))
+                    labelers.update(extract_label_src_dids(follower.get("labels")))
+                    follower_rows.append(
                         {
                             "run_id": str(run_id),
                             "vantage_id": vantage_value,
@@ -1448,11 +1473,6 @@ async def run_backfill_rq1_factors(
                             "captured_at_utc": format_utc(now_utc()),
                         }
                     )
-                if rows:
-                    writers["followers"].write_rows(rows)
-                    progress_state.add_rows("followers", len(rows))
-                    for uri in author_to_posts.get(actor_did, set()):
-                        summary_counts[uri]["followers_edges_returned"] += len(rows)
 
             if max_follows is None or max_follows > 0:
                 follows = await _fetch_paginated(
@@ -1465,15 +1485,14 @@ async def run_backfill_rq1_factors(
                     max_items=max_follows,
                     list_keys=("follows",),
                 )
-                rows = []
                 for subject in follows:
                     flat = flatten_actor_view(subject)
                     subject_did = flat.get("did")
-                    _add_scope(actor_scopes, subject_did, "followed_by_seed")
+                    _add_scope(scope_additions, subject_did, "followed_by_seed")
                     if subject_did:
-                        graph_actor_dids.add(str(subject_did))
-                    labeler_dids.update(extract_label_src_dids(subject.get("labels")))
-                    rows.append(
+                        discovered_graph_dids.add(str(subject_did))
+                    labelers.update(extract_label_src_dids(subject.get("labels")))
+                    follow_rows.append(
                         {
                             "run_id": str(run_id),
                             "vantage_id": vantage_value,
@@ -1494,11 +1513,37 @@ async def run_backfill_rq1_factors(
                             "captured_at_utc": format_utc(now_utc()),
                         }
                     )
-                if rows:
-                    writers["follows"].write_rows(rows)
-                    progress_state.add_rows("follows", len(rows))
-                    for uri in author_to_posts.get(actor_did, set()):
-                        summary_counts[uri]["follows_edges_returned"] += len(rows)
+
+            return {
+                "actor_did": actor_did,
+                "follower_rows": follower_rows,
+                "follow_rows": follow_rows,
+                "scope_additions": scope_additions,
+                "labelers": labelers,
+                "graph_actor_dids": discovered_graph_dids,
+            }
+
+        graph_tasks = [_bounded_call(_fetch_seed_actor_graph, actor_did) for actor_did in seed_actor_dids]
+        for result in await asyncio.gather(*graph_tasks) if graph_tasks else []:
+            actor_did = str(result.get("actor_did") or "")
+            for did, scopes in (result.get("scope_additions") or {}).items():
+                actor_scopes.setdefault(did, set()).update(scopes)
+            labeler_dids.update(result.get("labelers") or set())
+            graph_actor_dids.update(result.get("graph_actor_dids") or set())
+
+            follower_rows = list(result.get("follower_rows") or [])
+            if follower_rows:
+                writers["followers"].write_rows(follower_rows)
+                progress_state.add_rows("followers", len(follower_rows))
+                for uri in author_to_posts.get(actor_did, set()):
+                    summary_counts[uri]["followers_edges_returned"] += len(follower_rows)
+
+            follow_rows = list(result.get("follow_rows") or [])
+            if follow_rows:
+                writers["follows"].write_rows(follow_rows)
+                progress_state.add_rows("follows", len(follow_rows))
+                for uri in author_to_posts.get(actor_did, set()):
+                    summary_counts[uri]["follows_edges_returned"] += len(follow_rows)
 
         # Hydrate newly discovered graph actor profiles too, so the graph nodes carry covariates.
         graph_only_dids = sorted(graph_actor_dids - hydrated_actor_profiles)
@@ -1529,9 +1574,18 @@ async def run_backfill_rq1_factors(
 
         # Author history and curation surfaces for the seed actor universe.
         progress_state.set_detail("phase", "hydrating_author_history_and_curation")
-        seed_and_graph_for_history = sorted(actor_scopes)
-        for actor_did in seed_actor_dids:
+
+        async def _fetch_seed_actor_history(actor_did: str) -> dict[str, Any]:
             actor_scope_value = _actor_scope_value(actor_scopes, actor_did)
+            scope_additions: dict[str, set[str]] = {}
+            labelers: set[str] = set()
+            author_feed_rows: list[dict[str, Any]] = []
+            list_rows: list[dict[str, Any]] = []
+            starter_pack_rows: list[dict[str, Any]] = []
+            discovered_feed_uris: set[str] = set()
+            discovered_list_uris: set[str] = set()
+            discovered_starter_pack_uris: set[str] = set()
+
             if max_author_feed_items is None or max_author_feed_items > 0:
                 items = await _fetch_paginated(
                     http=http,
@@ -1543,16 +1597,15 @@ async def run_backfill_rq1_factors(
                     max_items=max_author_feed_items,
                     list_keys=("feed",),
                 )
-                rows = []
                 for item in items:
                     flat = flatten_author_feed_item(item)
-                    _add_scope(actor_scopes, flat.get("post_author_did"), "author_feed_post_author")
-                    _add_scope(actor_scopes, flat.get("reason_actor_did"), "author_feed_reason_actor")
+                    _add_scope(scope_additions, flat.get("post_author_did"), "author_feed_post_author")
+                    _add_scope(scope_additions, flat.get("reason_actor_did"), "author_feed_reason_actor")
                     post = item.get("post") if isinstance(item.get("post"), dict) else {}
                     author = post.get("author") if isinstance(post.get("author"), dict) else {}
-                    labeler_dids.update(extract_label_src_dids(post.get("labels")))
-                    labeler_dids.update(extract_label_src_dids(author.get("labels")))
-                    rows.append(
+                    labelers.update(extract_label_src_dids(post.get("labels")))
+                    labelers.update(extract_label_src_dids(author.get("labels")))
+                    author_feed_rows.append(
                         {
                             "run_id": str(run_id),
                             "vantage_id": vantage_value,
@@ -1563,9 +1616,6 @@ async def run_backfill_rq1_factors(
                             "captured_at_utc": format_utc(now_utc()),
                         }
                     )
-                if rows:
-                    writers["author_feed"].write_rows(rows)
-                    progress_state.add_rows("author_feed_items", len(rows))
 
             if max_actor_feeds is None or max_actor_feeds > 0:
                 feed_rows = await _fetch_paginated(
@@ -1580,13 +1630,11 @@ async def run_backfill_rq1_factors(
                 )
                 for feed in feed_rows:
                     feed_uri = str(feed.get("uri") or "").strip()
-                    if not feed_uri:
-                        continue
-                    feed_sources.setdefault(feed_uri, set()).add("actor_feed_catalog")
-                    feed_source_actors.setdefault(feed_uri, set()).add(actor_did)
+                    if feed_uri:
+                        discovered_feed_uris.add(feed_uri)
                     creator = feed.get("creator") if isinstance(feed.get("creator"), dict) else {}
-                    _add_scope(actor_scopes, creator.get("did"), "feed_creator")
-                    labeler_dids.update(extract_label_src_dids(feed.get("labels")))
+                    _add_scope(scope_additions, creator.get("did"), "feed_creator")
+                    labelers.update(extract_label_src_dids(feed.get("labels")))
 
             if max_lists is None or max_lists > 0:
                 lists = await _fetch_paginated(
@@ -1599,15 +1647,14 @@ async def run_backfill_rq1_factors(
                     max_items=max_lists,
                     list_keys=("lists",),
                 )
-                rows = []
                 for list_view in lists:
                     flat = flatten_list_view(list_view)
                     list_uri = str(flat.get("list_uri") or "").strip()
                     if list_uri:
-                        list_uris_to_fetch.add(list_uri)
-                    _add_scope(actor_scopes, flat.get("creator_did"), "list_creator")
-                    labeler_dids.update(extract_label_src_dids(list_view.get("labels")))
-                    rows.append(
+                        discovered_list_uris.add(list_uri)
+                    _add_scope(scope_additions, flat.get("creator_did"), "list_creator")
+                    labelers.update(extract_label_src_dids(list_view.get("labels")))
+                    list_rows.append(
                         {
                             "run_id": str(run_id),
                             "vantage_id": vantage_value,
@@ -1618,9 +1665,6 @@ async def run_backfill_rq1_factors(
                             "captured_at_utc": format_utc(now_utc()),
                         }
                     )
-                if rows:
-                    writers["actor_lists"].write_rows(rows)
-                    progress_state.add_rows("actor_lists", len(rows))
 
             if max_starter_packs is None or max_starter_packs > 0:
                 packs = await _fetch_paginated(
@@ -1633,15 +1677,17 @@ async def run_backfill_rq1_factors(
                     max_items=max_starter_packs,
                     list_keys=("starterPacks",),
                 )
-                rows = []
                 for pack in packs:
                     flat = flatten_starter_pack_view(pack)
                     pack_uri = str(flat.get("starter_pack_uri") or "").strip()
                     if pack_uri:
-                        starter_pack_uris.add(pack_uri)
-                    _add_scope(actor_scopes, flat.get("creator_did"), "starter_pack_creator")
-                    labeler_dids.update(extract_label_src_dids(pack.get("labels")))
-                    rows.append(
+                        discovered_starter_pack_uris.add(pack_uri)
+                    list_uri = str(flat.get("list_uri") or "").strip()
+                    if list_uri:
+                        discovered_list_uris.add(list_uri)
+                    _add_scope(scope_additions, flat.get("creator_did"), "starter_pack_creator")
+                    labelers.update(extract_label_src_dids(pack.get("labels")))
+                    starter_pack_rows.append(
                         {
                             "run_id": str(run_id),
                             "vantage_id": vantage_value,
@@ -1652,13 +1698,51 @@ async def run_backfill_rq1_factors(
                             "captured_at_utc": format_utc(now_utc()),
                         }
                     )
-                if rows:
-                    writers["starter_packs"].write_rows(rows)
-                    progress_state.add_rows("starter_packs", len(rows))
+
+            return {
+                "actor_did": actor_did,
+                "author_feed_rows": author_feed_rows,
+                "list_rows": list_rows,
+                "starter_pack_rows": starter_pack_rows,
+                "feed_uris": discovered_feed_uris,
+                "list_uris": discovered_list_uris,
+                "starter_pack_uris": discovered_starter_pack_uris,
+                "scope_additions": scope_additions,
+                "labelers": labelers,
+            }
+
+        history_tasks = [_bounded_call(_fetch_seed_actor_history, actor_did) for actor_did in seed_actor_dids]
+        for result in await asyncio.gather(*history_tasks) if history_tasks else []:
+            actor_did = str(result.get("actor_did") or "")
+            for did, scopes in (result.get("scope_additions") or {}).items():
+                actor_scopes.setdefault(did, set()).update(scopes)
+            labeler_dids.update(result.get("labelers") or set())
+
+            author_feed_rows = list(result.get("author_feed_rows") or [])
+            if author_feed_rows:
+                writers["author_feed"].write_rows(author_feed_rows)
+                progress_state.add_rows("author_feed_items", len(author_feed_rows))
+
+            for feed_uri in result.get("feed_uris") or set():
+                feed_sources.setdefault(feed_uri, set()).add("actor_feed_catalog")
+                feed_source_actors.setdefault(feed_uri, set()).add(actor_did)
+
+            list_rows = list(result.get("list_rows") or [])
+            if list_rows:
+                writers["actor_lists"].write_rows(list_rows)
+                progress_state.add_rows("actor_lists", len(list_rows))
+            list_uris_to_fetch.update(result.get("list_uris") or set())
+
+            starter_pack_rows = list(result.get("starter_pack_rows") or [])
+            if starter_pack_rows:
+                writers["starter_packs"].write_rows(starter_pack_rows)
+                progress_state.add_rows("starter_packs", len(starter_pack_rows))
+            starter_pack_uris.update(result.get("starter_pack_uris") or set())
 
         # Hydrate lists and starter packs in detail.
         progress_state.set_detail("phase", "hydrating_lists_and_starter_packs")
-        for list_uri in sorted(list_uris_to_fetch):
+
+        async def _hydrate_list_members(list_uri: str) -> dict[str, Any]:
             resp_items = await _fetch_paginated(
                 http=http,
                 endpoint="app.bsky.graph.getList",
@@ -1671,11 +1755,13 @@ async def run_backfill_rq1_factors(
             )
             list_actor_did = _did_from_at_uri(list_uri)
             list_scope = _actor_scope_value(actor_scopes, list_actor_did) if list_actor_did else ""
-            rows = []
+            rows: list[dict[str, Any]] = []
+            scope_additions: dict[str, set[str]] = {}
+            labelers: set[str] = set()
             for item in resp_items:
                 flat = flatten_list_item(item)
-                _add_scope(actor_scopes, flat.get("subject_did"), "list_member")
-                labeler_dids.update(extract_label_src_dids(item.get("subject", {}).get("labels") if isinstance(item.get("subject"), dict) else None))
+                _add_scope(scope_additions, flat.get("subject_did"), "list_member")
+                labelers.update(extract_label_src_dids(item.get("subject", {}).get("labels") if isinstance(item.get("subject"), dict) else None))
                 rows.append(
                     {
                         "run_id": str(run_id),
@@ -1688,11 +1774,28 @@ async def run_backfill_rq1_factors(
                         "captured_at_utc": format_utc(now_utc()),
                     }
                 )
-            if rows:
-                writers["list_members"].write_rows(rows)
-                progress_state.add_rows("list_members", len(rows))
+            return {"rows": rows, "scope_additions": scope_additions, "labelers": labelers}
 
-        for starter_pack_uri in sorted(starter_pack_uris):
+        hydrated_list_uris: set[str] = set()
+
+        async def _run_list_hydration(list_uris: set[str]) -> None:
+            pending = sorted(set(list_uris) - hydrated_list_uris)
+            if not pending:
+                return
+            list_tasks = [_bounded_call(_hydrate_list_members, list_uri) for list_uri in pending]
+            for result in await asyncio.gather(*list_tasks) if list_tasks else []:
+                for did, scopes in (result.get("scope_additions") or {}).items():
+                    actor_scopes.setdefault(did, set()).update(scopes)
+                labeler_dids.update(result.get("labelers") or set())
+                rows = list(result.get("rows") or [])
+                if rows:
+                    writers["list_members"].write_rows(rows)
+                    progress_state.add_rows("list_members", len(rows))
+            hydrated_list_uris.update(pending)
+
+        await _run_list_hydration(list_uris_to_fetch)
+
+        async def _hydrate_starter_pack(starter_pack_uri: str) -> dict[str, Any]:
             resp = await http.xrpc_get(
                 endpoint="app.bsky.graph.getStarterPack",
                 host=http.hosts.appview_host,
@@ -1706,14 +1809,17 @@ async def run_backfill_rq1_factors(
             actor_did = _did_from_at_uri(starter_pack_uri)
             actor_scope_value = _actor_scope_value(actor_scopes, actor_did) if actor_did else ""
             feeds = pack.get("feeds") if isinstance(pack.get("feeds"), list) else []
-            slot_rows = []
+            slot_rows: list[dict[str, Any]] = []
+            discovered_feed_uris: set[str] = set()
+            discovered_list_uris: set[str] = set()
+            labelers: set[str] = set(extract_label_src_dids(pack.get("labels")))
+            scope_additions: dict[str, set[str]] = {}
             for idx, feed in enumerate(feeds, start=1):
                 if not isinstance(feed, dict):
                     continue
                 feed_uri = str(feed.get("uri") or "").strip()
                 if feed_uri:
-                    feed_sources.setdefault(feed_uri, set()).add("starter_pack")
-                    feed_source_actors.setdefault(feed_uri, set()).add(actor_did or "")
+                    discovered_feed_uris.add(feed_uri)
                 slot_rows.append(
                     {
                         "run_id": str(run_id),
@@ -1732,7 +1838,7 @@ async def run_backfill_rq1_factors(
             list_view = pack.get("list") if isinstance(pack.get("list"), dict) else {}
             if list_view.get("uri"):
                 list_uri = str(list_view.get("uri"))
-                list_uris_to_fetch.add(list_uri)
+                discovered_list_uris.add(list_uri)
                 slot_rows.append(
                     {
                         "run_id": str(run_id),
@@ -1748,21 +1854,50 @@ async def run_backfill_rq1_factors(
                         "captured_at_utc": format_utc(now_utc()),
                     }
                 )
+            creator = pack.get("creator") if isinstance(pack.get("creator"), dict) else {}
+            _add_scope(scope_additions, creator.get("did"), "starter_pack_creator")
+            return {
+                "actor_did": actor_did,
+                "slot_rows": slot_rows,
+                "feed_uris": discovered_feed_uris,
+                "list_uris": discovered_list_uris,
+                "scope_additions": scope_additions,
+                "labelers": labelers,
+            }
+
+        starter_pack_tasks = [_bounded_call(_hydrate_starter_pack, starter_pack_uri) for starter_pack_uri in sorted(starter_pack_uris)]
+        for result in await asyncio.gather(*starter_pack_tasks) if starter_pack_tasks else []:
+            actor_did = str(result.get("actor_did") or "")
+            for did, scopes in (result.get("scope_additions") or {}).items():
+                actor_scopes.setdefault(did, set()).update(scopes)
+            labeler_dids.update(result.get("labelers") or set())
+            for feed_uri in result.get("feed_uris") or set():
+                feed_sources.setdefault(feed_uri, set()).add("starter_pack")
+                if actor_did:
+                    feed_source_actors.setdefault(feed_uri, set()).add(actor_did)
+            list_uris_to_fetch.update(result.get("list_uris") or set())
+            slot_rows = list(result.get("slot_rows") or [])
             if slot_rows:
                 writers["starter_pack_contents"].write_rows(slot_rows)
                 progress_state.add_rows("starter_pack_contents", len(slot_rows))
+
+        await _run_list_hydration(list_uris_to_fetch)
 
         # Follow-record lane: resolve each repo to its PDS, describe it, then list app.bsky.graph.follow records.
         progress_state.set_detail("phase", "hydrating_follow_records")
         follow_record_actors = set(seed_actor_dids)
         if str(cfg.follow_record_scope).strip().lower() in {"seed+graph", "all", "seed_and_graph"}:
             follow_record_actors.update(graph_actor_dids)
-        for actor_did in sorted(follow_record_actors):
+
+        async def _fetch_follow_record_lane(actor_did: str) -> dict[str, Any]:
             resolved_host: str | None = None
             if bool(cfg.resolve_pds_endpoints):
                 resolved_host = await _resolve_pds(did_resolver, actor_did, format_utc(now_utc()), run_id, vantage_value, writers["dids"])
             host = resolved_host or hosts.pds_host
             actor_scope_value = _actor_scope_value(actor_scopes, actor_did)
+            repo_desc_row: dict[str, Any] | None = None
+            follow_rows: list[dict[str, Any]] = []
+            scope_additions: dict[str, set[str]] = {}
             try:
                 repo_desc_resp = await http.xrpc_get(
                     endpoint="com.atproto.repo.describeRepo",
@@ -1774,20 +1909,15 @@ async def run_backfill_rq1_factors(
                     timestamp_utc=format_utc(now_utc()),
                 )
                 repo_desc = repo_desc_resp.data if isinstance(repo_desc_resp.data, dict) else {}
-                writers["repo_desc"].write_rows(
-                    [
-                        {
-                            "run_id": str(run_id),
-                            "vantage_id": vantage_value,
-                            "actor_scope": actor_scope_value,
-                            "resolved_pds_host": host,
-                            **flatten_repo_description(repo_desc),
-                            "raw_json": json_compact(repo_desc),
-                            "captured_at_utc": format_utc(now_utc()),
-                        }
-                    ]
-                )
-                progress_state.add_rows("repo_descriptions", 1)
+                repo_desc_row = {
+                    "run_id": str(run_id),
+                    "vantage_id": vantage_value,
+                    "actor_scope": actor_scope_value,
+                    "resolved_pds_host": host,
+                    **flatten_repo_description(repo_desc),
+                    "raw_json": json_compact(repo_desc),
+                    "captured_at_utc": format_utc(now_utc()),
+                }
             except Exception:
                 logger.exception("describeRepo failed repo=%s host=%s", actor_did, host)
 
@@ -1805,91 +1935,124 @@ async def run_backfill_rq1_factors(
             except Exception:
                 records = None
             if records is None:
-                # Cross-PDS call must go directly to the resolved host.
                 records = []
-                cursor: str | None = None
-                remaining = None if max_follow_records is None else max(0, int(max_follow_records))
-                while remaining is None or remaining > 0:
-                    limit = 100 if remaining is None else min(100, remaining)
-                    params = {"repo": actor_did, "collection": "app.bsky.graph.follow", "limit": limit}
-                    if cursor:
-                        params["cursor"] = cursor
-                    resp = await http.xrpc_get(
-                        endpoint="com.atproto.repo.listRecords",
-                        host=host,
-                        method="com.atproto.repo.listRecords",
-                        params=params,
-                        access_jwt=None,
-                        feed_uri=None,
-                        timestamp_utc=format_utc(now_utc()),
-                    )
-                    page = _as_list(resp.data, "records")
-                    if not page:
-                        break
-                    records.extend(page)
-                    if remaining is not None:
-                        remaining -= len(page)
-                        if remaining <= 0:
+                try:
+                    cursor: str | None = None
+                    remaining = None if max_follow_records is None else max(0, int(max_follow_records))
+                    while remaining is None or remaining > 0:
+                        limit = 100 if remaining is None else min(100, remaining)
+                        params = {"repo": actor_did, "collection": "app.bsky.graph.follow", "limit": limit}
+                        if cursor:
+                            params["cursor"] = cursor
+                        resp = await http.xrpc_get(
+                            endpoint="com.atproto.repo.listRecords",
+                            host=host,
+                            method="com.atproto.repo.listRecords",
+                            params=params,
+                            access_jwt=None,
+                            feed_uri=None,
+                            timestamp_utc=format_utc(now_utc()),
+                        )
+                        page = _as_list(resp.data, "records")
+                        if not page:
                             break
-                    cursor = resp.data.get("cursor") if isinstance(resp.data.get("cursor"), str) else None
-                    if not cursor:
-                        break
-            if records:
-                rows = []
-                for record in records:
-                    flat = flatten_follow_record(record)
-                    _add_scope(actor_scopes, flat.get("subject_did"), "follow_record_subject")
-                    rows.append(
-                        {
-                            "run_id": str(run_id),
-                            "vantage_id": vantage_value,
-                            "actor_scope": actor_scope_value,
-                            "repo_did": actor_did,
-                            "resolved_pds_host": host,
-                            **flat,
-                            "captured_at_utc": format_utc(now_utc()),
-                        }
-                    )
-                writers["follow_records"].write_rows(rows)
-                progress_state.add_rows("follow_records", len(rows))
-                for uri in author_to_posts.get(actor_did, set()):
-                    summary_counts[uri]["follow_records_returned"] += len(rows)
-
-        # Final feed generator hydration after all discovery surfaces are scanned.
-        progress_state.set_detail("phase", "hydrating_feed_metadata")
-        for feed_uri in sorted(feed_sources):
-            captured_at_utc = format_utc(now_utc())
-            resp = await http.xrpc_get(
-                endpoint="app.bsky.feed.getFeedGenerator",
-                host=http.hosts.appview_host,
-                method="app.bsky.feed.getFeedGenerator",
-                params={"feed": feed_uri},
-                access_jwt=None,
-                feed_uri=feed_uri,
-                timestamp_utc=captured_at_utc,
-            )
-            view = resp.data.get("view") if isinstance(resp.data.get("view"), dict) else {}
-            flat = flatten_generator_view(view)
-            _add_scope(actor_scopes, flat.get("creator_did"), "feed_creator")
-            labeler_dids.update(extract_label_src_dids(view.get("labels")))
-            writers["feed_generators"].write_rows(
-                [
+                        records.extend(page)
+                        if remaining is not None:
+                            remaining -= len(page)
+                            if remaining <= 0:
+                                break
+                        cursor = resp.data.get("cursor") if isinstance(resp.data.get("cursor"), str) else None
+                        if not cursor:
+                            break
+                except Exception:
+                    logger.exception("listRecords failed repo=%s host=%s", actor_did, host)
+                    records = []
+            for record in records:
+                flat = flatten_follow_record(record)
+                _add_scope(scope_additions, flat.get("subject_did"), "follow_record_subject")
+                follow_rows.append(
                     {
                         "run_id": str(run_id),
                         "vantage_id": vantage_value,
-                        "source_scope": "|".join(sorted(feed_sources.get(feed_uri, set()))),
-                        "source_actor_dids": json_compact(sorted(a for a in feed_source_actors.get(feed_uri, set()) if a)),
+                        "actor_scope": actor_scope_value,
+                        "repo_did": actor_did,
+                        "resolved_pds_host": host,
                         **flat,
-                        "is_online": 1 if resp.data.get("isOnline") is True else 0 if resp.data.get("isOnline") is False else None,
-                        "is_valid": 1 if resp.data.get("isValid") is True else 0 if resp.data.get("isValid") is False else None,
-                        "raw_json": json_compact(resp.data),
-                        "labelers_requested": accept_labelers,
-                        "labelers_included": resp.content_labelers,
-                        "captured_at_utc": captured_at_utc,
+                        "captured_at_utc": format_utc(now_utc()),
                     }
-                ]
-            )
-            progress_state.add_rows("feed_generators", 1)
+                )
+            return {
+                "actor_did": actor_did,
+                "repo_desc_row": repo_desc_row,
+                "follow_rows": follow_rows,
+                "scope_additions": scope_additions,
+            }
+
+        follow_record_tasks = [_bounded_call(_fetch_follow_record_lane, actor_did) for actor_did in sorted(follow_record_actors)]
+        for result in await asyncio.gather(*follow_record_tasks) if follow_record_tasks else []:
+            actor_did = str(result.get("actor_did") or "")
+            repo_desc_row = result.get("repo_desc_row")
+            if isinstance(repo_desc_row, dict):
+                writers["repo_desc"].write_rows([repo_desc_row])
+                progress_state.add_rows("repo_descriptions", 1)
+            for did, scopes in (result.get("scope_additions") or {}).items():
+                actor_scopes.setdefault(did, set()).update(scopes)
+            follow_rows = list(result.get("follow_rows") or [])
+            if follow_rows:
+                writers["follow_records"].write_rows(follow_rows)
+                progress_state.add_rows("follow_records", len(follow_rows))
+                for uri in author_to_posts.get(actor_did, set()):
+                    summary_counts[uri]["follow_records_returned"] += len(follow_rows)
+
+        # Final feed generator hydration after all discovery surfaces are scanned.
+        progress_state.set_detail("phase", "hydrating_feed_metadata")
+
+        async def _hydrate_feed_generator(feed_uri: str) -> dict[str, Any] | None:
+            captured_at_utc = format_utc(now_utc())
+            try:
+                resp = await http.xrpc_get(
+                    endpoint="app.bsky.feed.getFeedGenerator",
+                    host=http.hosts.appview_host,
+                    method="app.bsky.feed.getFeedGenerator",
+                    params={"feed": feed_uri},
+                    access_jwt=None,
+                    feed_uri=feed_uri,
+                    timestamp_utc=captured_at_utc,
+                )
+            except Exception:
+                logger.exception("getFeedGenerator failed feed=%s", feed_uri)
+                return None
+            view = resp.data.get("view") if isinstance(resp.data.get("view"), dict) else {}
+            flat = flatten_generator_view(view)
+            scope_additions: dict[str, set[str]] = {}
+            _add_scope(scope_additions, flat.get("creator_did"), "feed_creator")
+            labelers = set(extract_label_src_dids(view.get("labels")))
+            row = {
+                "run_id": str(run_id),
+                "vantage_id": vantage_value,
+                "source_scope": "|".join(sorted(feed_sources.get(feed_uri, set()))),
+                "source_actor_dids": json_compact(sorted(a for a in feed_source_actors.get(feed_uri, set()) if a)),
+                **flat,
+                "is_online": 1 if resp.data.get("isOnline") is True else 0 if resp.data.get("isOnline") is False else None,
+                "is_valid": 1 if resp.data.get("isValid") is True else 0 if resp.data.get("isValid") is False else None,
+                "raw_json": json_compact(resp.data),
+                "labelers_requested": accept_labelers,
+                "labelers_included": resp.content_labelers,
+                "captured_at_utc": captured_at_utc,
+            }
+            return {"row": row, "scope_additions": scope_additions, "labelers": labelers}
+
+        feed_tasks = [_bounded_call(_hydrate_feed_generator, feed_uri) for feed_uri in sorted(feed_sources)]
+        for result in await asyncio.gather(*feed_tasks) if feed_tasks else []:
+            if not isinstance(result, dict):
+                continue
+            for did, scopes in (result.get("scope_additions") or {}).items():
+                actor_scopes.setdefault(did, set()).update(scopes)
+            labeler_dids.update(result.get("labelers") or set())
+            row = result.get("row")
+            if isinstance(row, dict):
+                writers["feed_generators"].write_rows([row])
+                progress_state.add_rows("feed_generators", 1)
 
         # Final actor-profile sweep for actors discovered later in lists, follow records, and feed hydration.
         final_actor_dids = sorted(set(actor_scopes) - hydrated_actor_profiles)
@@ -1921,16 +2084,21 @@ async def run_backfill_rq1_factors(
         # Labeler service metadata for every label source DID we saw.
         if labeler_dids:
             progress_state.set_detail("phase", "hydrating_labeler_services")
-            for batch in _chunked(sorted(labeler_dids), 25):
-                resp = await http.xrpc_get(
-                    endpoint="app.bsky.labeler.getServices",
-                    host=http.hosts.appview_host,
-                    method="app.bsky.labeler.getServices",
-                    params={"dids": batch, "detailed": True},
-                    access_jwt=None,
-                    feed_uri=None,
-                    timestamp_utc=format_utc(now_utc()),
-                )
+
+            async def _fetch_labeler_batch(batch: list[str]) -> list[dict[str, Any]]:
+                try:
+                    resp = await http.xrpc_get(
+                        endpoint="app.bsky.labeler.getServices",
+                        host=http.hosts.appview_host,
+                        method="app.bsky.labeler.getServices",
+                        params={"dids": batch, "detailed": True},
+                        access_jwt=None,
+                        feed_uri=None,
+                        timestamp_utc=format_utc(now_utc()),
+                    )
+                except Exception:
+                    logger.exception("getServices failed dids=%s", batch)
+                    return []
                 rows = []
                 for view in _as_list(resp.data, "views"):
                     rows.append(
@@ -1942,6 +2110,10 @@ async def run_backfill_rq1_factors(
                             "captured_at_utc": format_utc(now_utc()),
                         }
                     )
+                return rows
+
+            labeler_tasks = [_bounded_call(_fetch_labeler_batch, batch) for batch in _chunked(sorted(labeler_dids), 25)]
+            for rows in await asyncio.gather(*labeler_tasks) if labeler_tasks else []:
                 if rows:
                     writers["labelers"].write_rows(rows)
                     progress_state.add_rows("labeler_services", len(rows))
