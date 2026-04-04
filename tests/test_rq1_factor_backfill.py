@@ -156,6 +156,58 @@ def _seed_posts_and_appearances(out_base: Path, post_uris: list[str]) -> None:
             writer.writerows(rows)
 
 
+def _run_backfill_rq1(tmp_path: Path, server: FakeBskyRq1Server, *extra_args: str) -> subprocess.CompletedProcess[str]:
+    cmd = [
+        sys.executable,
+        "-m",
+        "bsky_collector_v2",
+        "backfill-rq1-factors",
+        "--out-base",
+        str(tmp_path),
+        "--appview-host",
+        server.base_url,
+        "--pds-host",
+        server.base_url,
+        "--relay-host",
+        server.base_url,
+        "--max-posts",
+        "2",
+        "--batch-size",
+        "2",
+        "--max-items-per-endpoint",
+        "2",
+        "--max-author-feed-items",
+        "2",
+        "--max-followers-per-actor",
+        "2",
+        "--max-follows-per-actor",
+        "2",
+        "--max-follow-records-per-actor",
+        "2",
+        "--max-actor-feeds-per-actor",
+        "2",
+        "--max-lists-per-actor",
+        "1",
+        "--max-list-members-per-list",
+        "2",
+        "--max-starter-packs-per-actor",
+        "1",
+        *extra_args,
+    ]
+    return _run(cmd, cwd=Path.cwd())
+
+
+def _request_query_values(server: FakeBskyRq1Server, path: str, key: str) -> list[str]:
+    values: list[str] = []
+    for entry in server.request_log:
+        if entry.get("path") != path:
+            continue
+        query = entry.get("query") or {}
+        raw = query.get(key) or []
+        values.extend(str(value) for value in raw)
+    return values
+
+
 def _thread_node(uri: str) -> dict[str, Any]:
     author_did = uri.removeprefix("at://").split("/")[0]
     slug = author_did.replace("did:plc:", "")
@@ -472,6 +524,51 @@ def test_backfill_rq1_factors_stage_store_replay_skips_network_after_registry_re
 
         rerun_called_paths = {entry["path"] for entry in server.request_log}
         assert rerun_called_paths == set()
+
+
+def test_backfill_rq1_factors_seed_actor_phases_stay_on_seed_post_authors(tmp_path: Path) -> None:
+    post_uris = [
+        "at://did:plc:author000/app.bsky.feed.post/post000",
+        "at://did:plc:author001/app.bsky.feed.post/post001",
+    ]
+    _seed_posts_and_appearances(tmp_path, post_uris)
+
+    with FakeBskyRq1Server() as server:
+        res = _run_backfill_rq1(tmp_path, server, "--no-resolve-pds-endpoints")
+        assert res.returncode == 0, res.stdout
+
+        seed_authors = {"did:plc:author000", "did:plc:author001"}
+        for path in (
+            "/xrpc/app.bsky.graph.getRelationships",
+            "/xrpc/app.bsky.graph.getFollowers",
+            "/xrpc/app.bsky.graph.getFollows",
+            "/xrpc/app.bsky.feed.getAuthorFeed",
+            "/xrpc/app.bsky.feed.getActorFeeds",
+            "/xrpc/app.bsky.graph.getLists",
+            "/xrpc/app.bsky.graph.getActorStarterPacks",
+        ):
+            assert set(_request_query_values(server, path, "actor")) == seed_authors, path
+
+
+def test_backfill_rq1_factors_no_resolve_skips_graph_repo_hydration(tmp_path: Path) -> None:
+    post_uris = [
+        "at://did:plc:author000/app.bsky.feed.post/post000",
+        "at://did:plc:author001/app.bsky.feed.post/post001",
+    ]
+    _seed_posts_and_appearances(tmp_path, post_uris)
+
+    with FakeBskyRq1Server() as server:
+        res = _run_backfill_rq1(tmp_path, server, "--no-resolve-pds-endpoints")
+        assert res.returncode == 0, res.stdout
+
+        seed_authors = {"did:plc:author000", "did:plc:author001"}
+        assert set(_request_query_values(server, "/xrpc/com.atproto.repo.describeRepo", "repo")) == seed_authors
+        assert set(_request_query_values(server, "/xrpc/com.atproto.repo.listRecords", "repo")) == seed_authors
+
+        run_root = tmp_path / "rq1_factors" / utc_date_str(now_utc()) / "shard_000"
+        with open(run_root / "repo_descriptions_part_000.csv", "r", encoding="utf-8", newline="") as f:
+            repo_rows = list(csv.DictReader(f))
+        assert {str(row["did"]) for row in repo_rows} == seed_authors
 
 
 def test_backfill_rq1_factors_actor_phase_uses_concurrency(tmp_path: Path) -> None:

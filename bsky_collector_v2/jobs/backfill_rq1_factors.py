@@ -1730,7 +1730,17 @@ async def run_backfill_rq1_factors(
             completed_focus_posts.append(post_uri)
             progress_state.feeds_done += 1
 
-        seed_actor_dids = sorted(actor_scopes)
+        # Keep the seed-only actor lanes anchored on the selected post authors.
+        # actor_scopes also accumulates likers, quoters, reposters, thread actors,
+        # feed creators, and other discovered accounts; using the whole map here
+        # causes relationship and graph hydration to fan out on popular posts.
+        seed_actor_dids = sorted(
+            {
+                did
+                for did, scopes in actor_scopes.items()
+                if did and ("post_author" in scopes or "surface_author" in scopes)
+            }
+        )
 
         async def _hydrate_actor_profiles(actor_dids: list[str]) -> None:
             missing_actor_dids = _replay_completed_stage(
@@ -2357,7 +2367,7 @@ async def run_backfill_rq1_factors(
         # Follow-record lane: resolve each repo to its PDS, describe it, then list app.bsky.graph.follow records.
         progress_state.set_detail("phase", "hydrating_follow_records")
         follow_record_actors = set(seed_actor_dids)
-        if str(cfg.follow_record_scope).strip().lower() in {"seed+graph", "all", "seed_and_graph"}:
+        if bool(cfg.resolve_pds_endpoints) and str(cfg.follow_record_scope).strip().lower() in {"seed+graph", "all", "seed_and_graph"}:
             follow_record_actors.update(graph_actor_dids)
         ordered_follow_record_actors = sorted(follow_record_actors)
 
