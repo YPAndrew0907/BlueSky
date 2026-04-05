@@ -1,0 +1,153 @@
+file_name,column_name,dtype_hint,description
+run_metadata.csv,run_id,str,Stable run identifier for this OUT_DIR.
+run_metadata.csv,started_at_utc,str,"Run start time (UTC, ISO-8601)."
+run_metadata.csv,finished_at_utc,str,"Run finish time (UTC, ISO-8601)."
+run_metadata.csv,appview_host,str,AppView base host used for reads.
+run_metadata.csv,relay_host,str,Relay base host used for indexing.
+run_metadata.csv,auth_mode,str,unauth|auth|both.
+run_metadata.csv,rps,float,Client-side request rate limit (requests/sec).
+run_metadata.csv,max_retries,int,Max retries for 429/5xx/network errors.
+run_metadata.csv,posts_per_feed,int,Requested ranked items per feed snapshot.
+run_metadata.csv,n_discovery,int,Target number of discovery_surfaced feeds.
+run_metadata.csv,n_popular,int,Target number of popular feeds.
+run_metadata.csv,n_less_known,int,Target number of less_known feeds.
+run_summary.csv,num_starterpacks_seen,int,Starter packs collected.
+run_summary.csv,num_unique_feeds_from_starterpacks,int,Distinct feed URIs observed in starter packs.
+run_summary.csv,num_popular_feeds_seen,int,Distinct feeds from popular feed endpoint.
+run_summary.csv,num_feed_generators_indexed,int,Feed generators discovered via indexing.
+run_summary.csv,num_feeds_panel,int,Feeds selected for snapshotting.
+run_summary.csv,num_feeds_snapshotted_success,int,Successful snapshot rows.
+run_summary.csv,num_feed_items,int,Total ranked feed items collected.
+run_summary.csv,num_unique_posts,int,Unique posts collected (post_uri+cid).
+run_summary.csv,num_unique_authors,int,Unique authors observed in feed items.
+run_summary.csv,auth_profile_hydration_rate,float,Hydrated authors / unique authors.
+run_summary.csv,snapshot_success_rate,float,Successful snapshots / expected snapshots.
+run_summary.csv,mapping_notes,str,High-level notes about data sources.
+errors.csv,stage,str,Pipeline stage name.
+errors.csv,key,str,"Entity key (e.g., feed_uri, starterpack_uri)."
+errors.csv,error_type,str,Error classification.
+errors.csv,http_status,int,HTTP status code when applicable.
+errors.csv,error_message,str,Short error message.
+errors.csv,when_utc,str,"Error time (UTC, ISO-8601)."
+errors.csv,retry_count,int,Retry attempt count at time of error.
+feed_generators_index.csv,feed_uri,str,Feed generator at-uri.
+feed_generators_index.csv,creator_did,str,Creator DID (repo DID).
+feed_generators_index.csv,rkey,str,Record key component of at-uri.
+feed_generators_index.csv,service_did,str,Service DID hosting the generator.
+feed_generators_index.csv,provider_bucket,str,did:web domain or plc_bucket.
+feed_generators_index.csv,display_name,str,Display name (if present).
+feed_generators_index.csv,description,str,Description (if present).
+feed_generators_index.csv,accepts_interaction,int,Whether interactions are accepted (if present).
+feed_generators_index.csv,content_mode,str,Content mode (if present).
+feed_generators_index.csv,indexed_at,str,IndexedAt timestamp (if present).
+starterpacks.csv,starterpack_uri,str,Starter pack at-uri.
+starterpacks.csv,creator_did,str,Creator DID (if present).
+starterpacks.csv,name,str,Starter pack name (if present).
+starterpacks.csv,description,str,Starter pack description (if present).
+starterpacks.csv,collected_at_utc,str,"Collection time (UTC, ISO-8601)."
+starterpack_feeds.csv,starterpack_uri,str,Starter pack at-uri.
+starterpack_feeds.csv,slot_index,int,0-based feed slot index within the pack.
+starterpack_feeds.csv,feed_uri,str,Feed generator at-uri.
+discovery_feed_inclusions.csv,feed_uri,str,Feed generator at-uri.
+discovery_feed_inclusions.csv,inclusion_count,int,Number of packs containing the feed.
+discovery_feed_inclusions.csv,slot_count,int,Total appearances across all packs.
+discovery_feed_inclusions.csv,inclusion_rank,int,Rank by slot_count desc.
+popular_feeds.csv,feed_uri,str,Feed generator at-uri.
+popular_feeds.csv,popularity_rank,int,Rank order returned by popular endpoint (first seen).
+popular_feeds.csv,collected_at_utc,str,"Collection time (UTC, ISO-8601)."
+feed_panel.csv,feed_uri,str,Feed generator at-uri.
+feed_panel.csv,feed_group,str,discovery_surfaced|popular|less_known.
+feed_panel.csv,selection_reason,str,Why this feed was selected.
+feed_panel.csv,provider_bucket,str,did:web domain or plc_bucket.
+feed_panel.csv,service_did,str,Service DID hosting the generator.
+feed_panel.csv,creator_did,str,Creator DID.
+feed_panel.csv,display_name,str,Feed display name.
+feed_panel.csv,inclusion_count,int,Starter pack inclusion_count if known.
+feed_panel.csv,popularity_rank,int,Popularity rank if known.
+feed_snapshot_status.csv,feed_uri,str,Feed generator at-uri.
+feed_snapshot_status.csv,feed_group,str,Feed group label.
+feed_snapshot_status.csv,viewer_mode,str,unauth|auth.
+feed_snapshot_status.csv,collected_at_utc,str,"Snapshot time (UTC, ISO-8601)."
+feed_snapshot_status.csv,requested_items,int,Requested items per feed (config).
+feed_snapshot_status.csv,returned_items,int,Items returned by API.
+feed_snapshot_status.csv,pages_fetched,int,Pagination pages fetched.
+feed_snapshot_status.csv,success,int,1 if snapshot succeeded else 0.
+feed_snapshot_status.csv,http_status,int,HTTP status code when failure is HTTP.
+feed_snapshot_status.csv,error_type,str,Error classification.
+feed_snapshot_status.csv,error_message_short,str,Short error message.
+feed_items.csv.gz,feed_uri,str,Feed generator at-uri.
+feed_items.csv.gz,feed_group,str,Feed group label.
+feed_items.csv.gz,viewer_mode,str,unauth|auth.
+feed_items.csv.gz,collected_at_utc,str,"Snapshot time (UTC, ISO-8601)."
+feed_items.csv.gz,rank,int,1-based rank within feed snapshot.
+feed_items.csv.gz,post_uri,str,Post at-uri.
+feed_items.csv.gz,post_cid,str,Post CID.
+feed_items.csv.gz,author_did,str,Author DID.
+feed_items.csv.gz,author_handle,str,Author handle if present.
+feed_items.csv.gz,reason_type,str,Feed item reason type (if present).
+feed_items.csv.gz,reason_actor_did,str,Reason actor DID (if present).
+posts.csv.gz,post_uri,str,Post at-uri.
+posts.csv.gz,post_cid,str,Post CID.
+posts.csv.gz,author_did,str,Author DID.
+posts.csv.gz,author_handle,str,Author handle if present.
+posts.csv.gz,record_created_at,str,Record createdAt timestamp.
+posts.csv.gz,indexed_at,str,IndexedAt timestamp (if present).
+posts.csv.gz,text,str,Post text.
+posts.csv.gz,text_len,int,Length of text in characters.
+posts.csv.gz,is_reply,int,1 if reply else 0.
+posts.csv.gz,reply_parent_uri,str,Parent post uri if reply.
+posts.csv.gz,reply_root_uri,str,Root post uri if reply.
+posts.csv.gz,is_quote,int,1 if quote embed else 0.
+posts.csv.gz,quoted_uri,str,Quoted post uri if quote.
+posts.csv.gz,embed_type,str,Embed type string (if present).
+posts.csv.gz,image_count,int,Number of images in embed if any.
+posts.csv.gz,external_uri,str,External embed URL if any.
+posts.csv.gz,external_domain,str,Domain of external_uri if any.
+posts.csv.gz,facet_link_count,int,Number of link facets.
+posts.csv.gz,link_domains_json,str,JSON array of link domains from facets.
+posts.csv.gz,mention_count,int,Number of mention facets.
+posts.csv.gz,hashtag_count,int,Number of hashtag facets.
+posts.csv.gz,like_count,int,Like count if present.
+posts.csv.gz,repost_count,int,Repost count if present.
+posts.csv.gz,reply_count,int,Reply count if present.
+posts.csv.gz,quote_count,int,Quote count if present.
+posts.csv.gz,langs_json,str,JSON array of detected languages if present.
+posts.csv.gz,post_labels_json,str,JSON array of post labels if present.
+posts.csv.gz,author_labels_json,str,JSON array of author labels if present.
+post_labels.csv.gz,post_uri,str,Post at-uri.
+post_labels.csv.gz,post_cid,str,Post CID.
+post_labels.csv.gz,feed_uri,str,Feed generator at-uri.
+post_labels.csv.gz,viewer_mode,str,unauth|auth.
+post_labels.csv.gz,collected_at_utc,str,"Snapshot time (UTC, ISO-8601)."
+post_labels.csv.gz,label_src,str,Label source.
+post_labels.csv.gz,label_val,str,Label value.
+post_labels.csv.gz,label_neg,int,Label negation flag if present.
+post_labels.csv.gz,label_uri,str,Label URI if present.
+authors.csv.gz,author_did,str,Author DID.
+authors.csv.gz,handle,str,Handle (if present).
+authors.csv.gz,display_name,str,Display name (if present).
+authors.csv.gz,followers_count,int,Followers count (if present).
+authors.csv.gz,follows_count,int,Follows count (if present).
+authors.csv.gz,posts_count,int,Posts count (if present).
+authors.csv.gz,collected_at_utc,str,"Profile hydration time (UTC, ISO-8601)."
+provider_stats.csv,provider_bucket,str,did:web domain or plc_bucket.
+provider_stats.csv,hosted_feed_count_api,int,Feeds hosted by this provider (API index).
+provider_stats.csv,discovery_slot_count,int,Total starter pack feed slots attributed to provider.
+provider_stats.csv,hosting_share,float,hosted_feed_count_api / total_indexed_feeds.
+provider_stats.csv,discovery_share,float,discovery_slot_count / total_discovery_slots.
+provider_stats.csv,leverage_ratio,float,discovery_share / hosting_share.
+validation_report.csv,check_name,str,Validation check name.
+validation_report.csv,status,str,PASS|FAIL.
+validation_report.csv,observed_value,str,Observed value (stringified).
+validation_report.csv,expected_threshold,str,Expected threshold or condition.
+validation_report.csv,notes,str,Extra notes or remediation hints.
+manifest.csv,file_name,str,CSV file name under OUT_DIR/csv/.
+manifest.csv,bytes,int,File size in bytes.
+manifest.csv,sha256,str,SHA-256 hash of file contents.
+manifest.csv,created_at_utc,str,"Manifest generation time (UTC, ISO-8601)."
+http_stats.csv,endpoint_name,str,Logical endpoint name.
+http_stats.csv,request_count,int,Total requests made.
+http_stats.csv,success_count,int,2xx responses.
+http_stats.csv,rate_limited_count,int,429 responses.
+http_stats.csv,avg_latency_ms,float,Average latency (ms).
+http_stats.csv,p95_latency_ms,float,Approximate p95 latency (ms) from histogram.

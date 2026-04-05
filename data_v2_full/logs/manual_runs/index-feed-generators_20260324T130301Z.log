@@ -1,0 +1,13 @@
+2026-03-24T13:03:01Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-03-24T13:03:01Z INFO bsky_collector_v2: job start subcommand=index-feed-generators dry_run=False resume=True
+2026-03-24T13:03:04Z WARNING bsky_collector_v2.session: cached session refresh failed; falling back to createSession err=HttpError("exhausted retries: ConnectError('[Errno 8] nodename nor servname provided, or not known')")
+2026-03-24T13:03:08Z WARNING bsky_collector_v2.job.index_feed_generators: auth session failed; proceeding unauth err=HttpError("exhausted retries: ConnectError('[Errno 8] nodename nor servname provided, or not known')")
+2026-03-24T13:03:08Z INFO bsky_collector_v2.job.index_feed_generators: feed generator index hosts relay_host=https://bsky.network records_host=https://bsky.social auth=no
+2026-03-24T13:03:12Z INFO bsky_collector_v2.job.index_feed_generators: recovered repo tasks in_progress->pending n=1
+2026-03-24T13:03:17Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:uqld4dpzhnv2gwqatpqd2vti err=HttpError("exhausted retries: ConnectError('[Errno 8] nodename nor servname provided, or not known')")
+2026-03-24T13:03:25Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:urlmr3xm5nnbrhgy6bf6yrr3 err=HttpError("exhausted retries: ConnectError('[Errno 8] nodename nor servname provided, or not known')")
+2026-03-24T13:03:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:urspt7ipowywueyyzgtrvkif err=HttpError("exhausted retries: ConnectError('[Errno 8] nodename nor servname provided, or not known')")
+2026-03-24T13:04:31Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:uwkz4eyrz3ytpkqj7ab2csq6 err=HttpError("exhausted retries: ConnectError('[Errno 8] nodename nor servname provided, or not known')")
+2026-03-24T13:04:43Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:uy4atjgb3nvgomiqlrh7tnda err=HttpError("exhausted retries: ConnectError('[Errno 8] nodename nor servname provided, or not known')")
+2026-03-24T13:04:54Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:vcuy5uwy5gz2mfrdpjbgq5x7 err=HttpError("exhausted retries: ConnectError('[Errno 8] nodename nor servname provided, or not known')")
+2026-03-24T13:05:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:vl4e2mxmo77eze4xfo2msxch err=HttpError("exhausted retries: ConnectError('[Errno 8] nodename nor servname provided, or not known')")

@@ -1,0 +1,16 @@
+2026-02-16T08:21:18Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-02-16T08:21:18Z INFO bsky_collector_v2: job start subcommand=refresh-discovery dry_run=False resume=True
+2026-02-16T08:21:19Z INFO bsky_collector_v2.job.refresh_discovery: resume=true: skipping completed surface=popular_feed_generators
+/Volumes/T9/BlueSky/bsky_collector_v2/jobs/refresh_discovery.py:384: RuntimeWarning: coroutine '_collect_popular' was never awaited
+  popular_n = await run_surface(
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+2026-02-16T08:21:19Z INFO bsky_collector_v2.job.refresh_discovery: resume=true: skipping completed surface=suggested_feeds
+/Volumes/T9/BlueSky/bsky_collector_v2/jobs/refresh_discovery.py:397: RuntimeWarning: coroutine '_collect_suggested_feeds' was never awaited
+  suggested_feeds_n = await run_surface(
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+2026-02-16T08:21:19Z WARNING bsky_collector_v2.job.refresh_discovery: discovery surface failed surface=suggested_accounts err=HttpError('InvalidRequest: must pass viewer')
+2026-02-16T08:21:19Z INFO bsky_collector_v2.job.refresh_discovery: resume=true: skipping completed surface=onboarding_suggested_starterpacks
+/Volumes/T9/BlueSky/bsky_collector_v2/jobs/refresh_discovery.py:428: RuntimeWarning: coroutine '_collect_onboarding_starterpacks' was never awaited
+  onboarding_n = await run_surface(
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+2026-02-16T08:21:19Z INFO bsky_collector_v2.job.refresh_discovery: wrote feed_catalog.csv path=/Volumes/T9/BlueSky/data_v2_full/metadata/2026-02-16/feed_catalog.csv

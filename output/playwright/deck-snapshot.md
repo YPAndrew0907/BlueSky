@@ -1,0 +1,473 @@
+- generic [active] [ref=e1]:
+  - generic:
+    - img "Observed top-K opportunity allocation deck":
+      - generic:
+        - generic:
+          - generic: 1 / 5 THEORY
+        - generic: Ranking allocates exposure, not just order
+        - generic: Start from the abstraction, not the platform.
+      - generic:
+        - generic:
+          - generic: 2 / 5 IDENTIFICATION
+        - generic: One screenshot, one cluster, three gates
+      - generic:
+        - generic:
+          - generic: 3 / 5 EXAMPLE
+        - generic: The same post can appear, disappear, and move across q
+      - generic:
+        - generic:
+          - generic: 4 / 5 MODELS
+        - generic: "Three questions: entry, position, and reinforcement"
+      - generic:
+        - generic:
+          - generic: 5 / 5 CONTENT
+        - generic: "Second module: hold event fixed, compare frames"
+      - generic:
+        - generic: ranked list
+        - generic:
+          - generic: "1"
+        - generic:
+          - generic: "2"
+        - generic:
+          - generic: "3"
+          - generic: item i
+        - generic:
+          - generic: "4"
+        - generic:
+          - generic: "5"
+      - generic:
+        - generic: position bias
+        - generic:
+          - generic: v_1
+          - generic: v_2
+          - generic: v_3
+          - generic: v_4
+          - generic: v_5
+      - generic:
+        - generic: i
+      - generic:
+        - generic: relevance signal u
+      - generic:
+        - generic:
+          - generic: context q
+      - generic:
+        - generic:
+          - img
+      - generic:
+        - generic:
+          - img
+      - generic:
+        - generic: small score gap, larger opportunity gap
+        - generic:
+          - generic: A
+          - generic: same textslightly higherutility
+          - generic: "u: 0.52"
+        - generic:
+          - generic: B
+          - generic: same textslightly lowerutility
+          - generic: "u: 0.49"
+        - generic:
+          - generic: utility
+          - generic: opportunity
+      - generic:
+        - generic: Small score differences can become large opportunity differences because attention decays by position.
+      - generic:
+        - generic:
+          - generic: q = one screenshot
+          - generic:
+            - generic: Feed
+            - generic: F1
+          - generic:
+            - generic: Hour
+            - generic: 20:00
+          - generic:
+            - generic: Viewer mode
+            - generic: auth
+      - generic:
+        - generic: Unobserved platform candidate universe
+        - generic:
+          - generic: not directly observed
+      - generic:
+        - generic: "one captured top-K screenshot: q_1"
+        - generic:
+          - generic: "5"
+        - generic:
+          - generic: "9"
+        - generic:
+          - generic: "18"
+        - generic:
+          - generic: "23"
+        - generic:
+          - generic: "30"
+        - generic:
+          - generic: "40"
+        - generic:
+          - generic: A
+          - generic: same textin q_1made panel
+          - generic: rank 5
+        - generic:
+          - generic: B
+          - generic: same textmissed q_1not shown
+        - generic:
+          - generic: C
+          - generic: same textin q_1made panel
+          - generic: rank 18
+        - generic: bounded depth
+      - generic:
+        - generic: fixed same-text cluster c
+        - generic:
+          - generic: A
+          - generic: same textcreated 19:05
+          - generic: indexed 19:12
+        - generic:
+          - generic: B
+          - generic: same textcreated 19:18
+          - generic: indexed 19:22
+        - generic:
+          - generic: C
+          - generic: same textcreated 19:50
+          - generic: indexed 19:58
+        - generic:
+          - generic: D
+          - generic: outofexample
+      - generic:
+        - generic: one master formula
+        - generic: opportunity only exists if all three gates open
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic: G
+          - generic: in local risk set
+          - generic: already indexed by capture time
+        - generic:
+          - generic: I
+          - generic: made this screenshot
+          - generic: observed in this one top-K panel
+        - generic:
+          - generic: w
+          - generic: position value
+          - generic: higher slots get more opportunity
+      - generic:
+        - generic:
+          - generic: not the whole platform
+        - generic:
+          - generic: one captured top-K only
+      - generic:
+        - generic: indexed_at = already in the platform pool by q
+        - generic: not just later collected into our database
+      - generic:
+        - generic:
+          - generic: "G = 0: too early for this q"
+        - generic:
+          - generic: "G = 1, I = 0: arrived, but missed this screenshot"
+        - generic:
+          - generic: across q's, add O instead of raw rank
+      - generic:
+        - generic: "Think of q as one screenshot: who arrived in time, who made the list, where they sat, and what opportunity they got."
+      - generic:
+        - generic: Same cluster c
+        - generic:
+          - generic: A indexed 19:12
+        - generic:
+          - generic: B indexed 19:22
+        - generic:
+          - generic: C indexed 19:58
+        - generic: Four q slices
+        - generic:
+          - generic: q_0 F1 19:15
+        - generic:
+          - generic: q_1 F1 20:00
+        - generic:
+          - generic: q_2 F1 21:00
+        - generic:
+          - generic: q_3 F2 20:00
+        - generic: all auth
+      - generic:
+        - generic: Each column is one captured top-K slice q
+        - generic: Read down a column to compare versions inside one q. Read across a row to see the same post move across q's.
+        - generic: A
+        - generic: B
+        - generic: C
+        - generic: same text
+        - generic: same text
+        - generic: same text
+        - generic:
+          - generic: q_0
+          - generic: F1 · 19:15
+          - generic:
+            - generic: R=1
+            - generic: eligible
+            - generic: R = 1A arrived before q_0
+          - generic:
+            - generic: R=0
+            - generic: not yet
+            - generic: R = 0indexed after q_0
+          - generic:
+            - generic: R=0
+            - generic: not yet
+            - generic: R = 0indexed after q_0
+        - generic:
+          - generic: q_1
+          - generic: F1 · 20:00
+          - generic:
+            - generic: I=1
+            - generic: rank 5
+            - generic: I = 1O = 0.70
+          - generic:
+            - generic: I=0
+            - generic: missed
+            - generic: I = 0O = 0
+          - generic:
+            - generic: I=1
+            - generic: rank 18
+            - generic: I = 1O = 0.25
+        - generic:
+          - generic: q_2
+          - generic: F1 · 21:00
+          - generic:
+            - generic: I=0
+            - generic: missed
+            - generic: I = 0O = 0
+          - generic:
+            - generic: I=1
+            - generic: rank 9
+            - generic: I = 1O = 0.50
+          - generic:
+            - generic: I=1
+            - generic: rank 23
+            - generic: I = 1O = 0.15
+        - generic:
+          - generic: q_3
+          - generic: F2 · 20:00
+          - generic:
+            - generic: I=0
+            - generic: missed
+            - generic: I = 0O = 0
+          - generic:
+            - generic: I=1
+            - generic: rank 4
+            - generic: I = 1O = 0.75
+          - generic:
+            - generic: I=0
+            - generic: missed
+            - generic: I = 0O = 0
+      - generic:
+        - generic: How to read the example
+        - generic: The matrix says what happened to A, B, and C in each slice.
+        - generic:
+          - generic: "R_cq: who arrived in time"
+          - generic: At q_0 only A is eligible.By q_1 and q_2, all three are in the risk set.
+        - generic:
+          - generic: "I_iq: did this post make this screenshot"
+          - generic: In q_1, A and C appear.B misses that captured top-K.
+        - generic:
+          - generic: The same post can flip across q's
+          - generic: A is visible in q_1 but not in q_2.B is out in q_1 and in by q_2.
+        - generic:
+          - generic: A new feed means a new competition
+          - generic: q_3 is F2, not F1.So q_3 rank 4 is not directly comparable to q_1 rank 5.
+        - generic:
+          - generic: Across a row = one post history
+          - generic: A in then out; B out then back in; C in twice then out.
+      - generic:
+        - generic: Across monitored slices, add opportunity
+        - generic:
+          - generic: A
+          - generic: q_1 0.70 q_2 0 q_3 0
+          - generic: total 0.70
+        - generic:
+          - generic: B
+          - generic: q_1 0 q_2 0.50 q_3 0.75
+          - generic: total 1.25
+        - generic:
+          - generic: C
+          - generic: q_1 0.25 q_2 0.15 q_3 0
+          - generic: total 0.40
+        - generic:
+          - generic: Two guardrails
+          - generic: "`I = 0` means missed this slice, not missed forever.Raw rank compares within one column; across columns we add `O` instead."
+      - generic:
+        - generic: 1. Which version entersthe observed top-K panel?
+        - generic: Observed Inclusion
+      - generic:
+        - generic: 2. If multiple versions appear,who ranks higher?
+        - generic: Conditional Rank
+      - generic:
+        - generic: 3. Does early advantagecompound later?
+        - generic: Reinforcement
+      - generic:
+        - generic:
+          - generic:
+            - generic: A
+            - generic: same textq_1 enters
+            - generic: rank 5
+          - generic:
+            - generic: B
+            - generic: same textq_1 misses
+            - generic: I = 0
+          - generic:
+            - generic: C
+            - generic: same textq_1 enters
+            - generic: rank 18
+        - generic:
+          - generic: risk set R_cq
+          - generic: who arrived in time for this q
+        - generic:
+          - generic:
+            - generic: freshness T
+          - generic:
+            - generic: labels L
+          - generic:
+            - generic: lagged M
+          - generic:
+            - generic: priors A
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic: At q_1, A and C enter the panel,while B misses this slice.
+      - generic:
+        - generic:
+          - generic:
+            - generic: A
+            - generic: visiblein q_1
+            - generic: rank 5
+          - generic:
+            - generic: B
+            - generic: not visiblein q_1
+            - generic: I = 0
+          - generic:
+            - generic: C
+            - generic: visiblein q_1
+            - generic: rank 18
+        - generic:
+          - generic: same q, then ordered
+          - generic:
+            - generic: Delta T
+          - generic:
+            - generic: Delta L
+          - generic:
+            - generic: Delta M
+          - generic:
+            - generic: Delta A
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic: Compare raw rank only within the same q.Here that means A versus C in q_1.
+      - generic:
+        - generic: What we can say
+        - generic: What we cannot claim
+        - generic:
+          - generic: observed top-K opportunity
+        - generic:
+          - generic: matched-content panel entry
+        - generic:
+          - generic: within-q rank comparison
+        - generic:
+          - generic: full eligibility
+        - generic:
+          - generic: true attention
+        - generic:
+          - generic: cross-q raw rank ordering
+      - generic:
+        - generic: Start with panel questions, not one platform label.
+        - generic: Break the political question into lenses you can actually measure.
+        - generic:
+          - generic: "Not first:"
+          - generic: Bluesky left or right?
+        - generic:
+          - generic:
+            - generic: Topic
+            - generic: what enters
+          - generic:
+            - generic: Frame
+            - generic: which angle
+          - generic:
+            - generic: Lift
+            - generic: who gains
+          - generic:
+            - generic: Context
+            - generic: feed auth labels
+      - generic:
+        - generic:
+          - generic: current paper
+        - generic: "Module A: exposure bias"
+        - generic: Hold text fixed. Compare duplicate versions.
+        - generic:
+          - generic:
+            - generic: A
+            - generic: same textalpha
+          - generic:
+            - generic: B
+            - generic: same textbeta
+          - generic:
+            - generic: C
+            - generic: same textgamma
+          - generic: duplicate cluster c
+          - generic: same text held fixed
+          - generic:
+            - generic: observed q
+            - generic: compare O_iq
+          - generic:
+            - generic: text fixed
+          - generic:
+            - generic: authors vary
+          - generic:
+            - generic: who gets O?
+      - generic:
+        - generic:
+          - generic: next paper
+        - generic: "Module B: content bias"
+        - generic: Hold event fixed. Compare different frames.
+        - generic:
+          - generic: "one event cluster e: one Epstein news wave"
+          - generic: event e
+          - generic:
+            - generic: f_1
+            - generic: Trump
+            - generic: implication
+          - generic:
+            - generic: f_2
+            - generic: Dem elites
+            - generic: implication
+          - generic:
+            - generic: f_3
+            - generic: Systemic
+            - generic: coverup
+          - generic:
+            - generic: f_4
+            - generic: Legal
+            - generic: reporting
+      - generic:
+        - generic:
+          - generic: feed lens
+        - generic:
+          - generic: viewer lens
+        - generic:
+          - generic: label lens
+        - generic:
+          - generic: frame first, ideology later
+        - generic: not one platform constant
+      - generic:
+        - generic:
+          - generic: module B question
+        - generic: Within one event cluster e, which frame gets more monitored top-K opportunity O?
+        - generic: Then ask whether that tilt changes by feed, auth state, or labels.
+    - img
+  - application [ref=e2]:
+    - generic:
+      - generic [ref=e4]: Slide 1. Ranking allocates exposure, not just order.
+      - generic:
+        - generic: Slide 2. Think of q as one screenshot, then read one master formula for monitored opportunity through the A B C example.
+      - generic:
+        - generic: Slide 3. A matrix of q_0 through q_3 shows how the same post can enter, miss, and move across slices.
+    - text: Speaker notes
+    - generic [ref=e8]: Slide 1. Ranking allocates exposure, not just order.

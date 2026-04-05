@@ -1,0 +1,12 @@
+2026-03-16T21:54:40Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-03-16T21:54:40Z INFO bsky_collector_v2: job start subcommand=index-feed-generators dry_run=False resume=True
+2026-03-16T21:54:41Z INFO bsky_collector_v2.job.index_feed_generators: feed generator index hosts relay_host=https://bsky.network records_host=https://bsky.social auth=yes
+2026-03-16T21:54:54Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:wphi4jgrjfzsorqaiewrg4sy err=HttpError('InvalidRequest: Could not find repo: did:plc:wphi4jgrjfzsorqaiewrg4sy')
+2026-03-16T21:55:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:2uhg5brwh2xk3agp6h2ri6x4 err=HttpError('InvalidRequest: Could not find repo: did:plc:2uhg5brwh2xk3agp6h2ri6x4')
+2026-03-16T21:55:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5ywufnccrr4j7vt3m2vxf24p err=HttpError('InvalidRequest: Could not find repo: did:plc:5ywufnccrr4j7vt3m2vxf24p')
+2026-03-16T21:55:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:wphi4jgrjfzsorqaiewrg4sy err=HttpError('InvalidRequest: Could not find repo: did:plc:wphi4jgrjfzsorqaiewrg4sy')
+2026-03-16T21:55:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:2uhg5brwh2xk3agp6h2ri6x4 err=HttpError('InvalidRequest: Could not find repo: did:plc:2uhg5brwh2xk3agp6h2ri6x4')
+2026-03-16T21:55:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5ywufnccrr4j7vt3m2vxf24p err=HttpError('InvalidRequest: Could not find repo: did:plc:5ywufnccrr4j7vt3m2vxf24p')
+2026-03-16T21:55:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:wphi4jgrjfzsorqaiewrg4sy err=HttpError('InvalidRequest: Could not find repo: did:plc:wphi4jgrjfzsorqaiewrg4sy')
+2026-03-16T21:55:07Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=1 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-03-16T21:56:14Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:se2bz4otwd2jztmuywlyt63v err=HttpError('InvalidRequest: Could not find repo: did:plc:se2bz4otwd2jztmuywlyt63v')

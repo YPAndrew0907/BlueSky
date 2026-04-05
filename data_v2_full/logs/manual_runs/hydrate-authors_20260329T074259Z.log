@@ -1,0 +1,48 @@
+2026-03-29T07:43:00Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-03-29T07:43:00Z INFO bsky_collector_v2: job start subcommand=hydrate-authors dry_run=False resume=True
+2026-03-29T07:43:53Z ERROR bsky_collector_v2: job failed subcommand=hydrate-authors err=RuntimeError('state-writer empty response method=finish_run')
+Traceback (most recent call last):
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/hydrate_authors.py", line 135, in run_hydrate_authors
+    to_hydrate = control.select_authors_to_hydrate(
+        limit=cfg.max_authors,
+        seen_after_utc=cfg.seen_after_utc,
+        seen_before_utc=cfg.seen_before_utc,
+    )
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    return self._rpc(name, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 165, in _rpc
+    raise RuntimeError(f"state-writer empty response method={method}")
+RuntimeError: state-writer empty response method=select_authors_to_hydrate
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/cli.py", line 405, in main
+    asyncio.run(
+    ~~~~~~~~~~~^
+        run_hydrate_authors(
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<15 lines>...
+        )
+        ^
+    )
+    ^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/hydrate_authors.py", line 192, in run_hydrate_authors
+    control.finish_run(run_id=run_id, finished_at_utc=format_utc(now_utc()), success=success)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    return self._rpc(name, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 165, in _rpc
+    raise RuntimeError(f"state-writer empty response method={method}")
+RuntimeError: state-writer empty response method=finish_run

@@ -1,0 +1,649 @@
+2026-02-16T20:31:50Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-02-16T20:31:50Z INFO bsky_collector_v2: job start subcommand=index-feed-generators dry_run=False resume=True
+2026-02-16T20:31:50Z INFO bsky_collector_v2.job.index_feed_generators: feed generator index hosts relay_host=https://bsky.network records_host=https://bsky.social auth=yes
+2026-02-16T20:31:55Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:d32uum577h6mfrbuk7zdrdpf part=4723 records=1 next_cursor=set
+2026-02-16T20:31:58Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ecb7yyr7iwv6o6mvy7njavua part=4724 records=3 next_cursor=set
+2026-02-16T20:32:06Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:h3wqcp5o462ve2cxg32g7zrm part=4725 records=1 next_cursor=set
+2026-02-16T20:32:11Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:jfm6lmavpepsj4fe6l6z4vhq err=HttpError('InvalidRequest: Could not find repo: did:plc:jfm6lmavpepsj4fe6l6z4vhq')
+2026-02-16T20:32:25Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:r5sj26ax2utwg53c5xslmvcl part=4726 records=1 next_cursor=set
+2026-02-16T20:32:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ulpu2zjxev6ibhqmwp23riwj err=HttpError('InvalidRequest: Could not find repo: did:plc:ulpu2zjxev6ibhqmwp23riwj')
+2026-02-16T20:32:36Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:vp3ofnwczdwzuh7yq47v2ybs part=4727 records=1 next_cursor=set
+2026-02-16T20:32:37Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:w4rx4amipcw36p7omul5tyjx part=4728 records=1 next_cursor=set
+2026-02-16T20:32:38Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:wvt2kn37a4ln5hy7etrornfz part=4729 records=1 next_cursor=set
+2026-02-16T20:32:42Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:yono5h26syghwsd6beawciwh err=HttpError('InvalidRequest: Could not find repo: did:plc:yono5h26syghwsd6beawciwh')
+2026-02-16T20:32:46Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5rhx5vkjuolopyobph7agzhd err=HttpError('InvalidRequest: Could not find repo: did:plc:5rhx5vkjuolopyobph7agzhd')
+2026-02-16T20:32:46Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6dmvcqrm7piuxw6eejitwib7 err=HttpError('InvalidRequest: Could not find repo: did:plc:6dmvcqrm7piuxw6eejitwib7')
+2026-02-16T20:32:46Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:jfm6lmavpepsj4fe6l6z4vhq err=HttpError('InvalidRequest: Could not find repo: did:plc:jfm6lmavpepsj4fe6l6z4vhq')
+2026-02-16T20:32:46Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ulpu2zjxev6ibhqmwp23riwj err=HttpError('InvalidRequest: Could not find repo: did:plc:ulpu2zjxev6ibhqmwp23riwj')
+2026-02-16T20:32:47Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:yono5h26syghwsd6beawciwh err=HttpError('InvalidRequest: Could not find repo: did:plc:yono5h26syghwsd6beawciwh')
+2026-02-16T20:32:47Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5rhx5vkjuolopyobph7agzhd err=HttpError('InvalidRequest: Could not find repo: did:plc:5rhx5vkjuolopyobph7agzhd')
+2026-02-16T20:32:47Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6dmvcqrm7piuxw6eejitwib7 err=HttpError('InvalidRequest: Could not find repo: did:plc:6dmvcqrm7piuxw6eejitwib7')
+2026-02-16T20:32:47Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:jfm6lmavpepsj4fe6l6z4vhq err=HttpError('InvalidRequest: Could not find repo: did:plc:jfm6lmavpepsj4fe6l6z4vhq')
+2026-02-16T20:32:47Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ulpu2zjxev6ibhqmwp23riwj err=HttpError('InvalidRequest: Could not find repo: did:plc:ulpu2zjxev6ibhqmwp23riwj')
+2026-02-16T20:32:47Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:yono5h26syghwsd6beawciwh err=HttpError('InvalidRequest: Could not find repo: did:plc:yono5h26syghwsd6beawciwh')
+2026-02-16T20:32:48Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=1 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:32:54Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:3ikts3p76dj5csscbygxmwgw part=4730 records=1 next_cursor=set
+2026-02-16T20:33:02Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:4xt6m4puceqkgiluskr5k5ui part=4731 records=1 next_cursor=set
+2026-02-16T20:33:21Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:crehwnrdudmntfrz7ptc3xvh part=4732 records=2 next_cursor=set
+2026-02-16T20:33:39Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:m6asjw7esr36uh4xh4ojhjaf part=4733 records=1 next_cursor=set
+2026-02-16T20:33:51Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:royaf2w5gjojwtxhh45vnltz part=4734 records=1 next_cursor=set
+2026-02-16T20:34:00Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:vp3irkl7h5mcc55ny7fdxa33 part=4735 records=11 next_cursor=set
+2026-02-16T20:34:11Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=2 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:34:12Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2s63h7s5grxxsefjhjx4r3b4 part=4736 records=1 next_cursor=set
+2026-02-16T20:34:14Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:3welk3gkz45yvj6zqm4ph65h part=4737 records=3 next_cursor=set
+2026-02-16T20:34:20Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:5yrvgswl6jc2lsvrnczwpwy4 part=4738 records=1 next_cursor=set
+2026-02-16T20:34:25Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:a4puq4aw6k3ns2e6mfnemjrg part=4739 records=7 next_cursor=set
+2026-02-16T20:34:27Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:bl74yoxh65gjpow3jap4qkbh err=HttpError('InvalidRequest: Could not find repo: did:plc:bl74yoxh65gjpow3jap4qkbh')
+2026-02-16T20:34:30Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:cwq7hz5nw25oywmpw2qmucsf part=4740 records=6 next_cursor=set
+2026-02-16T20:34:38Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:gpzumzyrdogumlixcztwtaxq part=4741 records=1 next_cursor=set
+2026-02-16T20:34:41Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gy7kcpbt4q5tvi2omvh5nwrh err=HttpError('InvalidRequest: Could not find repo: did:plc:gy7kcpbt4q5tvi2omvh5nwrh')
+2026-02-16T20:34:52Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ir4l2evnojtjwy2frdneur3g part=4742 records=1 next_cursor=set
+2026-02-16T20:35:10Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:nneevpxvdx3dk52z2pl6drpg part=4743 records=1 next_cursor=set
+2026-02-16T20:35:12Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ora5cd2lrk46rogpwxkn6eln part=4744 records=1 next_cursor=set
+2026-02-16T20:35:15Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ra4oy3ibhnmfd5li4wmkg763 err=HttpError('InvalidRequest: Could not find repo: did:plc:ra4oy3ibhnmfd5li4wmkg763')
+2026-02-16T20:35:32Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:zdnqtcqyyskastgpslb7bw4w err=HttpError('InvalidRequest: Could not find repo: did:plc:zdnqtcqyyskastgpslb7bw4w')
+2026-02-16T20:35:36Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:bl74yoxh65gjpow3jap4qkbh err=HttpError('InvalidRequest: Could not find repo: did:plc:bl74yoxh65gjpow3jap4qkbh')
+2026-02-16T20:35:36Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gy7kcpbt4q5tvi2omvh5nwrh err=HttpError('InvalidRequest: Could not find repo: did:plc:gy7kcpbt4q5tvi2omvh5nwrh')
+2026-02-16T20:35:37Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ra4oy3ibhnmfd5li4wmkg763 err=HttpError('InvalidRequest: Could not find repo: did:plc:ra4oy3ibhnmfd5li4wmkg763')
+2026-02-16T20:35:37Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:zdnqtcqyyskastgpslb7bw4w err=HttpError('InvalidRequest: Could not find repo: did:plc:zdnqtcqyyskastgpslb7bw4w')
+2026-02-16T20:35:37Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:bl74yoxh65gjpow3jap4qkbh err=HttpError('InvalidRequest: Could not find repo: did:plc:bl74yoxh65gjpow3jap4qkbh')
+2026-02-16T20:35:37Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gy7kcpbt4q5tvi2omvh5nwrh err=HttpError('InvalidRequest: Could not find repo: did:plc:gy7kcpbt4q5tvi2omvh5nwrh')
+2026-02-16T20:35:37Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ra4oy3ibhnmfd5li4wmkg763 err=HttpError('InvalidRequest: Could not find repo: did:plc:ra4oy3ibhnmfd5li4wmkg763')
+2026-02-16T20:35:37Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:zdnqtcqyyskastgpslb7bw4w err=HttpError('InvalidRequest: Could not find repo: did:plc:zdnqtcqyyskastgpslb7bw4w')
+2026-02-16T20:35:38Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=3 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:35:55Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:cyojfvvwaxjcyxdchph2p77e err=HttpError('InvalidRequest: Could not find repo: did:plc:cyojfvvwaxjcyxdchph2p77e')
+2026-02-16T20:36:08Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ibbzx6nyassnfafzr5lky4jn part=4745 records=1 next_cursor=set
+2026-02-16T20:36:16Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:m6thjadm5nclhrnmax7y25wq part=4746 records=6 next_cursor=set
+2026-02-16T20:36:18Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:mrbfgjzv74yg7gzticmaivmm part=4747 records=2 next_cursor=set
+2026-02-16T20:36:22Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:oi2xgmnimagrpwxurrfvgkkd part=4748 records=2 next_cursor=set
+2026-02-16T20:36:23Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:oqroppmwtmqp6t4uzslwkr2x part=4749 records=2 next_cursor=set
+2026-02-16T20:36:38Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:vtqtr7kprz433rj5bng7roig part=4750 records=1 next_cursor=set
+2026-02-16T20:36:50Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:cyojfvvwaxjcyxdchph2p77e err=HttpError('InvalidRequest: Could not find repo: did:plc:cyojfvvwaxjcyxdchph2p77e')
+2026-02-16T20:36:50Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:cyojfvvwaxjcyxdchph2p77e err=HttpError('InvalidRequest: Could not find repo: did:plc:cyojfvvwaxjcyxdchph2p77e')
+2026-02-16T20:36:51Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=4 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:37:00Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:6cryatd3tron7wzrcdaqpdwk part=4751 records=1 next_cursor=set
+2026-02-16T20:37:05Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:axr6mhr34mski4hz7gwas5je part=4752 records=2 next_cursor=set
+2026-02-16T20:37:10Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:df3ckeqjpjpljjbv25dtx7vf part=4753 records=2 next_cursor=set
+2026-02-16T20:37:37Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:qohvrrsfvmdro252ia24mndn part=4754 records=1 next_cursor=set
+2026-02-16T20:37:45Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:tgrbkxkcypo3mscyrcvedq45 part=4755 records=1 next_cursor=set
+2026-02-16T20:37:51Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:whe4epxhd5owigcfixx55nlf part=4756 records=3 next_cursor=set
+2026-02-16T20:37:53Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:wx4rh2ykrg2qsvpklwjhlgis part=4757 records=1 next_cursor=set
+2026-02-16T20:38:00Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:web:npub1cdak4q4f3h3k3sgyh0rd5dj4w8k95f3mquzh6z3ew76vqkh60e3slyczgz.eclipse.pub err=HttpError('InvalidRequest: Could not find repo: did:web:npub1cdak4q4f3h3k3sgyh0rd5dj4w8k95f3mquzh6z3ew76vqkh60e3slyczgz.eclipse.pub')
+2026-02-16T20:38:01Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:web:npub1cdak4q4f3h3k3sgyh0rd5dj4w8k95f3mquzh6z3ew76vqkh60e3slyczgz.eclipse.pub err=HttpError('InvalidRequest: Could not find repo: did:web:npub1cdak4q4f3h3k3sgyh0rd5dj4w8k95f3mquzh6z3ew76vqkh60e3slyczgz.eclipse.pub')
+2026-02-16T20:38:01Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:web:npub1cdak4q4f3h3k3sgyh0rd5dj4w8k95f3mquzh6z3ew76vqkh60e3slyczgz.eclipse.pub err=HttpError('InvalidRequest: Could not find repo: did:web:npub1cdak4q4f3h3k3sgyh0rd5dj4w8k95f3mquzh6z3ew76vqkh60e3slyczgz.eclipse.pub')
+2026-02-16T20:38:02Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=5 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:38:02Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:25rdn5elo5izoxrmtis34zuk err=HttpError('InvalidRequest: Could not find repo: did:plc:25rdn5elo5izoxrmtis34zuk')
+2026-02-16T20:38:11Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6aaqjcg6rtitum42bldwnjkr err=HttpError('InvalidRequest: Could not find repo: did:plc:6aaqjcg6rtitum42bldwnjkr')
+2026-02-16T20:38:19Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:dbqkp32qlceyur5wdz73e2c5 part=4758 records=4 next_cursor=set
+2026-02-16T20:38:32Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:iw6baony4smnjgraewtwtdd2 part=4759 records=1 next_cursor=set
+2026-02-16T20:38:34Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:jynfuzksihjyvun56lswvr44 err=HttpError('InvalidRequest: Could not find repo: did:plc:jynfuzksihjyvun56lswvr44')
+2026-02-16T20:38:38Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:m22wp5zbyqxks2wmm3eynhmv part=4760 records=2 next_cursor=set
+2026-02-16T20:38:40Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:neboijdndrshj2eov5k3qf7y err=HttpError('InvalidRequest: Could not find repo: did:plc:neboijdndrshj2eov5k3qf7y')
+2026-02-16T20:38:42Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:o5zxfzrreowbgkvev7fiv6d7 err=HttpError('InvalidRequest: Could not find repo: did:plc:o5zxfzrreowbgkvev7fiv6d7')
+2026-02-16T20:38:46Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:qbjuwl7a2jy3u2r2ppsadcuv err=HttpError('InvalidRequest: Could not find repo: did:plc:qbjuwl7a2jy3u2r2ppsadcuv')
+2026-02-16T20:38:47Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:qjmvisar3f2whicyonsbz77s err=HttpError('InvalidRequest: Could not find repo: did:plc:qjmvisar3f2whicyonsbz77s')
+2026-02-16T20:38:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rxovlct4irvxr7jfwsylfwl5 err=HttpError('InvalidRequest: Could not find repo: did:plc:rxovlct4irvxr7jfwsylfwl5')
+2026-02-16T20:38:55Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:uqvn4hqoxhoz5sh3cgthwsge part=4761 records=6 next_cursor=set
+2026-02-16T20:38:58Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:vzssadkfo3foizohautsdcdi err=HttpError('InvalidRequest: Could not find repo: did:plc:vzssadkfo3foizohautsdcdi')
+2026-02-16T20:39:05Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:25rdn5elo5izoxrmtis34zuk err=HttpError('InvalidRequest: Could not find repo: did:plc:25rdn5elo5izoxrmtis34zuk')
+2026-02-16T20:39:05Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6aaqjcg6rtitum42bldwnjkr err=HttpError('InvalidRequest: Could not find repo: did:plc:6aaqjcg6rtitum42bldwnjkr')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:jynfuzksihjyvun56lswvr44 err=HttpError('InvalidRequest: Could not find repo: did:plc:jynfuzksihjyvun56lswvr44')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:neboijdndrshj2eov5k3qf7y err=HttpError('InvalidRequest: Could not find repo: did:plc:neboijdndrshj2eov5k3qf7y')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:o5zxfzrreowbgkvev7fiv6d7 err=HttpError('InvalidRequest: Could not find repo: did:plc:o5zxfzrreowbgkvev7fiv6d7')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:qbjuwl7a2jy3u2r2ppsadcuv err=HttpError('InvalidRequest: Could not find repo: did:plc:qbjuwl7a2jy3u2r2ppsadcuv')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:qjmvisar3f2whicyonsbz77s err=HttpError('InvalidRequest: Could not find repo: did:plc:qjmvisar3f2whicyonsbz77s')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rxovlct4irvxr7jfwsylfwl5 err=HttpError('InvalidRequest: Could not find repo: did:plc:rxovlct4irvxr7jfwsylfwl5')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:vzssadkfo3foizohautsdcdi err=HttpError('InvalidRequest: Could not find repo: did:plc:vzssadkfo3foizohautsdcdi')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:25rdn5elo5izoxrmtis34zuk err=HttpError('InvalidRequest: Could not find repo: did:plc:25rdn5elo5izoxrmtis34zuk')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6aaqjcg6rtitum42bldwnjkr err=HttpError('InvalidRequest: Could not find repo: did:plc:6aaqjcg6rtitum42bldwnjkr')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:jynfuzksihjyvun56lswvr44 err=HttpError('InvalidRequest: Could not find repo: did:plc:jynfuzksihjyvun56lswvr44')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:neboijdndrshj2eov5k3qf7y err=HttpError('InvalidRequest: Could not find repo: did:plc:neboijdndrshj2eov5k3qf7y')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:o5zxfzrreowbgkvev7fiv6d7 err=HttpError('InvalidRequest: Could not find repo: did:plc:o5zxfzrreowbgkvev7fiv6d7')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:qbjuwl7a2jy3u2r2ppsadcuv err=HttpError('InvalidRequest: Could not find repo: did:plc:qbjuwl7a2jy3u2r2ppsadcuv')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:qjmvisar3f2whicyonsbz77s err=HttpError('InvalidRequest: Could not find repo: did:plc:qjmvisar3f2whicyonsbz77s')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rxovlct4irvxr7jfwsylfwl5 err=HttpError('InvalidRequest: Could not find repo: did:plc:rxovlct4irvxr7jfwsylfwl5')
+2026-02-16T20:39:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:vzssadkfo3foizohautsdcdi err=HttpError('InvalidRequest: Could not find repo: did:plc:vzssadkfo3foizohautsdcdi')
+2026-02-16T20:39:07Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=6 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:39:40Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:k652kq33rncpd74sslfvue7t part=4762 records=1 next_cursor=set
+2026-02-16T20:39:42Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:luzpt3tgoisytdt7wq2ljqmt err=HttpError('InvalidRequest: Could not find repo: did:plc:luzpt3tgoisytdt7wq2ljqmt')
+2026-02-16T20:39:47Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:npiw5daydnr5ipa3mjexgdh5 part=4763 records=10 next_cursor=set
+2026-02-16T20:40:00Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:rm6m3yuctmkousoieiy6t3nz part=4764 records=1 next_cursor=set
+2026-02-16T20:40:02Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:shdocaud6rl7bqjtz6ogxghs part=4765 records=2 next_cursor=set
+2026-02-16T20:40:02Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:shq7snaq7npdoizz2wicu2rk err=HttpError('InvalidRequest: Could not find repo: did:plc:shq7snaq7npdoizz2wicu2rk')
+2026-02-16T20:40:07Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:uevjp66plj7fx5x47ol5zkor err=HttpError('InvalidRequest: Could not find repo: did:plc:uevjp66plj7fx5x47ol5zkor')
+2026-02-16T20:40:10Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:vlefxhhj7chhwubbir5yf5os part=4766 records=1 next_cursor=set
+2026-02-16T20:40:18Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:luzpt3tgoisytdt7wq2ljqmt err=HttpError('InvalidRequest: Could not find repo: did:plc:luzpt3tgoisytdt7wq2ljqmt')
+2026-02-16T20:40:19Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:shq7snaq7npdoizz2wicu2rk err=HttpError('InvalidRequest: Could not find repo: did:plc:shq7snaq7npdoizz2wicu2rk')
+2026-02-16T20:40:19Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:uevjp66plj7fx5x47ol5zkor err=HttpError('InvalidRequest: Could not find repo: did:plc:uevjp66plj7fx5x47ol5zkor')
+2026-02-16T20:40:19Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:luzpt3tgoisytdt7wq2ljqmt err=HttpError('InvalidRequest: Could not find repo: did:plc:luzpt3tgoisytdt7wq2ljqmt')
+2026-02-16T20:40:19Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:shq7snaq7npdoizz2wicu2rk err=HttpError('InvalidRequest: Could not find repo: did:plc:shq7snaq7npdoizz2wicu2rk')
+2026-02-16T20:40:19Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:uevjp66plj7fx5x47ol5zkor err=HttpError('InvalidRequest: Could not find repo: did:plc:uevjp66plj7fx5x47ol5zkor')
+2026-02-16T20:40:20Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=7 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:40:20Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2fwlvkz7gd2p6g7axbuhoyk7 part=4767 records=3 next_cursor=set
+2026-02-16T20:40:21Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2nn4ckflgo6ubgw444axnc2m part=4768 records=1 next_cursor=set
+2026-02-16T20:40:21Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:37yzqt2xhib4rhyv7hzde3v5 part=4769 records=5 next_cursor=set
+2026-02-16T20:40:26Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4qk2h6wpqvxsmeixsvonqvi4 err=HttpError('InvalidRequest: Could not find repo: did:plc:4qk2h6wpqvxsmeixsvonqvi4')
+2026-02-16T20:40:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ag2buywhlcalzzbk2epvsicq err=HttpError('InvalidRequest: Could not find repo: did:plc:ag2buywhlcalzzbk2epvsicq')
+2026-02-16T20:40:45Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:frkwqhie7br2xnntf6dmtrzl part=4770 records=1 next_cursor=set
+2026-02-16T20:40:53Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:kttkuxc264c4fkrhzxxw6q4p part=4771 records=1 next_cursor=set
+2026-02-16T20:40:59Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:nhupxb5gfmxradm4yo7mvvg2 err=HttpError('InvalidRequest: Could not find repo: did:plc:nhupxb5gfmxradm4yo7mvvg2')
+2026-02-16T20:41:18Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:vf32tdeunh3ra6nvclxhmeuo part=4772 records=1 next_cursor=set
+2026-02-16T20:41:28Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4qk2h6wpqvxsmeixsvonqvi4 err=HttpError('InvalidRequest: Could not find repo: did:plc:4qk2h6wpqvxsmeixsvonqvi4')
+2026-02-16T20:41:28Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ag2buywhlcalzzbk2epvsicq err=HttpError('InvalidRequest: Could not find repo: did:plc:ag2buywhlcalzzbk2epvsicq')
+2026-02-16T20:41:28Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:nhupxb5gfmxradm4yo7mvvg2 err=HttpError('InvalidRequest: Could not find repo: did:plc:nhupxb5gfmxradm4yo7mvvg2')
+2026-02-16T20:41:29Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4qk2h6wpqvxsmeixsvonqvi4 err=HttpError('InvalidRequest: Could not find repo: did:plc:4qk2h6wpqvxsmeixsvonqvi4')
+2026-02-16T20:41:29Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ag2buywhlcalzzbk2epvsicq err=HttpError('InvalidRequest: Could not find repo: did:plc:ag2buywhlcalzzbk2epvsicq')
+2026-02-16T20:41:29Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:nhupxb5gfmxradm4yo7mvvg2 err=HttpError('InvalidRequest: Could not find repo: did:plc:nhupxb5gfmxradm4yo7mvvg2')
+2026-02-16T20:41:29Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=8 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:41:35Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:3mwfzwwtkgfqplnd7ft6sian part=4773 records=1 next_cursor=set
+2026-02-16T20:41:39Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4dipqo3iyeypvshdhjce36te err=HttpError('InvalidRequest: Could not find repo: did:plc:4dipqo3iyeypvshdhjce36te')
+2026-02-16T20:41:40Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:4f3tle3fhds43wx2sr43kqer part=4774 records=4 next_cursor=set
+2026-02-16T20:41:44Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5obvddseoo5mj37rknxiua7v err=HttpError('InvalidRequest: Could not find repo: did:plc:5obvddseoo5mj37rknxiua7v')
+2026-02-16T20:42:13Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:hgkzjcq5vsqpyalk4cf7oopm err=HttpError('InvalidRequest: Could not find repo: did:plc:hgkzjcq5vsqpyalk4cf7oopm')
+2026-02-16T20:42:16Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:j2qz742yuxrhld7padisxnag part=4775 records=1 next_cursor=set
+2026-02-16T20:42:21Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:lgiyksz2pe3zqn2myskuaqi7 part=4776 records=1 next_cursor=set
+2026-02-16T20:42:21Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:lmftezsq52hi53taz762s7pc err=HttpError('InvalidRequest: Could not find repo: did:plc:lmftezsq52hi53taz762s7pc')
+2026-02-16T20:42:29Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:powybj4oxy7n7lyotmsc5dnz err=HttpError('InvalidRequest: Could not find repo: did:plc:powybj4oxy7n7lyotmsc5dnz')
+2026-02-16T20:42:40Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:uvrovj4bk5cmyi7pzxww5xat part=4777 records=2 next_cursor=set
+2026-02-16T20:42:47Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:yohoveu3j3jl4jv4h3jse2ig part=4778 records=3 next_cursor=set
+2026-02-16T20:42:48Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:zm4bjophz3kag7rcbumtn2ux err=HttpError('InvalidRequest: Could not find repo: did:plc:zm4bjophz3kag7rcbumtn2ux')
+2026-02-16T20:42:48Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4dipqo3iyeypvshdhjce36te err=HttpError('InvalidRequest: Could not find repo: did:plc:4dipqo3iyeypvshdhjce36te')
+2026-02-16T20:42:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5obvddseoo5mj37rknxiua7v err=HttpError('InvalidRequest: Could not find repo: did:plc:5obvddseoo5mj37rknxiua7v')
+2026-02-16T20:42:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:hgkzjcq5vsqpyalk4cf7oopm err=HttpError('InvalidRequest: Could not find repo: did:plc:hgkzjcq5vsqpyalk4cf7oopm')
+2026-02-16T20:42:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:lmftezsq52hi53taz762s7pc err=HttpError('InvalidRequest: Could not find repo: did:plc:lmftezsq52hi53taz762s7pc')
+2026-02-16T20:42:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:powybj4oxy7n7lyotmsc5dnz err=HttpError('InvalidRequest: Could not find repo: did:plc:powybj4oxy7n7lyotmsc5dnz')
+2026-02-16T20:42:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:zm4bjophz3kag7rcbumtn2ux err=HttpError('InvalidRequest: Could not find repo: did:plc:zm4bjophz3kag7rcbumtn2ux')
+2026-02-16T20:42:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4dipqo3iyeypvshdhjce36te err=HttpError('InvalidRequest: Could not find repo: did:plc:4dipqo3iyeypvshdhjce36te')
+2026-02-16T20:42:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5obvddseoo5mj37rknxiua7v err=HttpError('InvalidRequest: Could not find repo: did:plc:5obvddseoo5mj37rknxiua7v')
+2026-02-16T20:42:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:hgkzjcq5vsqpyalk4cf7oopm err=HttpError('InvalidRequest: Could not find repo: did:plc:hgkzjcq5vsqpyalk4cf7oopm')
+2026-02-16T20:42:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:lmftezsq52hi53taz762s7pc err=HttpError('InvalidRequest: Could not find repo: did:plc:lmftezsq52hi53taz762s7pc')
+2026-02-16T20:42:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:powybj4oxy7n7lyotmsc5dnz err=HttpError('InvalidRequest: Could not find repo: did:plc:powybj4oxy7n7lyotmsc5dnz')
+2026-02-16T20:42:49Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:zm4bjophz3kag7rcbumtn2ux err=HttpError('InvalidRequest: Could not find repo: did:plc:zm4bjophz3kag7rcbumtn2ux')
+2026-02-16T20:42:50Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=9 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:42:54Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4eixolgybtk7bnjkkxpqssft err=HttpError('InvalidRequest: Could not find repo: did:plc:4eixolgybtk7bnjkkxpqssft')
+2026-02-16T20:42:58Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:63d74enkrbfypqh4m2gftada part=4779 records=1 next_cursor=set
+2026-02-16T20:42:59Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6d4hqsjwilglxgud5ef3xfn2 err=HttpError('InvalidRequest: Could not find repo: did:plc:6d4hqsjwilglxgud5ef3xfn2')
+2026-02-16T20:43:04Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ar7zninhqbj2o546ocumipbx part=4780 records=1 next_cursor=set
+2026-02-16T20:43:12Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ez5xjghmux3w56v6zycngemq part=4781 records=2 next_cursor=set
+2026-02-16T20:43:28Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:lcrdcsx4pugyiyww6chla3jo err=HttpError('InvalidRequest: Could not find repo: did:plc:lcrdcsx4pugyiyww6chla3jo')
+2026-02-16T20:43:29Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:lmelu3bsccl5x3fghkdpt7ao part=4782 records=2 next_cursor=set
+2026-02-16T20:43:33Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:nvc5ziurmfx5e6k7mygvrke3 part=4783 records=1 next_cursor=set
+2026-02-16T20:43:39Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:r5b7uzuacnmjfxdbffpv3rkd err=HttpError('InvalidRequest: Could not find repo: did:plc:r5b7uzuacnmjfxdbffpv3rkd')
+2026-02-16T20:43:40Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:rla5bu7haqmxfkc6r3qicicl part=4784 records=2 next_cursor=set
+2026-02-16T20:43:43Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:tjgjfxskgjcxioww5bej76ys part=4785 records=5 next_cursor=set
+2026-02-16T20:43:44Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:tmeui2fnqathuc7bn5xy5wgi part=4786 records=2 next_cursor=set
+2026-02-16T20:43:52Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:xh65waraef4an6xrazrelxvq part=4787 records=4 next_cursor=set
+2026-02-16T20:43:59Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4eixolgybtk7bnjkkxpqssft err=HttpError('InvalidRequest: Could not find repo: did:plc:4eixolgybtk7bnjkkxpqssft')
+2026-02-16T20:43:59Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6d4hqsjwilglxgud5ef3xfn2 err=HttpError('InvalidRequest: Could not find repo: did:plc:6d4hqsjwilglxgud5ef3xfn2')
+2026-02-16T20:43:59Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:lcrdcsx4pugyiyww6chla3jo err=HttpError('InvalidRequest: Could not find repo: did:plc:lcrdcsx4pugyiyww6chla3jo')
+2026-02-16T20:43:59Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:r5b7uzuacnmjfxdbffpv3rkd err=HttpError('InvalidRequest: Could not find repo: did:plc:r5b7uzuacnmjfxdbffpv3rkd')
+2026-02-16T20:44:00Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4eixolgybtk7bnjkkxpqssft err=HttpError('InvalidRequest: Could not find repo: did:plc:4eixolgybtk7bnjkkxpqssft')
+2026-02-16T20:44:00Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6d4hqsjwilglxgud5ef3xfn2 err=HttpError('InvalidRequest: Could not find repo: did:plc:6d4hqsjwilglxgud5ef3xfn2')
+2026-02-16T20:44:00Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:lcrdcsx4pugyiyww6chla3jo err=HttpError('InvalidRequest: Could not find repo: did:plc:lcrdcsx4pugyiyww6chla3jo')
+2026-02-16T20:44:00Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:r5b7uzuacnmjfxdbffpv3rkd err=HttpError('InvalidRequest: Could not find repo: did:plc:r5b7uzuacnmjfxdbffpv3rkd')
+2026-02-16T20:44:01Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=10 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:44:04Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:3hsh4km5a4453lsqex3njzna err=HttpError('InvalidRequest: Could not find repo: did:plc:3hsh4km5a4453lsqex3njzna')
+2026-02-16T20:44:08Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:5lucrdi3xppvrlpjiubmmcs4 part=4788 records=1 next_cursor=set
+2026-02-16T20:44:13Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:a423zbyyhr3zzxdrirertd7b part=4789 records=1 next_cursor=set
+2026-02-16T20:44:19Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:cd3c6g6k2tcysawbtwp4dfqy part=4790 records=1 next_cursor=set
+2026-02-16T20:44:25Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:f3u25vipmtwb67pckojoiew6 part=4791 records=1 next_cursor=set
+2026-02-16T20:44:25Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:facgr6n6fxunpcy54dllbsko part=4792 records=1 next_cursor=set
+2026-02-16T20:44:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ioiqfz2fcjcrcay5hcg35edf err=HttpError('InvalidRequest: Could not find repo: did:plc:ioiqfz2fcjcrcay5hcg35edf')
+2026-02-16T20:44:37Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:l67pl7gs4gv3cwhjoizk2ezk part=4793 records=1 next_cursor=set
+2026-02-16T20:44:44Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:nwgforjnzbmobonaxmvbzkat err=HttpError('InvalidRequest: Could not find repo: did:plc:nwgforjnzbmobonaxmvbzkat')
+2026-02-16T20:44:49Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:q22xnn2cirtqsk5hn3dkluc7 part=4794 records=1 next_cursor=set
+2026-02-16T20:44:55Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:tc64ppbzqxgyosog5dqutnkd part=4795 records=2 next_cursor=set
+2026-02-16T20:44:58Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ucwmbki7uf7lnwen6dytywen part=4796 records=1 next_cursor=set
+2026-02-16T20:45:04Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:wxz5b6wadkeeu7fnd63ur7re part=4797 records=7 next_cursor=set
+2026-02-16T20:45:05Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:xhre46foqxbnttctfci2o7og part=4798 records=4 next_cursor=set
+2026-02-16T20:45:06Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:xuxlhbsotua3mhy4wnwxnj5a part=4799 records=2 next_cursor=set
+2026-02-16T20:45:11Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:3hsh4km5a4453lsqex3njzna err=HttpError('InvalidRequest: Could not find repo: did:plc:3hsh4km5a4453lsqex3njzna')
+2026-02-16T20:45:12Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ioiqfz2fcjcrcay5hcg35edf err=HttpError('InvalidRequest: Could not find repo: did:plc:ioiqfz2fcjcrcay5hcg35edf')
+2026-02-16T20:45:12Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:nwgforjnzbmobonaxmvbzkat err=HttpError('InvalidRequest: Could not find repo: did:plc:nwgforjnzbmobonaxmvbzkat')
+2026-02-16T20:45:13Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:3hsh4km5a4453lsqex3njzna err=HttpError('InvalidRequest: Could not find repo: did:plc:3hsh4km5a4453lsqex3njzna')
+2026-02-16T20:45:13Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ioiqfz2fcjcrcay5hcg35edf err=HttpError('InvalidRequest: Could not find repo: did:plc:ioiqfz2fcjcrcay5hcg35edf')
+2026-02-16T20:45:13Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:nwgforjnzbmobonaxmvbzkat err=HttpError('InvalidRequest: Could not find repo: did:plc:nwgforjnzbmobonaxmvbzkat')
+2026-02-16T20:45:14Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=11 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:45:19Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:64e6bfi5mkga3nflav5vfpbz part=4800 records=2 next_cursor=set
+2026-02-16T20:45:20Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6dqrevthqflmrbtz2uufh2tk err=HttpError('InvalidRequest: Could not find repo: did:plc:6dqrevthqflmrbtz2uufh2tk')
+2026-02-16T20:45:25Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:aiszm5s7rajxmnj5t35tm4qh part=4801 records=1 next_cursor=set
+2026-02-16T20:45:31Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:dm6xcyon6c666z52hrgkeipd part=4802 records=6 next_cursor=set
+2026-02-16T20:45:35Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:fs6sng5tcrdw2txfqgkdoqdd part=4803 records=1 next_cursor=set
+2026-02-16T20:45:49Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:nj7mv524tjedsdfd5b2dvloa part=4804 records=1 next_cursor=set
+2026-02-16T20:46:13Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:xoczpmti5ugt2wpcrbna5yfc part=4805 records=1 next_cursor=set
+2026-02-16T20:46:15Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:yddetsk3prvd3gifmaqrexzy part=4806 records=1 next_cursor=set
+2026-02-16T20:46:18Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:zdl3xphntx3xd7m2jq7wmtwm part=4807 records=2 next_cursor=set
+2026-02-16T20:46:21Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6dqrevthqflmrbtz2uufh2tk err=HttpError('InvalidRequest: Could not find repo: did:plc:6dqrevthqflmrbtz2uufh2tk')
+2026-02-16T20:46:22Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6dqrevthqflmrbtz2uufh2tk err=HttpError('InvalidRequest: Could not find repo: did:plc:6dqrevthqflmrbtz2uufh2tk')
+2026-02-16T20:46:22Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=12 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:46:24Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:2gzbdy7bpg5cini76ytc37s4 err=HttpError('InvalidRequest: Could not find repo: did:plc:2gzbdy7bpg5cini76ytc37s4')
+2026-02-16T20:46:28Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:4opuc67uf4ezeczfwnonlmu3 part=4808 records=1 next_cursor=set
+2026-02-16T20:46:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:7nuyhqvd4a6xquezhjhvregv err=HttpError('InvalidRequest: Could not find repo: did:plc:7nuyhqvd4a6xquezhjhvregv')
+2026-02-16T20:46:44Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:et3hwy6x7jn3pbzotbmhriy6 err=HttpError('InvalidRequest: Could not find repo: did:plc:et3hwy6x7jn3pbzotbmhriy6')
+2026-02-16T20:46:46Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gc24o22ndqcvsoagwakaxkcf err=HttpError('InvalidRequest: Could not find repo: did:plc:gc24o22ndqcvsoagwakaxkcf')
+2026-02-16T20:46:48Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:hgdjaqvq3hy7gxreaalvmj77 part=4809 records=1 next_cursor=set
+2026-02-16T20:46:49Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:hqmnyn2gxuf3micvec2yfk4i part=4810 records=2 next_cursor=set
+2026-02-16T20:47:03Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:owy7z3iivicvqlllybxivsn5 err=HttpError('InvalidRequest: Could not find repo: did:plc:owy7z3iivicvqlllybxivsn5')
+2026-02-16T20:47:08Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:qifj232pstd6e5342l763se5 err=HttpError('InvalidRequest: Could not find repo: did:plc:qifj232pstd6e5342l763se5')
+2026-02-16T20:47:08Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:qjowi3ixf242grl2o22fspx3 part=4811 records=1 next_cursor=set
+2026-02-16T20:47:16Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:tj2ypw4rodbzer3bta4ni4ab part=4812 records=1 next_cursor=set
+2026-02-16T20:47:16Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:twioctwsdydgipjpzj774hmp part=4813 records=1 next_cursor=set
+2026-02-16T20:47:24Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:wud4jtvcfrqxcn4e2phcmz3u part=4814 records=3 next_cursor=set
+2026-02-16T20:47:24Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:x4jbwhwamadbnourb3it6f7s part=4815 records=1 next_cursor=set
+2026-02-16T20:47:29Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:zbqjiep5ohcs5mkiuvwmweao part=4816 records=5 next_cursor=set
+2026-02-16T20:47:32Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:2gzbdy7bpg5cini76ytc37s4 err=HttpError('InvalidRequest: Could not find repo: did:plc:2gzbdy7bpg5cini76ytc37s4')
+2026-02-16T20:47:32Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:7nuyhqvd4a6xquezhjhvregv err=HttpError('InvalidRequest: Could not find repo: did:plc:7nuyhqvd4a6xquezhjhvregv')
+2026-02-16T20:47:32Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:et3hwy6x7jn3pbzotbmhriy6 err=HttpError('InvalidRequest: Could not find repo: did:plc:et3hwy6x7jn3pbzotbmhriy6')
+2026-02-16T20:47:32Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gc24o22ndqcvsoagwakaxkcf err=HttpError('InvalidRequest: Could not find repo: did:plc:gc24o22ndqcvsoagwakaxkcf')
+2026-02-16T20:47:32Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:owy7z3iivicvqlllybxivsn5 err=HttpError('InvalidRequest: Could not find repo: did:plc:owy7z3iivicvqlllybxivsn5')
+2026-02-16T20:47:32Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:qifj232pstd6e5342l763se5 err=HttpError('InvalidRequest: Could not find repo: did:plc:qifj232pstd6e5342l763se5')
+2026-02-16T20:47:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:2gzbdy7bpg5cini76ytc37s4 err=HttpError('InvalidRequest: Could not find repo: did:plc:2gzbdy7bpg5cini76ytc37s4')
+2026-02-16T20:47:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:7nuyhqvd4a6xquezhjhvregv err=HttpError('InvalidRequest: Could not find repo: did:plc:7nuyhqvd4a6xquezhjhvregv')
+2026-02-16T20:47:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:et3hwy6x7jn3pbzotbmhriy6 err=HttpError('InvalidRequest: Could not find repo: did:plc:et3hwy6x7jn3pbzotbmhriy6')
+2026-02-16T20:47:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gc24o22ndqcvsoagwakaxkcf err=HttpError('InvalidRequest: Could not find repo: did:plc:gc24o22ndqcvsoagwakaxkcf')
+2026-02-16T20:47:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:owy7z3iivicvqlllybxivsn5 err=HttpError('InvalidRequest: Could not find repo: did:plc:owy7z3iivicvqlllybxivsn5')
+2026-02-16T20:47:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:qifj232pstd6e5342l763se5 err=HttpError('InvalidRequest: Could not find repo: did:plc:qifj232pstd6e5342l763se5')
+2026-02-16T20:47:34Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=13 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:47:45Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6s264fps3aucnsgc5j4o2x6l err=HttpError('InvalidRequest: Could not find repo: did:plc:6s264fps3aucnsgc5j4o2x6l')
+2026-02-16T20:47:53Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:cpnjokw3d3aeabfqvbz3oxjb part=4817 records=3 next_cursor=set
+2026-02-16T20:48:01Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:em7itzaz5vq6wroct3eazvfv part=4818 records=1 next_cursor=set
+2026-02-16T20:48:04Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:feg3vkiuvs54g5a7xxkl4n5c err=HttpError('InvalidRequest: Could not find repo: did:plc:feg3vkiuvs54g5a7xxkl4n5c')
+2026-02-16T20:48:13Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:hiixfhgizhari6dtgi5sbsvf part=4819 records=2 next_cursor=set
+2026-02-16T20:48:16Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ifhkrhzjjccjeiwnpxfzseps part=4820 records=1 next_cursor=set
+2026-02-16T20:48:21Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:jizcwneibrts7bw7ly4jgnmh part=4821 records=4 next_cursor=set
+2026-02-16T20:48:23Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:kmpiaq3olrcnjkwe7cwsv7hx part=4822 records=3 next_cursor=set
+2026-02-16T20:48:54Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:uf6gkhbfga76e5wl4hq2ob6v err=HttpError('InvalidRequest: Could not find repo: did:plc:uf6gkhbfga76e5wl4hq2ob6v')
+2026-02-16T20:48:59Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:wak52rq57ps4rfwabwh4lecw part=4823 records=2 next_cursor=set
+2026-02-16T20:49:02Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:x2v74c3fp5p3iue52pcalkwb part=4824 records=1 next_cursor=set
+2026-02-16T20:49:09Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6s264fps3aucnsgc5j4o2x6l err=HttpError('InvalidRequest: Could not find repo: did:plc:6s264fps3aucnsgc5j4o2x6l')
+2026-02-16T20:49:09Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:feg3vkiuvs54g5a7xxkl4n5c err=HttpError('InvalidRequest: Could not find repo: did:plc:feg3vkiuvs54g5a7xxkl4n5c')
+2026-02-16T20:49:09Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:uf6gkhbfga76e5wl4hq2ob6v err=HttpError('InvalidRequest: Could not find repo: did:plc:uf6gkhbfga76e5wl4hq2ob6v')
+2026-02-16T20:49:10Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:6s264fps3aucnsgc5j4o2x6l err=HttpError('InvalidRequest: Could not find repo: did:plc:6s264fps3aucnsgc5j4o2x6l')
+2026-02-16T20:49:10Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:feg3vkiuvs54g5a7xxkl4n5c err=HttpError('InvalidRequest: Could not find repo: did:plc:feg3vkiuvs54g5a7xxkl4n5c')
+2026-02-16T20:49:10Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:uf6gkhbfga76e5wl4hq2ob6v err=HttpError('InvalidRequest: Could not find repo: did:plc:uf6gkhbfga76e5wl4hq2ob6v')
+2026-02-16T20:49:10Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=14 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:49:16Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:5graj2rpw5ji5hhvjbeurejf part=4825 records=2 next_cursor=set
+2026-02-16T20:49:22Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:7rytwat2afxxztd2hohlob77 err=HttpError('InvalidRequest: Could not find repo: did:plc:7rytwat2afxxztd2hohlob77')
+2026-02-16T20:49:37Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:i5qdhl2vazaiezte3ftorrxc part=4826 records=1 next_cursor=set
+2026-02-16T20:49:41Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:jojcvztaqpti5gbqpk7f4ef5 part=4827 records=2 next_cursor=set
+2026-02-16T20:49:41Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:jsfsf4oicsjbj3v2fcs4eccw part=4828 records=1 next_cursor=set
+2026-02-16T20:49:43Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:kblitfxhns5wgt4icx4lj4xg part=4829 records=1 next_cursor=set
+2026-02-16T20:49:44Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ksiy3khova23jygrwy36md7w err=HttpError('InvalidRequest: Could not find repo: did:plc:ksiy3khova23jygrwy36md7w')
+2026-02-16T20:49:45Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:l3yyolm7erbf4a33revl6m4j part=4830 records=1 next_cursor=set
+2026-02-16T20:49:58Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:rs4mst66taspj3inryw2iech part=4831 records=1 next_cursor=set
+2026-02-16T20:50:01Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:t4v56lfofe43fotvq5dirlov part=4832 records=1 next_cursor=set
+2026-02-16T20:50:14Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:7rytwat2afxxztd2hohlob77 err=HttpError('InvalidRequest: Could not find repo: did:plc:7rytwat2afxxztd2hohlob77')
+2026-02-16T20:50:14Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ksiy3khova23jygrwy36md7w err=HttpError('InvalidRequest: Could not find repo: did:plc:ksiy3khova23jygrwy36md7w')
+2026-02-16T20:50:14Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:7rytwat2afxxztd2hohlob77 err=HttpError('InvalidRequest: Could not find repo: did:plc:7rytwat2afxxztd2hohlob77')
+2026-02-16T20:50:14Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ksiy3khova23jygrwy36md7w err=HttpError('InvalidRequest: Could not find repo: did:plc:ksiy3khova23jygrwy36md7w')
+2026-02-16T20:50:15Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=15 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:50:15Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:2fdxjmamctoqonrfgwuebvrz err=HttpError('InvalidRequest: Could not find repo: did:plc:2fdxjmamctoqonrfgwuebvrz')
+2026-02-16T20:50:46Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:d5yivoc64kk5whb7nwzuuc2s part=4833 records=3 next_cursor=set
+2026-02-16T20:50:53Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:fwyh25setwuqzkpf2lmmwmuy err=HttpError('InvalidRequest: Could not find repo: did:plc:fwyh25setwuqzkpf2lmmwmuy')
+2026-02-16T20:50:54Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gps5xkjslu6xsn4mrw5ezliq err=HttpError('InvalidRequest: Could not find repo: did:plc:gps5xkjslu6xsn4mrw5ezliq')
+2026-02-16T20:50:54Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:h3ktswmbv5qxwihinx4apdaf part=4834 records=1 next_cursor=set
+2026-02-16T20:51:09Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ofbhd4x65yjzuoh27ceq3n76 part=4835 records=1 next_cursor=set
+2026-02-16T20:51:09Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ohsxmh3343h5wpouka7mb4qf part=4836 records=4 next_cursor=set
+2026-02-16T20:51:15Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:r2evmddzoal5qnalwpjxkcz3 part=4837 records=3 next_cursor=set
+2026-02-16T20:51:15Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rcs5g4tydaddjhqrr56whwws err=HttpError('InvalidRequest: Could not find repo: did:plc:rcs5g4tydaddjhqrr56whwws')
+2026-02-16T20:51:21Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:tnosnwggxxa7bndvwridci6e err=HttpError('InvalidRequest: Could not find repo: did:plc:tnosnwggxxa7bndvwridci6e')
+2026-02-16T20:51:23Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:utq5txoqgh5d5gqy5hs577ad part=4838 records=4 next_cursor=set
+2026-02-16T20:51:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:2fdxjmamctoqonrfgwuebvrz err=HttpError('InvalidRequest: Could not find repo: did:plc:2fdxjmamctoqonrfgwuebvrz')
+2026-02-16T20:51:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:fwyh25setwuqzkpf2lmmwmuy err=HttpError('InvalidRequest: Could not find repo: did:plc:fwyh25setwuqzkpf2lmmwmuy')
+2026-02-16T20:51:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gps5xkjslu6xsn4mrw5ezliq err=HttpError('InvalidRequest: Could not find repo: did:plc:gps5xkjslu6xsn4mrw5ezliq')
+2026-02-16T20:51:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rcs5g4tydaddjhqrr56whwws err=HttpError('InvalidRequest: Could not find repo: did:plc:rcs5g4tydaddjhqrr56whwws')
+2026-02-16T20:51:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:tnosnwggxxa7bndvwridci6e err=HttpError('InvalidRequest: Could not find repo: did:plc:tnosnwggxxa7bndvwridci6e')
+2026-02-16T20:51:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:2fdxjmamctoqonrfgwuebvrz err=HttpError('InvalidRequest: Could not find repo: did:plc:2fdxjmamctoqonrfgwuebvrz')
+2026-02-16T20:51:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:fwyh25setwuqzkpf2lmmwmuy err=HttpError('InvalidRequest: Could not find repo: did:plc:fwyh25setwuqzkpf2lmmwmuy')
+2026-02-16T20:51:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gps5xkjslu6xsn4mrw5ezliq err=HttpError('InvalidRequest: Could not find repo: did:plc:gps5xkjslu6xsn4mrw5ezliq')
+2026-02-16T20:51:36Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rcs5g4tydaddjhqrr56whwws err=HttpError('InvalidRequest: Could not find repo: did:plc:rcs5g4tydaddjhqrr56whwws')
+2026-02-16T20:51:36Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:tnosnwggxxa7bndvwridci6e err=HttpError('InvalidRequest: Could not find repo: did:plc:tnosnwggxxa7bndvwridci6e')
+2026-02-16T20:51:36Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=16 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:51:51Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ccd7f5ar3bzx6bng3rdwbtyj part=4839 records=3 next_cursor=set
+2026-02-16T20:51:53Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:cxvo3ob5fjd5dp5uidpqt3qt part=4840 records=1 next_cursor=set
+2026-02-16T20:51:55Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:e3n4m2d5tngcrsxwcvrabukd part=4841 records=1 next_cursor=set
+2026-02-16T20:51:59Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ezhwaz3doge4ylugg553gahk err=HttpError('InvalidRequest: Could not find repo: did:plc:ezhwaz3doge4ylugg553gahk')
+2026-02-16T20:52:02Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:h6nekjcltk5b34ka65b3o4nj err=HttpError('InvalidRequest: Could not find repo: did:plc:h6nekjcltk5b34ka65b3o4nj')
+2026-02-16T20:52:07Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:j32omdikzboifnmntbf7nbzq err=HttpError('InvalidRequest: Could not find repo: did:plc:j32omdikzboifnmntbf7nbzq')
+2026-02-16T20:52:37Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:x2ngfzmsysg7jkfkt35727fi part=4842 records=1 next_cursor=set
+2026-02-16T20:52:43Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ezhwaz3doge4ylugg553gahk err=HttpError('InvalidRequest: Could not find repo: did:plc:ezhwaz3doge4ylugg553gahk')
+2026-02-16T20:52:43Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:h6nekjcltk5b34ka65b3o4nj err=HttpError('InvalidRequest: Could not find repo: did:plc:h6nekjcltk5b34ka65b3o4nj')
+2026-02-16T20:52:43Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:j32omdikzboifnmntbf7nbzq err=HttpError('InvalidRequest: Could not find repo: did:plc:j32omdikzboifnmntbf7nbzq')
+2026-02-16T20:52:43Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ezhwaz3doge4ylugg553gahk err=HttpError('InvalidRequest: Could not find repo: did:plc:ezhwaz3doge4ylugg553gahk')
+2026-02-16T20:52:43Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:h6nekjcltk5b34ka65b3o4nj err=HttpError('InvalidRequest: Could not find repo: did:plc:h6nekjcltk5b34ka65b3o4nj')
+2026-02-16T20:52:43Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:j32omdikzboifnmntbf7nbzq err=HttpError('InvalidRequest: Could not find repo: did:plc:j32omdikzboifnmntbf7nbzq')
+2026-02-16T20:52:44Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=17 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:52:56Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:75ynuq2d4oxcnfwajegvq7m7 err=HttpError('InvalidRequest: Could not find repo: did:plc:75ynuq2d4oxcnfwajegvq7m7')
+2026-02-16T20:53:04Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:cynm7xc22puvtpszxsefc52s part=4843 records=1 next_cursor=set
+2026-02-16T20:53:08Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:e7swajiiqv5deci34fn2pon5 err=HttpError('InvalidRequest: Could not find repo: did:plc:e7swajiiqv5deci34fn2pon5')
+2026-02-16T20:53:12Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:g72bkwlyuvmnva7kch3vyn7b part=4844 records=1 next_cursor=set
+2026-02-16T20:53:25Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:m55vpi47ybh6nbw5rkxgs4hl part=4845 records=1 next_cursor=set
+2026-02-16T20:53:27Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:nbkrxnrmuowzlqp6k2lfohzp part=4846 records=1 next_cursor=set
+2026-02-16T20:53:28Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:nw2mxdlrpx3zuy7xuuk27jew part=4847 records=1 next_cursor=set
+2026-02-16T20:53:36Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:sflr2vcic3x5lqfswmzkx7ta part=4848 records=3 next_cursor=set
+2026-02-16T20:53:46Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:wvrxcowsq3z4aunijjtcc7hr part=4849 records=14 next_cursor=set
+2026-02-16T20:53:51Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:zfjvormgjno6dbozq6iaazhx part=4850 records=2 next_cursor=set
+2026-02-16T20:53:52Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:75ynuq2d4oxcnfwajegvq7m7 err=HttpError('InvalidRequest: Could not find repo: did:plc:75ynuq2d4oxcnfwajegvq7m7')
+2026-02-16T20:53:52Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:e7swajiiqv5deci34fn2pon5 err=HttpError('InvalidRequest: Could not find repo: did:plc:e7swajiiqv5deci34fn2pon5')
+2026-02-16T20:53:53Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:75ynuq2d4oxcnfwajegvq7m7 err=HttpError('InvalidRequest: Could not find repo: did:plc:75ynuq2d4oxcnfwajegvq7m7')
+2026-02-16T20:53:53Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:e7swajiiqv5deci34fn2pon5 err=HttpError('InvalidRequest: Could not find repo: did:plc:e7swajiiqv5deci34fn2pon5')
+2026-02-16T20:53:54Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=18 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:53:54Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2dvqlvirz54dzekx6d2nfyxk part=4851 records=6 next_cursor=set
+2026-02-16T20:53:56Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:3zcx3gyl7itlvc5cwzfwiduk err=HttpError('InvalidRequest: Could not find repo: did:plc:3zcx3gyl7itlvc5cwzfwiduk')
+2026-02-16T20:53:59Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:4uz2445cjiw7w4nobfgnu35f part=4852 records=1 next_cursor=set
+2026-02-16T20:54:07Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:awxfhpz4xsqihdmycz65h3jz err=HttpError('InvalidRequest: Could not find repo: did:plc:awxfhpz4xsqihdmycz65h3jz')
+2026-02-16T20:54:08Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:b644fczb7elray2nnrariafs part=4853 records=1 next_cursor=set
+2026-02-16T20:54:10Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:chmkpuneb5tem3w53kq2zker part=4854 records=3 next_cursor=set
+2026-02-16T20:54:30Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:llauqdutlr54eqzrpne4lkjw part=4855 records=1 next_cursor=set
+2026-02-16T20:54:40Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:pknqgx7kgnbr6qoihfza27al part=4856 records=6 next_cursor=set
+2026-02-16T20:54:40Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:poppimbdh5dmhbcnxplrztop err=HttpError('InvalidRequest: Could not find repo: did:plc:poppimbdh5dmhbcnxplrztop')
+2026-02-16T20:54:44Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:r4andjbx2tiroq3fv4azx2zp part=4857 records=1 next_cursor=set
+2026-02-16T20:54:50Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ukagwejnhdmv6izmyfob7ww7 part=4858 records=1 next_cursor=set
+2026-02-16T20:54:53Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:vw43pxuucbvrkvgb3qsoi36p part=4859 records=1 next_cursor=set
+2026-02-16T20:54:57Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:y34ezdu7xaakexou2tq7dxe7 part=4860 records=2 next_cursor=set
+2026-02-16T20:55:00Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:3zcx3gyl7itlvc5cwzfwiduk err=HttpError('InvalidRequest: Could not find repo: did:plc:3zcx3gyl7itlvc5cwzfwiduk')
+2026-02-16T20:55:01Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:awxfhpz4xsqihdmycz65h3jz err=HttpError('InvalidRequest: Could not find repo: did:plc:awxfhpz4xsqihdmycz65h3jz')
+2026-02-16T20:55:01Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:poppimbdh5dmhbcnxplrztop err=HttpError('InvalidRequest: Could not find repo: did:plc:poppimbdh5dmhbcnxplrztop')
+2026-02-16T20:55:02Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:3zcx3gyl7itlvc5cwzfwiduk err=HttpError('InvalidRequest: Could not find repo: did:plc:3zcx3gyl7itlvc5cwzfwiduk')
+2026-02-16T20:55:02Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:awxfhpz4xsqihdmycz65h3jz err=HttpError('InvalidRequest: Could not find repo: did:plc:awxfhpz4xsqihdmycz65h3jz')
+2026-02-16T20:55:02Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:poppimbdh5dmhbcnxplrztop err=HttpError('InvalidRequest: Could not find repo: did:plc:poppimbdh5dmhbcnxplrztop')
+2026-02-16T20:55:03Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=19 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:55:09Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4hzyhthfcyjvvppxiquypdsr err=HttpError('InvalidRequest: Could not find repo: did:plc:4hzyhthfcyjvvppxiquypdsr')
+2026-02-16T20:55:26Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:aa627rpittaeqqcvzxhj7k2w part=4861 records=1 next_cursor=set
+2026-02-16T20:55:28Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:atlwzvpj5y7kdt7ndzez4xli err=HttpError('InvalidRequest: Could not find repo: did:plc:atlwzvpj5y7kdt7ndzez4xli')
+2026-02-16T20:55:47Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:jrcxofbfsty3n5o3sykujhfs part=4862 records=1 next_cursor=set
+2026-02-16T20:55:59Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:pbkewxqblia7xkucjj2eoi2f err=HttpError('InvalidRequest: Could not find repo: did:plc:pbkewxqblia7xkucjj2eoi2f')
+2026-02-16T20:56:05Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:s4yger3foondi4d5hzzc7st2 part=4863 records=1 next_cursor=set
+2026-02-16T20:56:23Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:zoldu6ki6nxte43qt2iwqc5t part=4864 records=1 next_cursor=set
+2026-02-16T20:56:24Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4hzyhthfcyjvvppxiquypdsr err=HttpError('InvalidRequest: Could not find repo: did:plc:4hzyhthfcyjvvppxiquypdsr')
+2026-02-16T20:56:24Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:atlwzvpj5y7kdt7ndzez4xli err=HttpError('InvalidRequest: Could not find repo: did:plc:atlwzvpj5y7kdt7ndzez4xli')
+2026-02-16T20:56:24Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:pbkewxqblia7xkucjj2eoi2f err=HttpError('InvalidRequest: Could not find repo: did:plc:pbkewxqblia7xkucjj2eoi2f')
+2026-02-16T20:56:24Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:4hzyhthfcyjvvppxiquypdsr err=HttpError('InvalidRequest: Could not find repo: did:plc:4hzyhthfcyjvvppxiquypdsr')
+2026-02-16T20:56:24Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:atlwzvpj5y7kdt7ndzez4xli err=HttpError('InvalidRequest: Could not find repo: did:plc:atlwzvpj5y7kdt7ndzez4xli')
+2026-02-16T20:56:25Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:pbkewxqblia7xkucjj2eoi2f err=HttpError('InvalidRequest: Could not find repo: did:plc:pbkewxqblia7xkucjj2eoi2f')
+2026-02-16T20:56:25Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=20 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:56:27Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2qswsmgbwjrnlpnkq2dgbded part=4865 records=3 next_cursor=set
+2026-02-16T20:56:28Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:3dg5zlv5v6tbzizwatnunvwu part=4866 records=1 next_cursor=set
+2026-02-16T20:56:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5jeojun3ibbftef2ivd7wad5 err=HttpError('InvalidRequest: Could not find repo: did:plc:5jeojun3ibbftef2ivd7wad5')
+2026-02-16T20:56:41Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:bjivtavjwicclemh6xsotprl err=HttpError('InvalidRequest: Could not find repo: did:plc:bjivtavjwicclemh6xsotprl')
+2026-02-16T20:56:44Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:crvih3tjo6lx7juaotiv2dpj part=4867 records=2 next_cursor=set
+2026-02-16T20:56:44Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:css4edxg3sgalxdg26xd2u3s part=4868 records=1 next_cursor=set
+2026-02-16T20:56:52Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gttrfs4hfmrclyxvwkwcgpj7 err=HttpError('InvalidRequest: Could not find repo: did:plc:gttrfs4hfmrclyxvwkwcgpj7')
+2026-02-16T20:56:56Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:iemxaixfgjoih6a4shbo24dz part=4869 records=5 next_cursor=set
+2026-02-16T20:56:59Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:j4y4hoksxfhpwgdogxyjkqsf part=4870 records=2 next_cursor=set
+2026-02-16T20:56:59Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:jij6rbqm3m5llpbkrzarideu part=4871 records=1 next_cursor=set
+2026-02-16T20:57:03Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:leu3wcb5tiwqu3v34tzvnayy part=4872 records=1 next_cursor=set
+2026-02-16T20:57:08Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ngm3i2723mudsnsckpqzqex2 part=4873 records=7 next_cursor=set
+2026-02-16T20:57:21Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:uw2tn5iz4r4v2xiatak4ri6t part=4874 records=1 next_cursor=set
+2026-02-16T20:57:28Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:xmxzszw7dyibyzrnrxevui4d part=4875 records=1 next_cursor=set
+2026-02-16T20:57:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5jeojun3ibbftef2ivd7wad5 err=HttpError('InvalidRequest: Could not find repo: did:plc:5jeojun3ibbftef2ivd7wad5')
+2026-02-16T20:57:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:bjivtavjwicclemh6xsotprl err=HttpError('InvalidRequest: Could not find repo: did:plc:bjivtavjwicclemh6xsotprl')
+2026-02-16T20:57:33Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gttrfs4hfmrclyxvwkwcgpj7 err=HttpError('InvalidRequest: Could not find repo: did:plc:gttrfs4hfmrclyxvwkwcgpj7')
+2026-02-16T20:57:34Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5jeojun3ibbftef2ivd7wad5 err=HttpError('InvalidRequest: Could not find repo: did:plc:5jeojun3ibbftef2ivd7wad5')
+2026-02-16T20:57:34Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:bjivtavjwicclemh6xsotprl err=HttpError('InvalidRequest: Could not find repo: did:plc:bjivtavjwicclemh6xsotprl')
+2026-02-16T20:57:34Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:gttrfs4hfmrclyxvwkwcgpj7 err=HttpError('InvalidRequest: Could not find repo: did:plc:gttrfs4hfmrclyxvwkwcgpj7')
+2026-02-16T20:57:35Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=21 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:58:10Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:icv7hzx3o66bwnrvqfdhfc6v part=4876 records=6 next_cursor=set
+2026-02-16T20:58:15Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:kgqbkcarlbbgmleiqiji6flc part=4877 records=1 next_cursor=set
+2026-02-16T20:58:20Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:njyn5veog3bdaafnvzeklhjw part=4878 records=5 next_cursor=set
+2026-02-16T20:58:29Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:rt2b3nvpmt4zrn55el6u4tya part=4879 records=2 next_cursor=set
+2026-02-16T20:58:31Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:szlyp3wdhbxkh6mqkkler4oj part=4880 records=1 next_cursor=set
+2026-02-16T20:58:49Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=22 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T20:58:54Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:45kyt2wprncuvmjafxfr2gvm part=4881 records=2 next_cursor=set
+2026-02-16T20:59:02Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:abkp4sglznvkptyncrltve6t part=4882 records=2 next_cursor=set
+2026-02-16T20:59:12Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:f7abbnexboy7myvd26ltq666 part=4883 records=1 next_cursor=set
+2026-02-16T20:59:12Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:fc7flwvdjynuqtctniwueieh part=4884 records=1 next_cursor=set
+2026-02-16T20:59:26Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:la4tfg6j2beizqywjwslpom4 part=4885 records=1 next_cursor=set
+2026-02-16T20:59:29Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:mxvitbjzd6gt5zroxsiwpgde part=4886 records=1 next_cursor=set
+2026-02-16T20:59:34Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:pgwfwgn7tybk4oroppoibgvl part=4887 records=3 next_cursor=set
+2026-02-16T20:59:39Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:qxigmylp4wto4grwhee2polf part=4888 records=1 next_cursor=set
+2026-02-16T20:59:48Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:vklsm2d67fx7pirahnp2qd2m part=4889 records=2 next_cursor=set
+2026-02-16T20:59:56Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ymwmaweqgu6zlvxab7cpfglr part=4890 records=2 next_cursor=set
+2026-02-16T21:00:00Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=23 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:00:14Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:asrof2r4z4vd5wng4s7rglas part=4891 records=1 next_cursor=set
+2026-02-16T21:00:14Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:b2ue2lazzqmkoqcdeeebys6o part=4892 records=2 next_cursor=set
+2026-02-16T21:00:20Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:dkct6ubz2ca2exn5t6rursot part=4893 records=1 next_cursor=set
+2026-02-16T21:00:34Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:jn2eq2blrbej7ckzxudhqp5f part=4894 records=1 next_cursor=set
+2026-02-16T21:00:52Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:obpuyxi42ohznc55kc32j3m2 part=4895 records=10 next_cursor=set
+2026-02-16T21:00:55Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:osajgugk7m23fnke6cpxvcun part=4896 records=1 next_cursor=set
+2026-02-16T21:00:56Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:pkhzjk4ycmmw2oujiuhqvhfj part=4897 records=5 next_cursor=set
+2026-02-16T21:01:01Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rjcq3invzsnivr37r6a2newj err=HttpError('InvalidRequest: Could not find repo: did:plc:rjcq3invzsnivr37r6a2newj')
+2026-02-16T21:01:06Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:tnnzvtflz4b56e3dwmh5yp66 part=4898 records=1 next_cursor=set
+2026-02-16T21:01:10Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:vkfgcrszbe4osrkm3tyb5nv4 part=4899 records=1 next_cursor=set
+2026-02-16T21:01:13Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:x3joxtgs6orjfa4i6zzym3th part=4900 records=2 next_cursor=set
+2026-02-16T21:01:19Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rjcq3invzsnivr37r6a2newj err=HttpError('InvalidRequest: Could not find repo: did:plc:rjcq3invzsnivr37r6a2newj')
+2026-02-16T21:01:19Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rjcq3invzsnivr37r6a2newj err=HttpError('InvalidRequest: Could not find repo: did:plc:rjcq3invzsnivr37r6a2newj')
+2026-02-16T21:01:20Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=24 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:01:34Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:7w4tay3hquyqw72yhooojkx2 part=4901 records=1 next_cursor=set
+2026-02-16T21:01:37Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:b4wruwqdhn6p6mkhurjjfk2v part=4902 records=5 next_cursor=set
+2026-02-16T21:01:42Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:dfpvdx5gjxeqtrye4jj76unc part=4903 records=1 next_cursor=set
+2026-02-16T21:01:59Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:mhwa2l7ac737zvpgdi4zrern part=4904 records=1 next_cursor=set
+2026-02-16T21:02:01Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:nrpxqabe3h6vw2lmbe7cy73k part=4905 records=3 next_cursor=set
+2026-02-16T21:02:17Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:tcvpjkdcsdotgvcgdf6epyoe part=4906 records=4 next_cursor=set
+2026-02-16T21:02:23Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:v7gngzva22rilmcp6fiypowf part=4907 records=9 next_cursor=set
+2026-02-16T21:02:35Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=25 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:02:35Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:23itsk3pl5l5unckofzs3d74 part=4908 records=1 next_cursor=set
+2026-02-16T21:02:42Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:5laso77d4gaxmotwzkjkdlpc part=4909 records=3 next_cursor=set
+2026-02-16T21:02:53Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:dro7f7wo2zda3jcrxrrhla5j part=4910 records=1 next_cursor=set
+2026-02-16T21:03:08Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ggvjklfurez4sxhod4gzzjt4 part=4911 records=1 next_cursor=set
+2026-02-16T21:03:26Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ni45fynluwihck7gpszss2nc part=4912 records=1 next_cursor=set
+2026-02-16T21:03:29Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:opm7kjzippurg433jh7rt4ax part=4913 records=4 next_cursor=set
+2026-02-16T21:03:35Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:rkb6s3pgsantgil3w4c4y74i part=4914 records=2 next_cursor=set
+2026-02-16T21:03:35Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:rkgcq7hp2cuqguc5yhntce6x part=4915 records=1 next_cursor=set
+2026-02-16T21:03:36Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:rpyg53po2rgj62zfnaekrp5s part=4916 records=1 next_cursor=set
+2026-02-16T21:03:39Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:sgjabnzmcofd7ladpukmyjhr part=4917 records=11 next_cursor=set
+2026-02-16T21:03:59Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:xccx7ujmsaolft6ukd2oakkx part=4918 records=1 next_cursor=set
+2026-02-16T21:04:01Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:xvdt3azzweu4fen2e7fxc7dg part=4919 records=2 next_cursor=set
+2026-02-16T21:04:08Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=26 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:04:12Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:2zocrlmgpchjy7ssm6tezsgp err=HttpError('InvalidRequest: Could not find repo: did:plc:2zocrlmgpchjy7ssm6tezsgp')
+2026-02-16T21:04:12Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:37mul2gsgq4ds2bhqlezbc6g part=4920 records=1 next_cursor=set
+2026-02-16T21:04:31Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:druvocex3do4dv3vicu4yd3h part=4921 records=1 next_cursor=set
+2026-02-16T21:04:43Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:itok2rigon43zyvqepgab43p part=4922 records=1 next_cursor=set
+2026-02-16T21:05:07Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:tkrbhvaapjv7flxjuitxlm4j part=4923 records=1 next_cursor=set
+2026-02-16T21:05:09Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:u7czkyw5ahmhsp7sg6mzlqwu part=4924 records=10 next_cursor=set
+2026-02-16T21:05:21Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:zkymvql3jh3dmchnfnlrazq5 part=4925 records=1 next_cursor=set
+2026-02-16T21:05:21Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:zo2clx3ha35kerrdzjzgm5fo part=4926 records=1 next_cursor=set
+2026-02-16T21:05:22Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:2zocrlmgpchjy7ssm6tezsgp err=HttpError('InvalidRequest: Could not find repo: did:plc:2zocrlmgpchjy7ssm6tezsgp')
+2026-02-16T21:05:22Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:2zocrlmgpchjy7ssm6tezsgp err=HttpError('InvalidRequest: Could not find repo: did:plc:2zocrlmgpchjy7ssm6tezsgp')
+2026-02-16T21:05:22Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=27 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:05:23Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2es575o6gsnfa5r4gfmg6rta part=4927 records=2 next_cursor=set
+2026-02-16T21:05:24Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2ndjk7sn6sm4y2l5q6hqt7ni part=4928 records=1 next_cursor=set
+2026-02-16T21:05:29Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:5ih5bsb7r6z5an7qf56wbwcc part=4929 records=2 next_cursor=set
+2026-02-16T21:05:41Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:bppubdocfxjh55da4wj7r64x part=4930 records=2 next_cursor=set
+2026-02-16T21:05:46Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ebx32gpdi6winohfmhoh24c2 part=4931 records=6 next_cursor=set
+2026-02-16T21:05:54Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:hlbdlt4nk6l3inzvts3s6quk part=4932 records=2 next_cursor=set
+2026-02-16T21:05:56Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:iwhvwluesbbqtslwwdzgiize part=4933 records=3 next_cursor=set
+2026-02-16T21:05:57Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:j56nbhc645mtq56zlcocvthg part=4934 records=5 next_cursor=set
+2026-02-16T21:05:59Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:kxwyakkpepuvztssmua2xij7 part=4935 records=2 next_cursor=set
+2026-02-16T21:06:13Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:qyfncfeuuebfir7zrqqnubmh part=4936 records=1 next_cursor=set
+2026-02-16T21:06:27Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:uq7ugdsdpgajcxq7hmfchral part=4937 records=1 next_cursor=set
+2026-02-16T21:06:46Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=28 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:06:57Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:6zakhd27z7bi4wuntbi2wltt part=4938 records=2 next_cursor=set
+2026-02-16T21:07:00Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:7zjk5qrilkvco3hotgcsyq6e part=4939 records=2 next_cursor=set
+2026-02-16T21:07:05Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:cyyyagcmak3nwpnzd2w5sm2z part=4940 records=3 next_cursor=set
+2026-02-16T21:07:08Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ds75yi5zzyg3pzxpvqb3ighr err=HttpError('InvalidRequest: Could not find repo: did:plc:ds75yi5zzyg3pzxpvqb3ighr')
+2026-02-16T21:07:08Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:e4uq6v62wnowodnio73gtcpo part=4941 records=2 next_cursor=set
+2026-02-16T21:07:15Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:hazmg24g657og6jr6lzjsvbm part=4942 records=3 next_cursor=set
+2026-02-16T21:07:21Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:lzad3jx23kmpibtdi6w5m5bx part=4943 records=1 next_cursor=set
+2026-02-16T21:07:32Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:nxdfrxavv5mshvuhgjarkp4y part=4944 records=2 next_cursor=set
+2026-02-16T21:07:34Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:o3ytfe6ddwdhxuvdbtjjhjfq err=HttpError('InvalidRequest: Could not find repo: did:plc:o3ytfe6ddwdhxuvdbtjjhjfq')
+2026-02-16T21:07:38Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:p4y4bx6cnnkuhpkin7z2gqz5 part=4945 records=1 next_cursor=set
+2026-02-16T21:07:41Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:qvfuy7krxgbeadk4bdaowbfg part=4946 records=1 next_cursor=set
+2026-02-16T21:07:42Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:r2n4mkykqnoghn7rsjbjkmtr part=4947 records=1 next_cursor=set
+2026-02-16T21:07:48Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:sncfqwi5x23i3kv2zh3dhwh4 part=4948 records=1 next_cursor=set
+2026-02-16T21:07:48Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:snovpgycyvmvhpzijjr5na45 part=4949 records=1 next_cursor=set
+2026-02-16T21:08:04Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:yxkwqejkscn7mrdg6swvfgvw part=4950 records=2 next_cursor=set
+2026-02-16T21:08:05Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:zrzj7rijuccxce5atffhvykq part=4951 records=1 next_cursor=set
+2026-02-16T21:08:07Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ds75yi5zzyg3pzxpvqb3ighr err=HttpError('InvalidRequest: Could not find repo: did:plc:ds75yi5zzyg3pzxpvqb3ighr')
+2026-02-16T21:08:08Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:o3ytfe6ddwdhxuvdbtjjhjfq err=HttpError('InvalidRequest: Could not find repo: did:plc:o3ytfe6ddwdhxuvdbtjjhjfq')
+2026-02-16T21:08:08Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ds75yi5zzyg3pzxpvqb3ighr err=HttpError('InvalidRequest: Could not find repo: did:plc:ds75yi5zzyg3pzxpvqb3ighr')
+2026-02-16T21:08:09Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:o3ytfe6ddwdhxuvdbtjjhjfq err=HttpError('InvalidRequest: Could not find repo: did:plc:o3ytfe6ddwdhxuvdbtjjhjfq')
+2026-02-16T21:08:09Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=29 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:08:24Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:bveuu2r3bkxxtc6j33rwcbws err=HttpError('InvalidRequest: Could not find repo: did:plc:bveuu2r3bkxxtc6j33rwcbws')
+2026-02-16T21:08:38Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:hsdpnosygoluvy4smhdwnlav part=4952 records=1 next_cursor=set
+2026-02-16T21:08:45Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:lcvdftstmatnoiwqkz4w46x6 part=4953 records=1 next_cursor=set
+2026-02-16T21:08:50Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:njdlczakrbgisqxairoh2d4u part=4954 records=4 next_cursor=set
+2026-02-16T21:08:51Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:nvejbpumalu2iw3zbg2zujuv part=4955 records=3 next_cursor=set
+2026-02-16T21:09:17Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:bveuu2r3bkxxtc6j33rwcbws err=HttpError('InvalidRequest: Could not find repo: did:plc:bveuu2r3bkxxtc6j33rwcbws')
+2026-02-16T21:09:18Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:bveuu2r3bkxxtc6j33rwcbws err=HttpError('InvalidRequest: Could not find repo: did:plc:bveuu2r3bkxxtc6j33rwcbws')
+2026-02-16T21:09:18Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=30 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:09:36Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:alv7y5qskbueljgdihe5xin4 part=4956 records=1 next_cursor=set
+2026-02-16T21:09:38Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:bjlqlocw2mwkwddmpdyyhadt part=4957 records=1 next_cursor=set
+2026-02-16T21:09:45Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:eai67oguq3rhbae5gxtboo4o part=4958 records=2 next_cursor=set
+2026-02-16T21:09:56Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:iutvpdlir44uetto2fhsowpq part=4959 records=1 next_cursor=set
+2026-02-16T21:09:59Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:jx2wycy7haq54bnxwamw3d4v part=4960 records=4 next_cursor=set
+2026-02-16T21:10:15Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:qrkgop4aohnenifbq3jtngk5 part=4961 records=24 next_cursor=set
+2026-02-16T21:10:20Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:tiof7p5zsplfetwern3gj7pc part=4962 records=4 next_cursor=set
+2026-02-16T21:10:28Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:xbaxrkvtoawzmbcmu5f52wee err=HttpError('InvalidRequest: Could not find repo: did:plc:xbaxrkvtoawzmbcmu5f52wee')
+2026-02-16T21:10:30Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ydhesmppmbpgiso7a3uyrucy part=4963 records=1 next_cursor=set
+2026-02-16T21:10:34Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:xbaxrkvtoawzmbcmu5f52wee err=HttpError('InvalidRequest: Could not find repo: did:plc:xbaxrkvtoawzmbcmu5f52wee')
+2026-02-16T21:10:34Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:xbaxrkvtoawzmbcmu5f52wee err=HttpError('InvalidRequest: Could not find repo: did:plc:xbaxrkvtoawzmbcmu5f52wee')
+2026-02-16T21:10:34Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=31 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:10:36Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2l56orvmjcwhh66jcaisg3l7 part=4964 records=1 next_cursor=set
+2026-02-16T21:11:03Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:i2tazs4btd4h774lev3xh263 part=4965 records=1 next_cursor=set
+2026-02-16T21:11:05Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:j4uve7af24roipl7lzvapkpg part=4966 records=1 next_cursor=set
+2026-02-16T21:11:11Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:lcmic7aufmdzn4fdxtclgowv part=4967 records=1 next_cursor=set
+2026-02-16T21:11:25Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:rhpasmnjypmj5vf6j7rytsfl part=4968 records=11 next_cursor=set
+2026-02-16T21:11:34Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:uzd7qe3p2i3yzjh35nx5uoji part=4969 records=1 next_cursor=set
+2026-02-16T21:11:43Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:yvfxmpm6zfrugkguk5zj5ua3 part=4970 records=1 next_cursor=set
+2026-02-16T21:11:44Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:zhejvw2z6wz3jcq7f75y4uc7 part=4971 records=1 next_cursor=set
+2026-02-16T21:11:47Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=32 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:12:20Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:kvhoxj2igycroduehatek7xg part=4972 records=1 next_cursor=set
+2026-02-16T21:12:23Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:lyc3v5uq27e5j35j3qgnd4se part=4973 records=5 next_cursor=set
+2026-02-16T21:12:25Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:mzx7sybipkgt4dgi5n6vdzpa part=4974 records=8 next_cursor=set
+2026-02-16T21:12:32Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:pvjjxui3retkqxoqd3zlcwa5 part=4975 records=1 next_cursor=set
+2026-02-16T21:12:44Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:v2fir2yje6abgagh2m2c2lmx part=4976 records=4 next_cursor=set
+2026-02-16T21:12:51Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:xo5phsdcuxeofiubs5r77na6 part=4977 records=2 next_cursor=set
+2026-02-16T21:12:52Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:y6i3dlcxryrz3ldmf2jkfiyg part=4978 records=7 next_cursor=set
+2026-02-16T21:12:57Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=33 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:12:59Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2mrshz6x35asng5tos7dhdxo part=4979 records=5 next_cursor=set
+2026-02-16T21:12:59Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2pi55rz4inffboh73k5lz7kb part=4980 records=3 next_cursor=set
+2026-02-16T21:13:13Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:bcp7ezvhnpa7nrdxxc5ijys5 part=4981 records=1 next_cursor=set
+2026-02-16T21:13:17Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ddjcqwjqcqgjuyao7ns7vpiq part=4982 records=1 next_cursor=set
+2026-02-16T21:13:20Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ewcimjkdda4egf3mds4buqau err=HttpError('InvalidRequest: Could not find repo: did:plc:ewcimjkdda4egf3mds4buqau')
+2026-02-16T21:13:28Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:if2a7jn3az2j3k2tyr4ycfg6 part=4983 records=1 next_cursor=set
+2026-02-16T21:13:32Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:jv6mq3vr4ajs6hxonqmhx3nn part=4984 records=4 next_cursor=set
+2026-02-16T21:13:33Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:k5nk3lfbe7odj5md536vqe6r part=4985 records=1 next_cursor=set
+2026-02-16T21:13:35Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:kt3rzxxib4xxo5mhbrib7zm7 part=4986 records=1 next_cursor=set
+2026-02-16T21:13:42Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:nfkmrmazzfakv3rxxk2owkkn part=4987 records=2 next_cursor=set
+2026-02-16T21:13:42Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ntrcy77suok7dhs63egusgvv err=HttpError('InvalidRequest: Could not find repo: did:plc:ntrcy77suok7dhs63egusgvv')
+2026-02-16T21:13:52Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:rozjesocnitwxmioidfdses2 part=4988 records=2 next_cursor=set
+2026-02-16T21:13:56Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ttdaexuq2ca4ok5hfphc2h5q part=4989 records=1 next_cursor=set
+2026-02-16T21:14:01Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:vsp7ytrodowpagffh3hr2rp4 err=HttpError('InvalidRequest: Could not find repo: did:plc:vsp7ytrodowpagffh3hr2rp4')
+2026-02-16T21:14:04Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:xzcewt6ygp7lczbfoa3nerzc part=4990 records=1 next_cursor=set
+2026-02-16T21:14:10Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ewcimjkdda4egf3mds4buqau err=HttpError('InvalidRequest: Could not find repo: did:plc:ewcimjkdda4egf3mds4buqau')
+2026-02-16T21:14:11Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ntrcy77suok7dhs63egusgvv err=HttpError('InvalidRequest: Could not find repo: did:plc:ntrcy77suok7dhs63egusgvv')
+2026-02-16T21:14:11Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:vsp7ytrodowpagffh3hr2rp4 err=HttpError('InvalidRequest: Could not find repo: did:plc:vsp7ytrodowpagffh3hr2rp4')
+2026-02-16T21:14:12Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ewcimjkdda4egf3mds4buqau err=HttpError('InvalidRequest: Could not find repo: did:plc:ewcimjkdda4egf3mds4buqau')
+2026-02-16T21:14:12Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ntrcy77suok7dhs63egusgvv err=HttpError('InvalidRequest: Could not find repo: did:plc:ntrcy77suok7dhs63egusgvv')
+2026-02-16T21:14:12Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:vsp7ytrodowpagffh3hr2rp4 err=HttpError('InvalidRequest: Could not find repo: did:plc:vsp7ytrodowpagffh3hr2rp4')
+2026-02-16T21:14:13Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=34 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:14:16Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:3kvguijyf46vtsud5bulvzfr part=4991 records=2 next_cursor=set
+2026-02-16T21:14:26Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:amlm6wqesmzyorvyhczhv43t part=4992 records=2 next_cursor=set
+2026-02-16T21:14:38Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:eyhobandd5fypb3crjaubom6 part=4993 records=2 next_cursor=set
+2026-02-16T21:14:40Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:frz4fzdkypbjrxj4ktapmfyz part=4994 records=1 next_cursor=set
+2026-02-16T21:14:44Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:hpyytvn3dpi44edj7mmfz5fm part=4995 records=1 next_cursor=set
+2026-02-16T21:14:48Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:kqf5bs2y6unlbgpwahyzlip2 part=4996 records=7 next_cursor=set
+2026-02-16T21:14:48Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:kwixvumqcm2tj5xckoydthzr part=4997 records=2 next_cursor=set
+2026-02-16T21:15:03Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:sf55dfvny2e4f3h26mxmcieq part=4998 records=1 next_cursor=set
+2026-02-16T21:15:05Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:stdh7fpxtslzio6codqsfwi2 part=4999 records=4 next_cursor=set
+2026-02-16T21:15:18Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:zmi7dzpok6qbj2ou7arugifs part=5000 records=2 next_cursor=set
+2026-02-16T21:15:20Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=35 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:15:22Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:353gzbhcjbznfxegvayffqek part=5001 records=1 next_cursor=set
+2026-02-16T21:15:34Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:7wen22sqjut3xonfaq4tggfn part=5002 records=2 next_cursor=set
+2026-02-16T21:15:39Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:c54gxfohcv4lgjnjquzwnp2b part=5003 records=1 next_cursor=set
+2026-02-16T21:15:39Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:cabrklvt67bqhwrfs4fsjenr err=HttpError('InvalidRequest: Could not find repo: did:plc:cabrklvt67bqhwrfs4fsjenr')
+2026-02-16T21:15:40Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:chlvuywnwpeobdywgfnct2zd part=5004 records=1 next_cursor=set
+2026-02-16T21:15:50Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:i6xh5dzb6jytzgmt6zyzl7z2 part=5005 records=3 next_cursor=set
+2026-02-16T21:16:06Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:livlh2bh6nxgxe5ammwfd2b4 err=HttpError('InvalidRequest: Could not find repo: did:plc:livlh2bh6nxgxe5ammwfd2b4')
+2026-02-16T21:16:12Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:o6spli6ezviy63jil57pnxyu part=5006 records=1 next_cursor=set
+2026-02-16T21:16:12Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ohwi3e3ro2eox7a2tpojxdhz part=5007 records=1 next_cursor=set
+2026-02-16T21:16:32Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:vgglh7xytf34okgtu4z2yckf part=5008 records=1 next_cursor=set
+2026-02-16T21:16:37Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:xjcxq6232fnqkorlif6bqjpj part=5009 records=6 next_cursor=set
+2026-02-16T21:16:44Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:cabrklvt67bqhwrfs4fsjenr err=HttpError('InvalidRequest: Could not find repo: did:plc:cabrklvt67bqhwrfs4fsjenr')
+2026-02-16T21:16:45Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:livlh2bh6nxgxe5ammwfd2b4 err=HttpError('InvalidRequest: Could not find repo: did:plc:livlh2bh6nxgxe5ammwfd2b4')
+2026-02-16T21:16:45Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:cabrklvt67bqhwrfs4fsjenr err=HttpError('InvalidRequest: Could not find repo: did:plc:cabrklvt67bqhwrfs4fsjenr')
+2026-02-16T21:16:46Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:livlh2bh6nxgxe5ammwfd2b4 err=HttpError('InvalidRequest: Could not find repo: did:plc:livlh2bh6nxgxe5ammwfd2b4')
+2026-02-16T21:16:46Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=36 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:16:51Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:44qymulz2xccfrsthg5xrp2s part=5010 records=1 next_cursor=set
+2026-02-16T21:17:47Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:pjhftro4hohgstv4mlzmxecw part=5011 records=9 next_cursor=set
+2026-02-16T21:18:00Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:uoqbys35s7ncc2ccslvpx4g6 part=5012 records=1 next_cursor=set
+2026-02-16T21:18:01Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:uswe4rwfzi3iacoyorwofipg part=5013 records=1 next_cursor=set
+2026-02-16T21:18:07Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:xrsqkpjtm3bay2kcvukr66y2 part=5014 records=1 next_cursor=set
+2026-02-16T21:18:08Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:y4bowur64zsqaioynfggvnis part=5015 records=2 next_cursor=set
+2026-02-16T21:18:12Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=37 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:18:24Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:64m2qjuplz5agsmnv7l27eyt part=5016 records=2 next_cursor=set
+2026-02-16T21:18:31Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:belajgahhuxxsl3qh73mzc3c part=5017 records=1 next_cursor=set
+2026-02-16T21:18:41Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:fpksx3l5jxhrm5zm5gq2qeoj part=5018 records=1 next_cursor=set
+2026-02-16T21:18:45Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:i53oprqv2wym22gb6bhj5l3g part=5019 records=1 next_cursor=set
+2026-02-16T21:18:58Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:myssyleew7do4jbyqy5m2kmp part=5020 records=1 next_cursor=set
+2026-02-16T21:18:59Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:nj7obcfe2vab2cygdf6yr3ob part=5021 records=1 next_cursor=set
+2026-02-16T21:19:04Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:p4pzf5kbgdzzljo4eku2yx4v err=HttpError('InvalidRequest: Could not find repo: did:plc:p4pzf5kbgdzzljo4eku2yx4v')
+2026-02-16T21:19:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:p4pzf5kbgdzzljo4eku2yx4v err=HttpError('InvalidRequest: Could not find repo: did:plc:p4pzf5kbgdzzljo4eku2yx4v')
+2026-02-16T21:19:36Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:p4pzf5kbgdzzljo4eku2yx4v err=HttpError('InvalidRequest: Could not find repo: did:plc:p4pzf5kbgdzzljo4eku2yx4v')
+2026-02-16T21:19:36Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=38 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:19:37Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2bfa4giojbqmwhcjsueyqcfu part=5022 records=3 next_cursor=set
+2026-02-16T21:19:41Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:4xuzf7555kdmagdsdghlfng5 part=5023 records=1 next_cursor=set
+2026-02-16T21:19:48Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ahfzh6rku2o4bqyirkp43lre err=HttpError('InvalidRequest: Could not find repo: did:plc:ahfzh6rku2o4bqyirkp43lre')
+2026-02-16T21:19:48Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:alfibxyzkzfsnm2fporfgksg part=5024 records=3 next_cursor=set
+2026-02-16T21:20:10Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:kdsx5vpffedpjhkrearuasbu part=5025 records=1 next_cursor=set
+2026-02-16T21:20:21Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ozjhir4s4ea75f44m6y5zxyn part=5026 records=1 next_cursor=set
+2026-02-16T21:20:44Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ahfzh6rku2o4bqyirkp43lre err=HttpError('InvalidRequest: Could not find repo: did:plc:ahfzh6rku2o4bqyirkp43lre')
+2026-02-16T21:20:44Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:ahfzh6rku2o4bqyirkp43lre err=HttpError('InvalidRequest: Could not find repo: did:plc:ahfzh6rku2o4bqyirkp43lre')
+2026-02-16T21:20:45Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=39 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:21:04Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:aenqmrgfy7uqybnz62ynzsm2 part=5027 records=1 next_cursor=set
+2026-02-16T21:21:06Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:aj73r3d6yhnehx55bfrkq522 part=5028 records=3 next_cursor=set
+2026-02-16T21:21:06Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:al6meylwgdqneifte7tkgnpe part=5029 records=1 next_cursor=set
+2026-02-16T21:21:09Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:b4o4iwknk7box6z22rz5nsui part=5030 records=1 next_cursor=set
+2026-02-16T21:21:24Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:g6ala5xln2zb7zuj5qjdu5zp part=5031 records=4 next_cursor=set
+2026-02-16T21:21:37Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:le6msorhr5xo4b4y47msiwks part=5032 records=1 next_cursor=set
+2026-02-16T21:22:01Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:vdme6ztqsjpjzzeq7evrmsyw part=5033 records=2 next_cursor=set
+2026-02-16T21:22:04Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:wv5dnxzwqqmhk6xhfuia7o3m part=5034 records=1 next_cursor=set
+2026-02-16T21:22:13Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=40 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:22:19Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2s5t5dmp6acyx4oysxtwiode part=5035 records=1 next_cursor=set
+2026-02-16T21:22:37Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:7crma3wydb57twixjqozkez2 part=5036 records=2 next_cursor=set
+2026-02-16T21:23:00Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:i7bvdrxadmywfj7o7wz6c7br err=HttpError('InvalidRequest: Could not find repo: did:plc:i7bvdrxadmywfj7o7wz6c7br')
+2026-02-16T21:23:00Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:i7vd7szhlklkky6zsw6kqshn part=5037 records=13 next_cursor=set
+2026-02-16T21:23:12Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:neayt43plrghzhhwtgntd7em part=5038 records=1 next_cursor=set
+2026-02-16T21:23:29Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:uvhnpg7kh6lt6lawisdmtqpj part=5039 records=1 next_cursor=set
+2026-02-16T21:23:38Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:zuo5sb5jye5fddxvdwjrgdva part=5040 records=2 next_cursor=set
+2026-02-16T21:23:39Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:i7bvdrxadmywfj7o7wz6c7br err=HttpError('InvalidRequest: Could not find repo: did:plc:i7bvdrxadmywfj7o7wz6c7br')
+2026-02-16T21:23:39Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:i7bvdrxadmywfj7o7wz6c7br err=HttpError('InvalidRequest: Could not find repo: did:plc:i7bvdrxadmywfj7o7wz6c7br')
+2026-02-16T21:23:40Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=41 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:23:46Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5ht342s5cizcit4c6rnmpqdm err=HttpError('InvalidRequest: Could not find repo: did:plc:5ht342s5cizcit4c6rnmpqdm')
+2026-02-16T21:23:48Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:5wbj7lm2ccrxdfl5gmrjb5ff part=5041 records=1 next_cursor=set
+2026-02-16T21:23:50Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:7757rmlmqtnnismustgtky6m part=5042 records=1 next_cursor=set
+2026-02-16T21:24:04Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ehiq46eyfac3rxiubtqcdlp3 part=5043 records=1 next_cursor=set
+2026-02-16T21:24:11Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:i4sfrnh3txwzslm4ypy7sclq part=5044 records=1 next_cursor=set
+2026-02-16T21:24:20Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:m3orhvmbqp6cfy67rijnttp7 part=5045 records=6 next_cursor=set
+2026-02-16T21:24:25Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:oaedpw6oogs4eylcxcfwzsrb part=5046 records=1 next_cursor=set
+2026-02-16T21:24:27Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:os6mzpqi2ikw4dayhlxtd6os part=5047 records=1 next_cursor=set
+2026-02-16T21:24:28Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:oxkpcvyl3kzuy7zpmsdslhsi part=5048 records=5 next_cursor=set
+2026-02-16T21:24:32Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rd4ewcuwczliidwmzhmdjzfr err=HttpError('InvalidRequest: Could not find repo: did:plc:rd4ewcuwczliidwmzhmdjzfr')
+2026-02-16T21:24:44Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:vyg3dge56q4kwkbicnjhf5dm part=5049 records=4 next_cursor=set
+2026-02-16T21:24:47Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:xplymicrejc3dreswhkmvqtg err=HttpError('InvalidRequest: Could not find repo: did:plc:xplymicrejc3dreswhkmvqtg')
+2026-02-16T21:24:50Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:z6qfjd3rkf4gpvwrq3xvzk6s part=5050 records=1 next_cursor=set
+2026-02-16T21:24:52Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5ht342s5cizcit4c6rnmpqdm err=HttpError('InvalidRequest: Could not find repo: did:plc:5ht342s5cizcit4c6rnmpqdm')
+2026-02-16T21:24:52Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rd4ewcuwczliidwmzhmdjzfr err=HttpError('InvalidRequest: Could not find repo: did:plc:rd4ewcuwczliidwmzhmdjzfr')
+2026-02-16T21:24:52Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:xplymicrejc3dreswhkmvqtg err=HttpError('InvalidRequest: Could not find repo: did:plc:xplymicrejc3dreswhkmvqtg')
+2026-02-16T21:24:53Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:5ht342s5cizcit4c6rnmpqdm err=HttpError('InvalidRequest: Could not find repo: did:plc:5ht342s5cizcit4c6rnmpqdm')
+2026-02-16T21:24:53Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:rd4ewcuwczliidwmzhmdjzfr err=HttpError('InvalidRequest: Could not find repo: did:plc:rd4ewcuwczliidwmzhmdjzfr')
+2026-02-16T21:24:53Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:xplymicrejc3dreswhkmvqtg err=HttpError('InvalidRequest: Could not find repo: did:plc:xplymicrejc3dreswhkmvqtg')
+2026-02-16T21:24:53Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=42 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:25:02Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:5ueil43ubjzmohs4h2wizxfo part=5051 records=3 next_cursor=set
+2026-02-16T21:25:02Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:5wd6oustsz4gq4z567gavvng part=5052 records=1 next_cursor=set
+2026-02-16T21:25:12Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:bzjgtbvsxgjiw7tuc3bkm5sy part=5053 records=1 next_cursor=set
+2026-02-16T21:25:14Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:dcdngcafso2kts4rmg3tdmwn part=5054 records=5 next_cursor=set
+2026-02-16T21:25:23Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:ibuemqpphd4znwauneanhdc5 part=5055 records=4 next_cursor=set
+2026-02-16T21:25:40Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:qmnz4ffevi7h6sdktwht6bcf part=5056 records=1 next_cursor=set
+2026-02-16T21:25:43Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:sflbypbwwbeor5t575hhujm6 part=5057 records=6 next_cursor=set
+2026-02-16T21:25:57Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:y4bbj2ob5ayyt5nqkho7vuw6 err=HttpError('InvalidRequest: Could not find repo: did:plc:y4bbj2ob5ayyt5nqkho7vuw6')
+2026-02-16T21:26:00Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:y4bbj2ob5ayyt5nqkho7vuw6 err=HttpError('InvalidRequest: Could not find repo: did:plc:y4bbj2ob5ayyt5nqkho7vuw6')
+2026-02-16T21:26:00Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:y4bbj2ob5ayyt5nqkho7vuw6 err=HttpError('InvalidRequest: Could not find repo: did:plc:y4bbj2ob5ayyt5nqkho7vuw6')
+2026-02-16T21:26:01Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=43 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-02-16T21:26:02Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:2lgl7wl7tfbkl6fbl5idaskh part=5058 records=1 next_cursor=set
+2026-02-16T21:26:34Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:j2f2gg67xme466jaymnmz75z part=5059 records=1 next_cursor=set
+2026-02-16T21:26:39Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:kzdeilddqannjtahrsnz5p3a part=5060 records=5 next_cursor=set
+2026-02-16T21:26:40Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:lo4qg55nwz73qhzjspshdsdg err=HttpError('InvalidRequest: Could not find repo: did:plc:lo4qg55nwz73qhzjspshdsdg')
+2026-02-16T21:26:41Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:mjmfd45sr7aquhtbvrvtyqte part=5061 records=1 next_cursor=set
+2026-02-16T21:26:48Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:pngceyoqrfxmpfargwbahh2g part=5062 records=1 next_cursor=set

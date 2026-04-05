@@ -1,0 +1,34 @@
+{
+  "collection_params_hash": "f9673e126659db7f",
+  "generated_at_utc": "2026-03-16T07:45:37Z",
+  "issues": [
+    {
+      "code": "timestamp_drift_warning",
+      "message": "snapshot start drift is 34.7 minutes",
+      "severity": "warning"
+    }
+  ],
+  "job_name": "snapshot-panel",
+  "metrics": {
+    "drift_minutes": 34.717,
+    "expected_request_rows": 107,
+    "failure_ratio": 0.016949,
+    "feed_item_rows": 5031,
+    "feeds_done": 116,
+    "feeds_failed": 2,
+    "metadata_source_out_base": "/Volumes/T9/BlueSky/data_v2_full",
+    "post_label_rows": 2101,
+    "request_provenance_completeness": 1.0,
+    "request_provenance_rows": 107,
+    "same_day_discovery_status_exists": true,
+    "same_day_feed_catalog_exists": true
+  },
+  "quality_report_version": "2026-03-16.1",
+  "run_id": "5e977a22eb914d4ba8a776f8e509b882",
+  "sample_family": "experimental_labelerexp_hourly",
+  "scope": {
+    "date_utc": "2026-02-21",
+    "snapshot_hour_utc": "2026-02-21T03:00:00Z"
+  },
+  "verdict": "promoted"
+}

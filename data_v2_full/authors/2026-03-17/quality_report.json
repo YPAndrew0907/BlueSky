@@ -1,0 +1,30 @@
+{
+  "collection_params_hash": "2e3d588df511a19e",
+  "generated_at_utc": "2026-03-17T12:01:26Z",
+  "issues": [
+    {
+      "code": "header_only_output",
+      "message": "author profile output is missing or empty",
+      "severity": "error"
+    },
+    {
+      "code": "request_provenance_missing",
+      "message": "request_provenance.csv is missing or empty",
+      "severity": "warning"
+    }
+  ],
+  "job_name": "hydrate-authors",
+  "metrics": {
+    "author_rows": 0,
+    "feeds_done": 0,
+    "feeds_failed": 0,
+    "request_provenance_rows": 0
+  },
+  "quality_report_version": "2026-03-17.1",
+  "run_id": "9d79299fb6e6418b8031bb400afbaf46",
+  "sample_family": "author_profile_hydration",
+  "scope": {
+    "date_utc": "2026-03-17"
+  },
+  "verdict": "quarantined"
+}

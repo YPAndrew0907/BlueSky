@@ -1,0 +1,25 @@
+2026-03-31T05:26:26Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-03-31T05:26:26Z INFO bsky_collector_v2: job start subcommand=hydrate-authors dry_run=False resume=True
+2026-03-31T05:26:34Z INFO bsky_collector_v2.job.hydrate_authors: hydrate-authors start candidates=6848 batch_size=25
+2026-03-31T05:26:42Z ERROR bsky_collector_v2: job failed subcommand=hydrate-authors err=HttpError("exhausted retries: ConnectError('All connection attempts failed')")
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 405, in main
+    asyncio.run(
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\jobs\hydrate_authors.py", line 146, in run_hydrate_authors
+    resp = await http.xrpc_get(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    return await self.request_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\http_client.py", line 496, in request_json
+    raise HttpError(
+bsky_collector_v2.http_client.HttpError: exhausted retries: ConnectError('All connection attempts failed')

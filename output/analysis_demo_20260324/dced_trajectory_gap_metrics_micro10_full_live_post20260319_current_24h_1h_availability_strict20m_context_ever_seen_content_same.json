@@ -1,0 +1,250 @@
+{
+  "study_id": "micro10_full_live_20260319",
+  "content_signature_mode": "live_embed_strict_same",
+  "content_signature_definition": "same normalized text + same top embed type + same nested media embed type + same external URL + same quoted/embedded record target + same media signature",
+  "max_age_hours": 24.0,
+  "riskset_mode": "ever_seen_in_feed",
+  "riskset_definition": "same duplicate cluster, same feed/viewer/window, eligible if created_at <= window_end and post was ever observed in the same feed",
+  "early_window_hours": 1.0,
+  "availability_anchor": "availability_time",
+  "strict_cohort_mode": "context",
+  "feed_posts": 723566,
+  "base_valid_duplicate_clusters": 4980,
+  "same_snapshot_baseline": {
+    "valid_duplicate_clusters": 4980,
+    "riskset_contexts_ge2": 2307,
+    "riskset_rows": 5257,
+    "riskset_zero_exposure_share": 0.2555,
+    "strict_cohort_summary": {
+      "posts_with_delay_measurement": 13325,
+      "posts_before_filter": 13325,
+      "rows_before_filter": 133388,
+      "contexts_before_filter": 29036,
+      "exposure_before_filter": 18096.309252,
+      "max_first_monitor_delay_minutes": 20.0,
+      "strict_cohort_mode": "context",
+      "posts_after_filter": 1969,
+      "rows_after_filter": 5257,
+      "contexts_after_filter": 2307,
+      "exposure_after_filter": 1114.337148,
+      "post_retention_share": 0.1478,
+      "row_retention_share": 0.0394,
+      "context_retention_share": 0.0795,
+      "exposure_retention_share": 0.0616,
+      "contexts_after_filter_ge2": 2307
+    },
+    "trajectory_feature_coverage": {
+      "has_any_early_trajectory_share": 0.6839,
+      "nonzero_early_exposure_share": 0.6839,
+      "nonzero_early_best_rank_share": 0.6839
+    },
+    "model_columns": {
+      "timing": [
+        "age_spline_0",
+        "age_spline_1",
+        "age_spline_2",
+        "age_spline_3"
+      ],
+      "timing_author": [
+        "age_spline_0",
+        "age_spline_1",
+        "age_spline_2",
+        "age_spline_3",
+        "log10_followers",
+        "log10_posts"
+      ],
+      "timing_trajectory": [
+        "age_spline_0",
+        "age_spline_1",
+        "age_spline_2",
+        "age_spline_3",
+        "early_prior_exposure_log",
+        "early_prior_appearances_log",
+        "early_prior_best_rank_weight"
+      ],
+      "timing_author_trajectory": [
+        "age_spline_0",
+        "age_spline_1",
+        "age_spline_2",
+        "age_spline_3",
+        "log10_followers",
+        "log10_posts",
+        "early_prior_exposure_log",
+        "early_prior_appearances_log",
+        "early_prior_best_rank_weight"
+      ]
+    },
+    "model_params": {
+      "timing": {
+        "age_spline_0": -0.0,
+        "age_spline_1": -7.015665,
+        "age_spline_2": 5.117081,
+        "age_spline_3": -60.699395
+      },
+      "timing_author": {
+        "age_spline_0": -0.0,
+        "age_spline_1": -7.040564,
+        "age_spline_2": 5.158607,
+        "age_spline_3": -61.244028,
+        "log10_followers": 0.082827,
+        "log10_posts": -0.101969
+      },
+      "timing_trajectory": {
+        "age_spline_0": -0.0,
+        "age_spline_1": -6.682588,
+        "age_spline_2": 5.133262,
+        "age_spline_3": -62.061293,
+        "early_prior_exposure_log": 1.292348,
+        "early_prior_appearances_log": -0.569183,
+        "early_prior_best_rank_weight": -0.307251
+      },
+      "timing_author_trajectory": {
+        "age_spline_0": -0.0,
+        "age_spline_1": -6.568944,
+        "age_spline_2": 5.038837,
+        "age_spline_3": -61.8942,
+        "log10_followers": 0.099817,
+        "log10_posts": -0.088603,
+        "early_prior_exposure_log": 1.419743,
+        "early_prior_appearances_log": -0.659282,
+        "early_prior_best_rank_weight": -0.373551
+      }
+    },
+    "gap_summary": {
+      "weighted_mean_gap_equal": 0.1735,
+      "weighted_mean_gap_timing": 0.0546,
+      "weighted_mean_gap_timing_author": 0.0562,
+      "weighted_mean_gap_timing_trajectory": 0.057,
+      "weighted_mean_gap_timing_author_trajectory": 0.0582,
+      "timing_explained_share": 0.6855,
+      "author_extra_after_timing_share": -0.0094,
+      "trajectory_extra_after_timing_share": -0.0141,
+      "trajectory_extra_after_timing_author_share": -0.0117,
+      "final_unexplained_share": 0.3356
+    }
+  },
+  "live_signature_summary": {
+    "candidate_posts_for_live_signature": 16644,
+    "fetched_signature_posts": 16282,
+    "missing_signature_posts": 362,
+    "signature_coverage_share": 0.9783,
+    "signature_cache_path": "/Volumes/T9/BlueSky/output/analysis_demo_20260323/content_signature_cache_micro10_full_live_20260319.json"
+  },
+  "refined_duplicate_summary": {
+    "refined_posts_with_signature": 16282,
+    "refined_clusters_total": 12562,
+    "refined_valid_duplicate_clusters": 2035,
+    "refined_posts_in_valid_clusters": 5468
+  },
+  "valid_duplicate_clusters": 2035,
+  "riskset_contexts_ge2": 796,
+  "riskset_rows": 1753,
+  "riskset_zero_exposure_share": 0.1928,
+  "strict_cohort_summary": {
+    "posts_with_delay_measurement": 4566,
+    "posts_before_filter": 4566,
+    "rows_before_filter": 39797,
+    "contexts_before_filter": 9546,
+    "exposure_before_filter": 7489.236756,
+    "max_first_monitor_delay_minutes": 20.0,
+    "strict_cohort_mode": "context",
+    "posts_after_filter": 734,
+    "rows_after_filter": 1753,
+    "contexts_after_filter": 796,
+    "exposure_after_filter": 408.644266,
+    "post_retention_share": 0.1608,
+    "row_retention_share": 0.044,
+    "context_retention_share": 0.0834,
+    "exposure_retention_share": 0.0546,
+    "contexts_after_filter_ge2": 796
+  },
+  "trajectory_feature_coverage": {
+    "has_any_early_trajectory_share": 0.6338,
+    "nonzero_early_exposure_share": 0.6338,
+    "nonzero_early_best_rank_share": 0.6338
+  },
+  "model_columns": {
+    "timing": [
+      "age_spline_0",
+      "age_spline_1",
+      "age_spline_2",
+      "age_spline_3"
+    ],
+    "timing_author": [
+      "age_spline_0",
+      "age_spline_1",
+      "age_spline_2",
+      "age_spline_3",
+      "log10_followers",
+      "log10_posts"
+    ],
+    "timing_trajectory": [
+      "age_spline_0",
+      "age_spline_1",
+      "age_spline_2",
+      "age_spline_3",
+      "early_prior_exposure_log",
+      "early_prior_appearances_log",
+      "early_prior_best_rank_weight"
+    ],
+    "timing_author_trajectory": [
+      "age_spline_0",
+      "age_spline_1",
+      "age_spline_2",
+      "age_spline_3",
+      "log10_followers",
+      "log10_posts",
+      "early_prior_exposure_log",
+      "early_prior_appearances_log",
+      "early_prior_best_rank_weight"
+    ]
+  },
+  "model_params": {
+    "timing": {
+      "age_spline_0": -0.0,
+      "age_spline_1": -10.667043,
+      "age_spline_2": 13.852614,
+      "age_spline_3": -119.469987
+    },
+    "timing_author": {
+      "age_spline_0": -0.0,
+      "age_spline_1": -10.587937,
+      "age_spline_2": 14.113495,
+      "age_spline_3": -122.6041,
+      "log10_followers": 0.094125,
+      "log10_posts": -0.039952
+    },
+    "timing_trajectory": {
+      "age_spline_0": -0.0,
+      "age_spline_1": -9.904282,
+      "age_spline_2": 14.218047,
+      "age_spline_3": -120.555382,
+      "early_prior_exposure_log": 0.291413,
+      "early_prior_appearances_log": -0.691439,
+      "early_prior_best_rank_weight": 0.294131
+    },
+    "timing_author_trajectory": {
+      "age_spline_0": -0.0,
+      "age_spline_1": -9.768925,
+      "age_spline_2": 14.502144,
+      "age_spline_3": -123.814389,
+      "log10_followers": 0.110105,
+      "log10_posts": -0.045249,
+      "early_prior_exposure_log": 0.225604,
+      "early_prior_appearances_log": -0.714964,
+      "early_prior_best_rank_weight": 0.368394
+    }
+  },
+  "gap_summary": {
+    "weighted_mean_gap_equal": 0.1295,
+    "weighted_mean_gap_timing": 0.0478,
+    "weighted_mean_gap_timing_author": 0.0492,
+    "weighted_mean_gap_timing_trajectory": 0.0483,
+    "weighted_mean_gap_timing_author_trajectory": 0.049,
+    "timing_explained_share": 0.6309,
+    "author_extra_after_timing_share": -0.011,
+    "trajectory_extra_after_timing_share": -0.0037,
+    "trajectory_extra_after_timing_author_share": 0.0021,
+    "final_unexplained_share": 0.378
+  }
+}

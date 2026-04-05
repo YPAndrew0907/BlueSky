@@ -1,0 +1,24 @@
+2026-04-03T07:32:58Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-04-03T07:32:58Z INFO bsky_collector_v2: job start subcommand=state-writer dry_run=False resume=True
+2026-04-03T07:32:59Z INFO bsky_collector_v2.state_writer: state-writer listening addr=tcp://127.0.0.1:9911 db=D:\BlueSky\data_v2_full\control\control_state.db
+2026-04-03T07:57:53Z ERROR bsky_collector_v2: job failed subcommand=state-writer err=TypeError('Object of type SelectedPost is not JSON serializable')
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 587, in main
+    run_state_writer(cfg=cfg)
+  File "D:\BlueSky\bsky_collector_v2\state_writer.py", line 153, in run_state_writer
+    _send_json_line(conn, resp)
+  File "D:\BlueSky\bsky_collector_v2\state_writer.py", line 72, in _send_json_line
+    payload = (json.dumps(obj, ensure_ascii=False) + "\n").encode("utf-8")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type SelectedPost is not JSON serializable

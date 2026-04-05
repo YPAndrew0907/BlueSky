@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "max_total_bytes": 500000000,
+    "max_total_human": "476.84 MiB",
+    "out_dir": "datasets/leobalduf/subset_csv",
+    "total_csv_bytes": 412830191,
+    "total_csv_human": "393.71 MiB"
+  },
+  "blocks": {
+    "csv": "datasets/leobalduf/subset_csv/blocks.csv",
+    "csv_bytes": 56242657,
+    "csv_human": "53.64 MiB",
+    "parquet": "blocks.parquet",
+    "pass": "initial",
+    "rows_limit": 1000000,
+    "source": "https://bsky-data.leobalduf.com/blocks.parquet"
+  },
+  "feed_generators": {
+    "csv": "datasets/leobalduf/subset_csv/feed_generators.csv",
+    "csv_bytes": 91367767,
+    "csv_human": "87.14 MiB",
+    "parquet": "feed_generators.parquet",
+    "pass": "initial",
+    "rows_limit": 200000,
+    "source": "https://bsky-data.leobalduf.com/feed_generators.parquet"
+  },
+  "follows": {
+    "csv": "datasets/leobalduf/subset_csv/follows.csv",
+    "csv_bytes": 55010988,
+    "csv_human": "52.46 MiB",
+    "parquet": "follows.parquet",
+    "pass": "initial",
+    "rows_limit": 1000000,
+    "source": "https://bsky-data.leobalduf.com/follows.parquet"
+  },
+  "likes": {
+    "csv": "datasets/leobalduf/subset_csv/likes.csv",
+    "csv_bytes": 87409036,
+    "csv_human": "83.36 MiB",
+    "parquet": "likes.parquet",
+    "pass": "initial",
+    "rows_limit": 1000000,
+    "source": "https://bsky-data.leobalduf.com/likes.parquet"
+  },
+  "reposts": {
+    "csv": "datasets/leobalduf/subset_csv/reposts.csv",
+    "csv_bytes": 88302791,
+    "csv_human": "84.21 MiB",
+    "parquet": "reposts.parquet",
+    "pass": "initial",
+    "rows_limit": 1000000,
+    "source": "https://bsky-data.leobalduf.com/reposts.parquet"
+  },
+  "starter_packs": {
+    "csv": "datasets/leobalduf/subset_csv/starter_packs.csv",
+    "csv_bytes": 34496952,
+    "csv_human": "32.90 MiB",
+    "parquet": "starter_packs.parquet",
+    "pass": "initial",
+    "rows_limit": 200000,
+    "source": "datasets/leobalduf/starter_packs.parquet"
+  }
+}

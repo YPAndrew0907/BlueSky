@@ -1,0 +1,37 @@
+2026-04-02T07:19:39Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-04-02T07:19:39Z INFO bsky_collector_v2: job start subcommand=wide-sweep dry_run=False resume=True
+2026-04-02T07:19:51Z INFO bsky_collector_v2.job.wide_sweep: wide-sweep start date=2026-04-02 workers=16 tasks=10000
+2026-04-02T07:27:13Z ERROR bsky_collector_v2: job failed subcommand=wide-sweep err=ExceptionGroup('unhandled errors in a TaskGroup', [ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)])
+  + Exception Group Traceback (most recent call last):
+  |   File "D:\BlueSky\bsky_collector_v2\cli.py", line 513, in main
+  |     asyncio.run(
+  |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+  |     return runner.run(main)
+  |            ^^^^^^^^^^^^^^^^
+  |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+  |     return self._loop.run_until_complete(task)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+  |     return future.result()
+  |            ^^^^^^^^^^^^^^^
+  |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 459, in run_wide_sweep
+  |     async with asyncio.TaskGroup() as tg:
+  |                ^^^^^^^^^^^^^^^^^^^
+  |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\taskgroups.py", line 71, in __aexit__
+  |     return await self._aexit(et, exc)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\taskgroups.py", line 164, in _aexit
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 404, in worker
+    |     control.mark_wide_in_progress(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 163, in _rpc
+    |     chunk = conn.recv(65536)
+    |             ^^^^^^^^^^^^^^^^
+    | ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+    +------------------------------------

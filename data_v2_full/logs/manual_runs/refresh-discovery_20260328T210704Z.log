@@ -1,0 +1,11 @@
+2026-03-28T21:07:04Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-03-28T21:07:04Z INFO bsky_collector_v2: job start subcommand=refresh-discovery dry_run=False resume=True
+2026-03-28T21:07:12Z INFO bsky_collector_v2.job.refresh_discovery: popular collected=116
+2026-03-28T21:07:12Z INFO bsky_collector_v2.job.refresh_discovery: suggested collected=116
+2026-03-28T21:07:13Z WARNING bsky_collector_v2.job.refresh_discovery: discovery surface failed surface=suggested_accounts err=HttpError('InvalidRequest: relativeToDid must be provided')
+2026-03-28T21:07:13Z INFO bsky_collector_v2.job.refresh_discovery: starterpacks skeleton unsupported; falling back err=HttpError('XRPCNotSupported: XRPC Not Supported')
+2026-03-28T21:07:14Z INFO bsky_collector_v2.job.refresh_discovery: starterpack has no embedded feeds pack_uri=at://did:plc:pifkcjimdcfwaxkanzhwxufp/app.bsky.graph.starterpack/3lylankcp632n
+2026-03-28T21:07:14Z INFO bsky_collector_v2.job.refresh_discovery: starterpack has no embedded feeds pack_uri=at://did:plc:pifkcjimdcfwaxkanzhwxufp/app.bsky.graph.starterpack/3lylqhd3un52v
+2026-03-28T21:07:14Z INFO bsky_collector_v2.job.refresh_discovery: starterpack has no embedded feeds pack_uri=at://did:plc:pifkcjimdcfwaxkanzhwxufp/app.bsky.graph.starterpack/3lygkvos7l52m
+2026-03-28T21:07:14Z INFO bsky_collector_v2.job.refresh_discovery: starterpack has no embedded feeds pack_uri=at://did:plc:pifkcjimdcfwaxkanzhwxufp/app.bsky.graph.starterpack/3lyl6lygz3o2d
+2026-03-28T21:08:49Z INFO bsky_collector_v2.job.refresh_discovery: wrote feed_catalog.csv path=/Volumes/T9/BlueSky/data_v2_full/metadata/2026-03-28/feed_catalog.csv

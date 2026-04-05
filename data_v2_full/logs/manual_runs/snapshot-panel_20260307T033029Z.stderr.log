@@ -1,0 +1,26 @@
+2026-03-07T03:30:29Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-03-07T03:30:29Z INFO bsky_collector_v2: job start subcommand=snapshot-panel dry_run=False resume=True
+2026-03-07T04:19:32Z ERROR bsky_collector_v2: job failed subcommand=snapshot-panel err=OSError(22, 'The file or directory is corrupted and unreadable')
+Traceback (most recent call last):
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'D:\\BlueSky\\data_v2_full\\hourly\\2026-03-07\\03\\logs'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 346, in main
+    with add_run_log_file(layout.hourly_snapshot_log(hour), log_level=g.log_level):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\logging_utils.py", line 67, in add_run_log_file
+    ensure_dir(path.parent)
+  File "D:\BlueSky\bsky_collector_v2\fs_utils.py", line 48, in ensure_dir
+    path.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1316, in mkdir
+    self.mkdir(mode, parents=False, exist_ok=exist_ok)
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+OSError: [WinError 1392] The file or directory is corrupted and unreadable: 'D:\\BlueSky\\data_v2_full\\hourly\\2026-03-07\\03\\logs'

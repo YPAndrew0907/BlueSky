@@ -1,0 +1,10 @@
+2026-04-03T06:14:55Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-04-03T06:14:55Z INFO bsky_collector_v2: job start subcommand=index-feed-generators dry_run=False resume=True
+2026-04-03T06:14:56Z INFO bsky_collector_v2.job.index_feed_generators: feed generator index hosts relay_host=https://bsky.network records_host=https://bsky.social auth=yes
+2026-04-03T06:14:56Z INFO bsky_collector_v2.job.index_feed_generators: recovered repo tasks in_progress->pending n=1
+2026-04-03T06:15:04Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:pruucfgmw3hfxk2kissdpzit err=HttpError('InvalidRequest: Could not find repo: did:plc:pruucfgmw3hfxk2kissdpzit')
+2026-04-03T06:15:29Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:pruucfgmw3hfxk2kissdpzit err=HttpError('InvalidRequest: Could not find repo: did:plc:pruucfgmw3hfxk2kissdpzit')
+2026-04-03T06:15:29Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:xdym4v3hpvfwgchyjmmqt2oe err=HttpError('InvalidRequest: Could not find repo: did:plc:xdym4v3hpvfwgchyjmmqt2oe')
+2026-04-03T06:15:29Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:xdym4v3hpvfwgchyjmmqt2oe err=HttpError('InvalidRequest: Could not find repo: did:plc:xdym4v3hpvfwgchyjmmqt2oe')
+2026-04-03T06:15:30Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=1 mode=listRepos inserted=0 repos_returned=500 next_cursor=set
+2026-04-03T06:16:51Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:jjbyt5mfpssf53n6lsnomltg err=HttpError('InvalidRequest: Could not find repo: did:plc:jjbyt5mfpssf53n6lsnomltg')

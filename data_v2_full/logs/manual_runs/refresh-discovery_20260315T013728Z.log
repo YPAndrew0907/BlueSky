@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/__main__.py", line 13, in <module>
+    _main()
+    ~~~~~^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/__main__.py", line 9, in _main
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/cli.py", line 195, in main
+    args = build_parser().parse_args(argv)
+           ~~~~~~~~~~~~^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/cli.py", line 100, in build_parser
+    default=Path(os.environ.get("BSKY_LABELEREXP_SOURCE_OUT_BASE", str(Path.cwd() / "data_v2_full"))),
+                                                                       ~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 746, in cwd
+    return cls('').absolute()
+           ~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 649, in absolute
+    cwd = os.getcwd()
+FileNotFoundError: [Errno 2] No such file or directory

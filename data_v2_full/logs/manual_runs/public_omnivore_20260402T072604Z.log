@@ -1,0 +1,32 @@
+COMMAND: /d/BlueSky/.venv-win/Scripts/python.exe -m bsky_collector_v2 collect-public-omnibus --out-base /d/BlueSky/data_v2_full --appview-host https://public.api.bsky.app --pds-host https://bsky.social --relay-host https://bsky.network --log-level info --rps 20 --concurrency 16 --posts-per-feed 50 --time-budget-minutes 55 --feed-time-budget-s 20 --vantage-id-unauth unauth --seed-max-files 0 --seed-max-rows 0 --n-feeds-wide 5000 --max-authors 200000 --max-feed-generators 200000 --max-posts-interactions 200000 --max-posts-rq1 200000 --batch-size-interactions 25 --batch-size-rq1 25 --max-items-per-endpoint-interactions 0 --max-items-per-endpoint-rq1 0 --max-thread-depth 1000 --max-thread-parent-height 1000 --max-author-feed-items 0 --max-followers-per-actor 0 --max-follows-per-actor 0 --max-follow-records-per-actor 0 --max-actor-feeds-per-actor 0 --max-lists-per-actor 0 --max-list-members-per-list 0 --max-starter-packs-per-actor 0 --follow-record-scope seed+graph --shard-index 0 --shard-count 1 --panel-k1-popular 700 --panel-k2-onboarding 300 --panel-k3-suggested 300 --panel-k4-longtail 200 --resume --no-include-author-labels --all-studies --no-seed-registry --include-posts-first-seen --enqueue-interactions-from-seed --enqueue-rq1-factors-from-seed --no-run-index-feed-generators --no-run-refresh-discovery --no-run-build-panel --no-run-snapshot-panel --no-run-wide-sweep --no-run-hydrate-authors --no-run-hydrate-feed-generators --run-backfill-interactions --run-backfill-rq1-factors --no-run-micro-studies --no-include-hydrated-interactions --no-include-hydrated-rq1 --resolve-pds-endpoints
+
+2026-04-02T07:26:04Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-04-02T07:26:04Z INFO bsky_collector_v2: job start subcommand=collect-public-omnibus dry_run=False resume=True
+2026-04-02T07:26:04Z INFO bsky_collector_v2.job.public_omnibus: public-omnibus step start step=backfill-interactions
+2026-04-02T07:26:10Z ERROR bsky_collector_v2: job failed subcommand=collect-public-omnibus err=RuntimeError('state-writer method failed method=select_posts_to_backfill type=AttributeError error=unknown method: select_posts_to_backfill')
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 628, in main
+    summary = asyncio.run(
+              ^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\jobs\public_omnibus.py", line 419, in run_public_omnibus
+    await _run_step(
+  File "D:\BlueSky\bsky_collector_v2\jobs\public_omnibus.py", line 214, in _run_step
+    await coro_factory()
+  File "D:\BlueSky\bsky_collector_v2\jobs\backfill_interactions.py", line 323, in run_backfill_interactions
+    selected = control.select_posts_to_backfill(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    return self._rpc(name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 186, in _rpc
+    raise RuntimeError(f"state-writer method failed method={method} type={err_type} error={err_msg}")
+RuntimeError: state-writer method failed method=select_posts_to_backfill type=AttributeError error=unknown method: select_posts_to_backfill

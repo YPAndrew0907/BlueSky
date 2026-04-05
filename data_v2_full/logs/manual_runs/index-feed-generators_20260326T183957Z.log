@@ -1,0 +1,5 @@
+2026-03-26T18:39:58Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-03-26T18:39:58Z INFO bsky_collector_v2: job start subcommand=index-feed-generators dry_run=False resume=True
+2026-03-26T18:40:19Z WARNING bsky_collector_v2.session: cached session refresh failed; falling back to createSession err=HttpError("exhausted retries: ConnectError('[Errno 8] nodename nor servname provided, or not known')")
+2026-03-26T18:40:47Z WARNING bsky_collector_v2.job.index_feed_generators: auth session failed; proceeding unauth err=HttpError("exhausted retries: ConnectError('[Errno 8] nodename nor servname provided, or not known')")
+2026-03-26T18:40:47Z INFO bsky_collector_v2.job.index_feed_generators: feed generator index hosts relay_host=https://bsky.network records_host=https://bsky.social auth=no

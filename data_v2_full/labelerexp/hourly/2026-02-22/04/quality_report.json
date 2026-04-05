@@ -1,0 +1,54 @@
+{
+  "collection_params_hash": "c91832afb8174261",
+  "generated_at_utc": "2026-03-16T07:45:37Z",
+  "issues": [
+    {
+      "code": "header_only_output",
+      "message": "feed_items parts have no data rows",
+      "severity": "error"
+    },
+    {
+      "code": "request_provenance_missing",
+      "message": "request_provenance.csv is missing or empty",
+      "severity": "warning"
+    },
+    {
+      "code": "run_not_successful",
+      "message": "manifest success is not true",
+      "severity": "error"
+    },
+    {
+      "code": "timestamp_drift_exceeds_threshold",
+      "message": "snapshot start drift is 59.8 minutes",
+      "severity": "error"
+    },
+    {
+      "code": "min_success_count_not_met",
+      "message": "success count 0 is below minimum 1",
+      "severity": "error"
+    }
+  ],
+  "job_name": "snapshot-panel",
+  "metrics": {
+    "drift_minutes": 59.75,
+    "expected_request_rows": 0,
+    "failure_ratio": null,
+    "feed_item_rows": 0,
+    "feeds_done": 0,
+    "feeds_failed": 0,
+    "metadata_source_out_base": "/Volumes/T9/BlueSky/data_v2_full",
+    "post_label_rows": 0,
+    "request_provenance_completeness": null,
+    "request_provenance_rows": 0,
+    "same_day_discovery_status_exists": true,
+    "same_day_feed_catalog_exists": true
+  },
+  "quality_report_version": "2026-03-16.1",
+  "run_id": "c762dac69f4642f78f8878606aeace0f",
+  "sample_family": "experimental_labelerexp_hourly",
+  "scope": {
+    "date_utc": "2026-02-22",
+    "snapshot_hour_utc": "2026-02-22T04:00:00Z"
+  },
+  "verdict": "quarantined"
+}

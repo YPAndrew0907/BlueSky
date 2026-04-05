@@ -1,0 +1,10 @@
+check_name,status,observed_value,expected_threshold,notes
+authors.hydration_rate,PASS,0.9953,>= 0.95,hydrated=210 unique_authors=211
+feed_generators_index.nonempty,PASS,8684,> 0,Indexed via relay listReposByCollection + appview getActorFeeds.
+feed_generators_index.provider_bucket_count,PASS,48,> 0,"Ideal scale is large (e.g., 100k+ feeds) but this check only requires >0."
+feed_panel.coverage,PASS,15,>= 14,Panel built from discovery_surfaced + popular + provider-balanced less_known.
+feed_panel.less_known_provider_diversity,PASS,5,>= 4 (max_possible=5),Unique provider_bucket count within less_known group. less_known_count=5 base_less_known=5 eligible_provider_buckets=47.
+popular_feeds.coverage,PASS,84,>= 4,Collected via appview getPopularFeedGenerators.
+snapshots.success_rate,PASS,0.9333,>= 14/15 (0.9333),success=14 expected=15
+starterpacks.nonempty,PASS,400,> 0,Collected via relay listReposByCollection(app.bsky.graph.starterpack) + appview getActorStarterPacks + getStarterPack (searchStarterPacks used when available).
+starterpacks.unique_feeds_nonempty,PASS,52,> 0,Distinct feed URIs extracted from packs.

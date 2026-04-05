@@ -1,0 +1,27 @@
+2026-03-07T09:28:58Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-03-07T09:28:58Z INFO bsky_collector_v2: job start subcommand=index-feed-generators dry_run=False resume=True
+2026-03-07T09:28:58Z ERROR bsky_collector_v2: job failed subcommand=index-feed-generators err=OSError(22, 'The file or directory is corrupted and unreadable')
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 278, in main
+    asyncio.run(
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\jobs\index_feed_generators.py", line 312, in run_index_feed_generators
+    run_id = _load_or_init_day_manifest(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\jobs\index_feed_generators.py", line 127, in _load_or_init_day_manifest
+    if manifest_path.exists():
+       ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 860, in exists
+    self.stat(follow_symlinks=follow_symlinks)
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 840, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 1392] The file or directory is corrupted and unreadable: 'D:\\BlueSky\\data_v2_full\\metadata\\2026-03-07\\feed_generators_index\\run_manifest.json'

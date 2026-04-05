@@ -1,0 +1,371 @@
+{
+  "study_id": "micro10_full_live_20260319",
+  "risk_window_hours": 24,
+  "design": "same duplicate / same feed / same viewer / same window / age-matched pairs",
+  "thresholds": {
+    "10m": {
+      "pairs": 3090,
+      "share_of_all_pairs": 0.132,
+      "all": {
+        "n": 3090,
+        "share_r2": 0.0086,
+        "share_params": {
+          "const": 1.7e-05,
+          "d_log10_followers": 0.018351,
+          "d_log10_posts": 0.410529,
+          "d_age_hours": 1.56873
+        },
+        "share_pvalues": {
+          "const": 0.999864,
+          "d_log10_followers": 0.939443,
+          "d_log10_posts": 0.033805,
+          "d_age_hours": 0.252785
+        },
+        "win_r2": 0.0801,
+        "win_params": {
+          "const": 0.192526,
+          "d_log10_followers": 0.016846,
+          "d_log10_posts": 0.033157,
+          "d_age_hours": -1.26747
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 0.405549,
+          "d_log10_posts": 0.034889,
+          "d_age_hours": 0.0
+        }
+      },
+      "unauth": {
+        "n": 1422,
+        "share_r2": 0.0154,
+        "share_params": {
+          "const": -0.113377,
+          "d_log10_followers": -0.07491,
+          "d_log10_posts": 0.685255,
+          "d_age_hours": -1.928653
+        },
+        "share_pvalues": {
+          "const": 0.455293,
+          "d_log10_followers": 0.82653,
+          "d_log10_posts": 0.013467,
+          "d_age_hours": 0.313524
+        },
+        "win_r2": 0.0964,
+        "win_params": {
+          "const": 0.204556,
+          "d_log10_followers": 0.023307,
+          "d_log10_posts": 0.036083,
+          "d_age_hours": -1.382185
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 0.395337,
+          "d_log10_posts": 0.09479,
+          "d_age_hours": 0.0
+        }
+      },
+      "auth": {
+        "n": 1668,
+        "share_r2": 0.0198,
+        "share_params": {
+          "const": 0.119462,
+          "d_log10_followers": 0.158058,
+          "d_log10_posts": 0.06488,
+          "d_age_hours": 5.754277
+        },
+        "share_pvalues": {
+          "const": 0.324947,
+          "d_log10_followers": 0.629685,
+          "d_log10_posts": 0.799123,
+          "d_age_hours": 0.002246
+        },
+        "win_r2": 0.0628,
+        "win_params": {
+          "const": 0.179548,
+          "d_log10_followers": 0.010374,
+          "d_log10_posts": 0.028879,
+          "d_age_hours": -1.12982
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 0.729711,
+          "d_log10_posts": 0.203582,
+          "d_age_hours": 0.0
+        }
+      }
+    },
+    "30m": {
+      "pairs": 6312,
+      "share_of_all_pairs": 0.2696,
+      "all": {
+        "n": 6312,
+        "share_r2": 0.0089,
+        "share_params": {
+          "const": 0.077782,
+          "d_log10_followers": 0.225245,
+          "d_log10_posts": 0.128571,
+          "d_age_hours": 1.619676
+        },
+        "share_pvalues": {
+          "const": 0.36816,
+          "d_log10_followers": 0.247727,
+          "d_log10_posts": 0.43302,
+          "d_age_hours": 7.4e-05
+        },
+        "win_r2": 0.0567,
+        "win_params": {
+          "const": 0.234966,
+          "d_log10_followers": 0.060266,
+          "d_log10_posts": -0.011028,
+          "d_age_hours": -0.3998
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 3.4e-05,
+          "d_log10_posts": 0.353754,
+          "d_age_hours": 0.0
+        }
+      },
+      "unauth": {
+        "n": 2892,
+        "share_r2": 0.0122,
+        "share_params": {
+          "const": -0.022635,
+          "d_log10_followers": -0.204817,
+          "d_log10_posts": 0.67974,
+          "d_age_hours": -1.179393
+        },
+        "share_pvalues": {
+          "const": 0.846592,
+          "d_log10_followers": 0.42855,
+          "d_log10_posts": 0.00122,
+          "d_age_hours": 0.02579
+        },
+        "win_r2": 0.0863,
+        "win_params": {
+          "const": 0.2245,
+          "d_log10_followers": 0.04101,
+          "d_log10_posts": 0.011251,
+          "d_age_hours": -0.478433
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 0.035076,
+          "d_log10_posts": 0.45716,
+          "d_age_hours": 0.0
+        }
+      },
+      "auth": {
+        "n": 3420,
+        "share_r2": 0.0634,
+        "share_params": {
+          "const": 0.238382,
+          "d_log10_followers": 0.807584,
+          "d_log10_posts": -0.587349,
+          "d_age_hours": 4.903055
+        },
+        "share_pvalues": {
+          "const": 0.049781,
+          "d_log10_followers": 0.004071,
+          "d_log10_posts": 0.013503,
+          "d_age_hours": 0.0
+        },
+        "win_r2": 0.0338,
+        "win_params": {
+          "const": 0.247968,
+          "d_log10_followers": 0.085101,
+          "d_log10_posts": -0.039588,
+          "d_age_hours": -0.305152
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 8.6e-05,
+          "d_log10_posts": 0.03289,
+          "d_age_hours": 0.0
+        }
+      }
+    },
+    "1h": {
+      "pairs": 9043,
+      "share_of_all_pairs": 0.3863,
+      "all": {
+        "n": 9043,
+        "share_r2": 0.0207,
+        "share_params": {
+          "const": -0.157281,
+          "d_log10_followers": 0.629654,
+          "d_log10_posts": -0.145202,
+          "d_age_hours": -1.631672
+        },
+        "share_pvalues": {
+          "const": 0.04401,
+          "d_log10_followers": 0.000255,
+          "d_log10_posts": 0.334484,
+          "d_age_hours": 0.0
+        },
+        "win_r2": 0.0821,
+        "win_params": {
+          "const": 0.219968,
+          "d_log10_followers": 0.054662,
+          "d_log10_posts": -0.006929,
+          "d_age_hours": -0.260124
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 7e-06,
+          "d_log10_posts": 0.498662,
+          "d_age_hours": 0.0
+        }
+      },
+      "unauth": {
+        "n": 4079,
+        "share_r2": 0.0513,
+        "share_params": {
+          "const": -0.266651,
+          "d_log10_followers": 0.258263,
+          "d_log10_posts": 0.351183,
+          "d_age_hours": -2.588384
+        },
+        "share_pvalues": {
+          "const": 0.011039,
+          "d_log10_followers": 0.260368,
+          "d_log10_posts": 0.07166,
+          "d_age_hours": 0.0
+        },
+        "win_r2": 0.1109,
+        "win_params": {
+          "const": 0.212818,
+          "d_log10_followers": 0.040381,
+          "d_log10_posts": 0.01027,
+          "d_age_hours": -0.295092
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 0.013259,
+          "d_log10_posts": 0.440528,
+          "d_age_hours": 0.0
+        }
+      },
+      "auth": {
+        "n": 4964,
+        "share_r2": 0.0094,
+        "share_params": {
+          "const": -0.033351,
+          "d_log10_followers": 1.114233,
+          "d_log10_posts": -0.788027,
+          "d_age_hours": -0.501366
+        },
+        "share_pvalues": {
+          "const": 0.770918,
+          "d_log10_followers": 1.3e-05,
+          "d_log10_posts": 0.000513,
+          "d_age_hours": 0.093976
+        },
+        "win_r2": 0.0563,
+        "win_params": {
+          "const": 0.228034,
+          "d_log10_followers": 0.07307,
+          "d_log10_posts": -0.029204,
+          "d_age_hours": -0.218818
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 6.5e-05,
+          "d_log10_posts": 0.064338,
+          "d_age_hours": 0.0
+        }
+      }
+    },
+    "6h": {
+      "pairs": 22221,
+      "share_of_all_pairs": 0.9493,
+      "all": {
+        "n": 22221,
+        "share_r2": 0.0904,
+        "share_params": {
+          "const": 0.037457,
+          "d_log10_followers": 2.334427,
+          "d_log10_posts": -0.870364,
+          "d_age_hours": -1.169747
+        },
+        "share_pvalues": {
+          "const": 0.590843,
+          "d_log10_followers": 0.0,
+          "d_log10_posts": 0.0,
+          "d_age_hours": 0.0
+        },
+        "win_r2": 0.091,
+        "win_params": {
+          "const": 0.266386,
+          "d_log10_followers": 0.119477,
+          "d_log10_posts": -0.041219,
+          "d_age_hours": -0.071988
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 0.0,
+          "d_log10_posts": 0.0,
+          "d_age_hours": 0.0
+        }
+      },
+      "unauth": {
+        "n": 10048,
+        "share_r2": 0.0931,
+        "share_params": {
+          "const": 0.08217,
+          "d_log10_followers": 2.123698,
+          "d_log10_posts": -0.586806,
+          "d_age_hours": -1.204372
+        },
+        "share_pvalues": {
+          "const": 0.400013,
+          "d_log10_followers": 0.0,
+          "d_log10_posts": 7.3e-05,
+          "d_age_hours": 0.0
+        },
+        "win_r2": 0.1053,
+        "win_params": {
+          "const": 0.277209,
+          "d_log10_followers": 0.113231,
+          "d_log10_posts": -0.030919,
+          "d_age_hours": -0.077607
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 0.0,
+          "d_log10_posts": 0.000178,
+          "d_age_hours": 0.0
+        }
+      },
+      "auth": {
+        "n": 12173,
+        "share_r2": 0.0892,
+        "share_params": {
+          "const": -0.018563,
+          "d_log10_followers": 2.63684,
+          "d_log10_posts": -1.260164,
+          "d_age_hours": -1.119473
+        },
+        "share_pvalues": {
+          "const": 0.850793,
+          "d_log10_followers": 0.0,
+          "d_log10_posts": 0.0,
+          "d_age_hours": 0.0
+        },
+        "win_r2": 0.0758,
+        "win_params": {
+          "const": 0.253325,
+          "d_log10_followers": 0.130043,
+          "d_log10_posts": -0.056182,
+          "d_age_hours": -0.064236
+        },
+        "win_pvalues": {
+          "const": 0.0,
+          "d_log10_followers": 0.0,
+          "d_log10_posts": 0.0,
+          "d_age_hours": 0.0
+        }
+      }
+    }
+  }
+}

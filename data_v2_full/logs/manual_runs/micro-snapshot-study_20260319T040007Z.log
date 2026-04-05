@@ -1,0 +1,40 @@
+2026-03-19T04:00:07Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-03-19T04:00:07Z INFO bsky_collector_v2: job start subcommand=micro-snapshot-study dry_run=False resume=True
+2026-03-19T04:00:13Z ERROR bsky_collector_v2: job failed subcommand=micro-snapshot-study err=FileNotFoundError(2, 'No such file or directory')
+Traceback (most recent call last):
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/cli.py", line 585, in main
+    asyncio.run(
+    ~~~~~~~~~~~^
+        run_micro_snapshot_study(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        )
+        ^
+    )
+    ^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/micro_snapshot_study.py", line 533, in run_micro_snapshot_study
+    control.start_run(
+    ~~~~~~~~~~~~~~~~~^
+        run_id=run_id,
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        params=params,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    return self._rpc(name, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    conn.connect(str(self.socket_path))
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory

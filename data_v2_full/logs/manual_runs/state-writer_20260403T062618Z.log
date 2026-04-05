@@ -1,0 +1,12 @@
+2026-04-03T06:26:18Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-04-03T06:26:18Z INFO bsky_collector_v2: job start subcommand=state-writer dry_run=False resume=True
+2026-04-03T06:26:18Z INFO bsky_collector_v2.state_writer: state-writer listening addr=tcp://127.0.0.1:9911 db=D:\BlueSky\data_v2_full\control\control_state.db
+2026-04-03T06:26:46Z ERROR bsky_collector_v2: job failed subcommand=state-writer err=ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 587, in main
+    run_state_writer(cfg=cfg)
+  File "D:\BlueSky\bsky_collector_v2\state_writer.py", line 152, in run_state_writer
+    _send_json_line(conn, resp)
+  File "D:\BlueSky\bsky_collector_v2\state_writer.py", line 73, in _send_json_line
+    conn.sendall(payload)
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host

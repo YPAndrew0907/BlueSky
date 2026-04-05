@@ -1,0 +1,1194 @@
+2026-03-29T04:42:54Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-03-29T04:42:54Z INFO bsky_collector_v2: job start subcommand=wide-sweep dry_run=False resume=True
+2026-03-29T04:43:01Z INFO bsky_collector_v2.job.wide_sweep: wide-sweep start date=2026-03-29 workers=16 tasks=10000
+2026-03-29T05:11:16Z ERROR bsky_collector_v2: job failed subcommand=wide-sweep err=ConnectionRefusedError(61, 'Connection refused')
+  + Exception Group Traceback (most recent call last):
+  |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 400, in run_wide_sweep
+  |     async with asyncio.TaskGroup() as tg:
+  |                ~~~~~~~~~~~~~~~~~^^
+  |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/taskgroups.py", line 71, in __aexit__
+  |     return await self._aexit(et, exc)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/taskgroups.py", line 173, in _aexit
+  |     raise BaseExceptionGroup(
+  |     ...<2 lines>...
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (16 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 3 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 4 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 5 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 6 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 372, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 486, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |     ...<26 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<9 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 287, in request_json
+    |     await limiter.wait()
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 106, in wait
+    |     await asyncio.sleep(self._penalty_s)
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py", line 718, in sleep
+    |     return await future
+    |            ^^^^^^^^^^^^
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 7 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 372, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 486, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |     ...<26 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<9 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<5 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<4 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         pool_request.request
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    |     raise exc
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    |     ) = await self._receive_response_headers(**kwargs)
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    |     event = await self._receive_event(timeout=timeout)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    |     data = await self._network_stream.read(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         self.READ_NUM_BYTES, timeout=timeout
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 35, in read
+    |     return await self._stream.receive(max_bytes=max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 244, in receive
+    |     data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 187, in _call_sslobject_method
+    |     data = await self.transport_stream.receive()
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1269, in receive
+    |     await self._protocol.read_event.wait()
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/locks.py", line 213, in wait
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 8 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 372, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 486, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |     ...<26 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<9 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<5 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<4 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         pool_request.request
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    |     raise exc
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    |     ) = await self._receive_response_headers(**kwargs)
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    |     event = await self._receive_event(timeout=timeout)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    |     data = await self._network_stream.read(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         self.READ_NUM_BYTES, timeout=timeout
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 35, in read
+    |     return await self._stream.receive(max_bytes=max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 244, in receive
+    |     data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 187, in _call_sslobject_method
+    |     data = await self.transport_stream.receive()
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1269, in receive
+    |     await self._protocol.read_event.wait()
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/locks.py", line 213, in wait
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 9 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 372, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 486, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |     ...<26 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<9 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<5 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<4 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         pool_request.request
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    |     raise exc
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    |     ) = await self._receive_response_headers(**kwargs)
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    |     event = await self._receive_event(timeout=timeout)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    |     data = await self._network_stream.read(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         self.READ_NUM_BYTES, timeout=timeout
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 35, in read
+    |     return await self._stream.receive(max_bytes=max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 244, in receive
+    |     data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 187, in _call_sslobject_method
+    |     data = await self.transport_stream.receive()
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1269, in receive
+    |     await self._protocol.read_event.wait()
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/locks.py", line 213, in wait
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 10 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 372, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 486, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |     ...<26 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<9 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<5 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<4 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         pool_request.request
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    |     raise exc
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    |     ) = await self._receive_response_headers(**kwargs)
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    |     event = await self._receive_event(timeout=timeout)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    |     data = await self._network_stream.read(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         self.READ_NUM_BYTES, timeout=timeout
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 35, in read
+    |     return await self._stream.receive(max_bytes=max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 244, in receive
+    |     data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 187, in _call_sslobject_method
+    |     data = await self.transport_stream.receive()
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1269, in receive
+    |     await self._protocol.read_event.wait()
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/locks.py", line 213, in wait
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 11 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 372, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 486, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |     ...<26 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<9 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<5 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<4 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         pool_request.request
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    |     raise exc
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    |     ) = await self._receive_response_headers(**kwargs)
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    |     event = await self._receive_event(timeout=timeout)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    |     data = await self._network_stream.read(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         self.READ_NUM_BYTES, timeout=timeout
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 35, in read
+    |     return await self._stream.receive(max_bytes=max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 244, in receive
+    |     data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 187, in _call_sslobject_method
+    |     data = await self.transport_stream.receive()
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1269, in receive
+    |     await self._protocol.read_event.wait()
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/locks.py", line 213, in wait
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 12 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 372, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 486, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |     ...<26 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<9 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<5 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<4 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         pool_request.request
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    |     raise exc
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    |     ) = await self._receive_response_headers(**kwargs)
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    |     event = await self._receive_event(timeout=timeout)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    |     data = await self._network_stream.read(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         self.READ_NUM_BYTES, timeout=timeout
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 35, in read
+    |     return await self._stream.receive(max_bytes=max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 244, in receive
+    |     data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 187, in _call_sslobject_method
+    |     data = await self.transport_stream.receive()
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1269, in receive
+    |     await self._protocol.read_event.wait()
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/locks.py", line 213, in wait
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 13 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 372, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 486, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |     ...<26 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<9 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<5 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<4 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         pool_request.request
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    |     raise exc
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    |     ) = await self._receive_response_headers(**kwargs)
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    |     event = await self._receive_event(timeout=timeout)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    |     data = await self._network_stream.read(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         self.READ_NUM_BYTES, timeout=timeout
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 35, in read
+    |     return await self._stream.receive(max_bytes=max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 244, in receive
+    |     data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 187, in _call_sslobject_method
+    |     data = await self.transport_stream.receive()
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1269, in receive
+    |     await self._protocol.read_event.wait()
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/locks.py", line 213, in wait
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 14 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 372, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 486, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |     ...<26 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<9 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<5 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<4 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         pool_request.request
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    |     raise exc
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    |     ) = await self._receive_response_headers(**kwargs)
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    |     event = await self._receive_event(timeout=timeout)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    |     data = await self._network_stream.read(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         self.READ_NUM_BYTES, timeout=timeout
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 35, in read
+    |     return await self._stream.receive(max_bytes=max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 244, in receive
+    |     data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 187, in _call_sslobject_method
+    |     data = await self.transport_stream.receive()
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1269, in receive
+    |     await self._protocol.read_event.wait()
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/locks.py", line 213, in wait
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- 15 ----------------
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 372, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/tasks.py", line 507, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 486, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |     ...<26 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<9 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<5 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<4 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         pool_request.request
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    |     raise exc
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    |     ) = await self._receive_response_headers(**kwargs)
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    |     event = await self._receive_event(timeout=timeout)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    |     data = await self._network_stream.read(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         self.READ_NUM_BYTES, timeout=timeout
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 35, in read
+    |     return await self._stream.receive(max_bytes=max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 244, in receive
+    |     data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/streams/tls.py", line 187, in _call_sslobject_method
+    |     data = await self.transport_stream.receive()
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/.venv/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1269, in receive
+    |     await self._protocol.read_event.wait()
+    |   File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/locks.py", line 213, in wait
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 380, in worker
+    |     control.mark_wide_done(
+    |     ~~~~~~~~~~~~~~~~~~~~~~^
+    |         date_utc=date_str,
+    |         ^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         last_error=last_err,
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    |     return self._rpc(name, *args, **kwargs)
+    |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    |     conn.connect(str(self.socket_path))
+    |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ConnectionRefusedError: [Errno 61] Connection refused
+    +---------------- ... ----------------
+    | and 1 more exception
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/cli.py", line 383, in main
+    asyncio.run(
+    ~~~~~~~~~~~^
+        run_wide_sweep(
+        ^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        )
+        ^
+    )
+    ^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/wide_sweep.py", line 415, in run_wide_sweep
+    control.finish_run(run_id=run_id, finished_at_utc=format_utc(now_utc()), success=success)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 191, in _call
+    return self._rpc(name, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 138, in _rpc
+    conn.connect(str(self.socket_path))
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionRefusedError: [Errno 61] Connection refused

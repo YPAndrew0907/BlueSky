@@ -1,0 +1,67 @@
+2026-02-16T00:26:42Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-02-16T00:26:42Z INFO bsky_collector_v2: job start subcommand=index-feed-generators dry_run=False resume=True
+2026-02-16T00:26:42Z INFO bsky_collector_v2.job.index_feed_generators: feed generator index hosts relay_host=https://bsky.network records_host=https://bsky.social auth=yes
+2026-02-16T00:26:44Z INFO bsky_collector_v2.job.index_feed_generators: recovered repo tasks in_progress->pending n=1
+2026-02-16T00:26:57Z ERROR bsky_collector_v2: job failed subcommand=index-feed-generators err=OperationalError('database is locked')
+Traceback (most recent call last):
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/index_feed_generators.py", line 710, in run_index_feed_generators
+    state.delete_feed_generator_index_repo_task(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        collection=FEED_GENERATOR_COLLECTION, repo_did=repo_did
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 545, in delete_feed_generator_index_repo_task
+    self.conn.execute(
+    ~~~~~~~~~~~~~~~~~^
+        "DELETE FROM feed_generator_index_repo_tasks WHERE collection=? AND repo_did=?",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (str(collection), str(repo_did)),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+sqlite3.OperationalError: database is locked
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/cli.py", line 218, in main
+    asyncio.run(
+    ~~~~~~~~~~~^
+        run_index_feed_generators(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<12 lines>...
+        )
+        ^
+    )
+    ^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/index_feed_generators.py", line 838, in run_index_feed_generators
+    state.mark_feed_generator_index_repo_done(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        collection=FEED_GENERATOR_COLLECTION,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        last_error=repr(err),
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 532, in mark_feed_generator_index_repo_done
+    self.conn.execute(
+    ~~~~~~~~~~~~~~~~~^
+        """
+        ^^^
+    ...<7 lines>...
+        (str(status), cursor, last_error, str(updated_at_utc), str(collection), str(repo_did)),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+sqlite3.OperationalError: database is locked

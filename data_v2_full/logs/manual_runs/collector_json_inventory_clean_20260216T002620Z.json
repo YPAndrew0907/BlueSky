@@ -1,0 +1,326 @@
+{
+  "control/feed_generators_index_checkpoint.json": {
+    "files": [
+      "control/feed_generators_index_checkpoint.json"
+    ],
+    "example_file": "control/feed_generators_index_checkpoint.json",
+    "keys": [
+      "collection",
+      "parts_next_index",
+      "records_host",
+      "records_written_this_run",
+      "relay_host",
+      "repo_source",
+      "repo_task_counts",
+      "repos_cursor",
+      "repos_done",
+      "updated_at_utc"
+    ],
+    "sample": {
+      "collection": "app.bsky.feed.generator",
+      "parts_next_index": "1",
+      "records_host": "https://bsky.social",
+      "records_written_this_run": "5",
+      "relay_host": "https://bsky.network",
+      "repo_source": "https://bsky.network::listRepos",
+      "repo_task_counts": "{'failed': 1870, 'pending': 271}",
+      "repos_cursor": "268571",
+      "repos_done": "False",
+      "updated_at_utc": "2026-02-16T00:19:59Z"
+    }
+  },
+  "hourly/{date}/{hour}/progress.json": {
+    "files": [
+      "hourly/2026-02-14/09/progress.json",
+      "hourly/2026-02-14/23/progress.json",
+      "hourly/2026-02-15/16/progress.json",
+      "hourly/2026-02-16/00/progress.json"
+    ],
+    "example_file": "hourly/2026-02-16/00/progress.json",
+    "keys": [
+      "concurrency",
+      "elapsed_s",
+      "feeds_done",
+      "feeds_failed",
+      "feeds_pending",
+      "feeds_total",
+      "http_errors_by_code",
+      "job_name",
+      "rows_written",
+      "rps_config",
+      "run_id",
+      "started_at_utc",
+      "updated_at_utc"
+    ],
+    "sample": {
+      "concurrency": "16",
+      "elapsed_s": "316.93",
+      "feeds_done": "669",
+      "feeds_failed": "73",
+      "feeds_pending": "2249",
+      "feeds_total": "2991",
+      "http_errors_by_code": "{'500': 19, '502': 1, 'timeout': 9}",
+      "job_name": "snapshot-panel",
+      "rows_written": "{'feed_items': 8919, 'post_labels': 808, 'post_metrics': 8919, 'posts_first_seen': 3148}",
+      "rps_config": "20.0",
+      "run_id": "bb761f2aecb3439fade4b7ec7060b756",
+      "started_at_utc": "2026-02-16T00:18:47Z",
+      "updated_at_utc": "2026-02-16T00:24:04Z"
+    }
+  },
+  "hourly/{date}/{hour}/run_manifest.json": {
+    "files": [
+      "hourly/2026-02-14/09/run_manifest.json",
+      "hourly/2026-02-14/23/run_manifest.json",
+      "hourly/2026-02-15/16/run_manifest.json",
+      "hourly/2026-02-16/00/run_manifest.json"
+    ],
+    "example_file": "hourly/2026-02-16/00/run_manifest.json",
+    "keys": [
+      "finished_at_utc",
+      "git_sha",
+      "hostname",
+      "job_name",
+      "labelers_included_by_viewer_mode",
+      "params",
+      "platform",
+      "python",
+      "run_id",
+      "snapshot_hour_utc",
+      "started_at_utc",
+      "success",
+      "vantages"
+    ],
+    "sample": {
+      "finished_at_utc": "2026-02-16T00:23:59Z",
+      "git_sha": "09f9b0f5ebd275a7fa8df27907a5624b24957ab0",
+      "hostname": "Yipengs-MacBook-Pro.local",
+      "job_name": "snapshot-panel",
+      "labelers_included_by_viewer_mode": "{'auth': ['did:plc:ar7c4by46qjdydhdevvrndac;redact'], 'unauth': ['did:plc:ar7c4by46qjdydhdevvrndac;redact']}",
+      "params": "{'accept_labelers': None, 'accept_language': 'en-US', 'concurrency': 16, 'feed_time_budget_s': 60.0, 'posts_per_feed': 50, 'resume': True, 'rps': 20.0, 'snapshot_hour_utc': '202...",
+      "platform": "macOS-26.0-arm64-arm-64bit-Mach-O",
+      "python": "3.13.7",
+      "run_id": "bb761f2aecb3439fade4b7ec7060b756",
+      "snapshot_hour_utc": "2026-02-16T00:00:00Z",
+      "started_at_utc": "2026-02-16T00:05:11Z",
+      "success": "True",
+      "vantages": "[{'accept_language': 'en-US', 'labelers_requested': None, 'vantage_id': 'unauth_enUS', 'viewer_mode': 'unauth'}, {'accept_language': 'en-US', 'labelers_requested': None, 'vantag..."
+    }
+  },
+  "metadata/{date}/discovery_status.json": {
+    "files": [
+      "metadata/2026-02-14/discovery_status.json",
+      "metadata/2026-02-15/discovery_status.json"
+    ],
+    "example_file": "metadata/2026-02-15/discovery_status.json",
+    "keys": [
+      "date_utc",
+      "finished_at_utc",
+      "job_name",
+      "run_id",
+      "started_at_utc",
+      "success",
+      "surfaces",
+      "updated_at_utc",
+      "vantage_id",
+      "viewer_mode"
+    ],
+    "sample": {
+      "date_utc": "2026-02-15",
+      "finished_at_utc": "2026-02-15T16:22:52Z",
+      "job_name": "refresh-discovery",
+      "run_id": "5a471233d3dc4c53af10e26735736b2a",
+      "started_at_utc": "2026-02-15T16:22:42Z",
+      "success": "True",
+      "surfaces": "{'feed_catalog_export': {'finished_at_utc': '2026-02-15T16:22:47Z', 'started_at_utc': '2026-02-15T16:22:47Z', 'status': 'success'}, 'onboarding_suggested_starterpacks': {'detail...",
+      "updated_at_utc": "2026-02-15T16:22:47Z",
+      "vantage_id": "auth",
+      "viewer_mode": "auth"
+    }
+  },
+  "metadata/{date}/feed_generators_index/progress.json": {
+    "files": [
+      "metadata/2026-02-14/feed_generators_index/progress.json",
+      "metadata/2026-02-15/feed_generators_index/progress.json",
+      "metadata/2026-02-16/feed_generators_index/progress.json"
+    ],
+    "example_file": "metadata/2026-02-16/feed_generators_index/progress.json",
+    "keys": [
+      "concurrency",
+      "elapsed_s",
+      "feeds_done",
+      "feeds_failed",
+      "feeds_pending",
+      "feeds_total",
+      "http_errors_by_code",
+      "job_name",
+      "rows_written",
+      "rps_config",
+      "run_id",
+      "started_at_utc",
+      "updated_at_utc"
+    ],
+    "sample": {
+      "concurrency": "1",
+      "elapsed_s": "90.074",
+      "feeds_done": "5",
+      "feeds_failed": "4",
+      "feeds_pending": "NULL",
+      "feeds_total": "NULL",
+      "http_errors_by_code": "{}",
+      "job_name": "index-feed-generators",
+      "rows_written": "{'feed_generators_index_records': 5}",
+      "rps_config": "20.0",
+      "run_id": "1b1ff14ddf2548cd9887d3b1883bd275",
+      "started_at_utc": "2026-02-16T00:18:47Z",
+      "updated_at_utc": "2026-02-16T00:20:17Z"
+    }
+  },
+  "metadata/{date}/feed_generators_index/run_manifest.json": {
+    "files": [
+      "metadata/2026-02-14/feed_generators_index/run_manifest.json",
+      "metadata/2026-02-15/feed_generators_index/run_manifest.json",
+      "metadata/2026-02-16/feed_generators_index/run_manifest.json"
+    ],
+    "example_file": "metadata/2026-02-16/feed_generators_index/run_manifest.json",
+    "keys": [
+      "collection",
+      "date_utc",
+      "error",
+      "finished_at_utc",
+      "git_sha",
+      "job_name",
+      "params",
+      "records_host",
+      "relay_host",
+      "run_id",
+      "started_at_utc",
+      "success"
+    ],
+    "sample": {
+      "collection": "app.bsky.feed.generator",
+      "date_utc": "2026-02-16",
+      "error": "OperationalError('database is locked')",
+      "finished_at_utc": "2026-02-16T00:20:17Z",
+      "git_sha": "09f9b0f5ebd275a7fa8df27907a5624b24957ab0",
+      "job_name": "index-feed-generators",
+      "params": "{'accept_labelers': None, 'accept_language': None, 'auth_env_path': '/Volumes/T9/BlueSky/auth.env', 'collection': 'app.bsky.feed.generator', 'date_utc': '2026-02-16', 'records_h...",
+      "records_host": "https://bsky.social",
+      "relay_host": "https://bsky.network",
+      "run_id": "1b1ff14ddf2548cd9887d3b1883bd275",
+      "started_at_utc": "2026-02-16T00:18:47Z",
+      "success": "False"
+    }
+  },
+  "metadata/{date}/progress.json": {
+    "files": [
+      "metadata/2026-02-14/progress.json",
+      "metadata/2026-02-15/progress.json"
+    ],
+    "example_file": "metadata/2026-02-15/progress.json",
+    "keys": [
+      "concurrency",
+      "elapsed_s",
+      "feeds_done",
+      "feeds_failed",
+      "feeds_pending",
+      "feeds_total",
+      "http_errors_by_code",
+      "job_name",
+      "rows_written",
+      "rps_config",
+      "run_id",
+      "started_at_utc",
+      "updated_at_utc"
+    ],
+    "sample": {
+      "concurrency": "NULL",
+      "elapsed_s": "9.247",
+      "feeds_done": "0",
+      "feeds_failed": "0",
+      "feeds_pending": "NULL",
+      "feeds_total": "NULL",
+      "http_errors_by_code": "{'400': 1, '404': 2}",
+      "job_name": "refresh-discovery",
+      "rows_written": "{}",
+      "rps_config": "NULL",
+      "run_id": "5a471233d3dc4c53af10e26735736b2a",
+      "started_at_utc": "2026-02-15T16:22:42Z",
+      "updated_at_utc": "2026-02-15T16:22:52Z"
+    }
+  },
+  "wide/{date}/progress.json": {
+    "files": [
+      "wide/2026-02-14/progress.json",
+      "wide/2026-02-15/progress.json",
+      "wide/2026-02-16/progress.json"
+    ],
+    "example_file": "wide/2026-02-16/progress.json",
+    "keys": [
+      "concurrency",
+      "elapsed_s",
+      "feeds_done",
+      "feeds_failed",
+      "feeds_pending",
+      "feeds_total",
+      "http_errors_by_code",
+      "job_name",
+      "rows_written",
+      "rps_config",
+      "run_id",
+      "started_at_utc",
+      "updated_at_utc"
+    ],
+    "sample": {
+      "concurrency": "16",
+      "elapsed_s": "312.328",
+      "feeds_done": "986",
+      "feeds_failed": "51",
+      "feeds_pending": "3964",
+      "feeds_total": "5001",
+      "http_errors_by_code": "{'400': 5, '401': 1, '500': 49, 'timeout': 39}",
+      "job_name": "wide-sweep",
+      "rows_written": "{'feed_items': 12132, 'post_labels': 720, 'post_metrics': 12132, 'posts_first_seen': 7058}",
+      "rps_config": "20.0",
+      "run_id": "1ad74b51f5b54d0d86c1db93a8c530b7",
+      "started_at_utc": "2026-02-16T00:18:47Z",
+      "updated_at_utc": "2026-02-16T00:23:59Z"
+    }
+  },
+  "wide/{date}/run_manifest.json": {
+    "files": [
+      "wide/2026-02-14/run_manifest.json",
+      "wide/2026-02-15/run_manifest.json",
+      "wide/2026-02-16/run_manifest.json"
+    ],
+    "example_file": "wide/2026-02-16/run_manifest.json",
+    "keys": [
+      "date_utc",
+      "finished_at_utc",
+      "git_sha",
+      "hostname",
+      "job_name",
+      "labelers_included",
+      "params",
+      "platform",
+      "python",
+      "run_id",
+      "started_at_utc",
+      "success"
+    ],
+    "sample": {
+      "date_utc": "2026-02-16",
+      "finished_at_utc": "2026-02-16T00:23:54Z",
+      "git_sha": "09f9b0f5ebd275a7fa8df27907a5624b24957ab0",
+      "hostname": "Yipengs-MacBook-Pro.local",
+      "job_name": "wide-sweep",
+      "labelers_included": "['did:plc:ar7c4by46qjdydhdevvrndac;redact']",
+      "params": "{'accept_labelers': None, 'accept_language': 'en-US', 'concurrency': 16, 'date_utc': '2026-02-16', 'feed_time_budget_s': 60.0, 'n_feeds': 5000, 'posts_per_feed': 20, 'resume': T...",
+      "platform": "macOS-26.0-arm64-arm-64bit-Mach-O",
+      "python": "3.13.7",
+      "run_id": "1ad74b51f5b54d0d86c1db93a8c530b7",
+      "started_at_utc": "2026-02-16T00:06:24Z",
+      "success": "True"
+    }
+  }
+}

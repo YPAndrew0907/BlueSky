@@ -1,0 +1,44 @@
+usage: python -m bsky_collector_v2 snapshot-panel [-h] [--out-base OUT_BASE]
+                                                  [--env-path ENV_PATH]
+                                                  [--log-level {info,debug}]
+                                                  [--appview-host APPVIEW_HOST]
+                                                  [--pds-host PDS_HOST]
+                                                  [--relay-host RELAY_HOST]
+                                                  [--rps RPS]
+                                                  [--concurrency CONCURRENCY]
+                                                  [--posts-per-feed POSTS_PER_FEED]
+                                                  [--time-budget-minutes TIME_BUDGET_MINUTES]
+                                                  [--feed-time-budget-s FEED_TIME_BUDGET_S]
+                                                  [--viewer-modes VIEWER_MODES]
+                                                  [--accept-language ACCEPT_LANGUAGE]
+                                                  [--accept-labelers ACCEPT_LABELERS]
+                                                  [--vantage-id-unauth VANTAGE_ID_UNAUTH]
+                                                  [--vantage-id-auth VANTAGE_ID_AUTH]
+                                                  [--resume | --no-resume]
+                                                  [--dry-run]
+                                                  [--snapshot-hour-utc SNAPSHOT_HOUR_UTC]
+python -m bsky_collector_v2 snapshot-panel: error: argument --time-budget-minutes: invalid int value: '1.0'
+[Window 1/1] 2026-02-16T00:00:00Z -> 2026-02-16T01:00:00Z
+
+$ /Volumes/T9/BlueSky/.venv/bin/python -m bsky_collector_v2 snapshot-panel --out-base /Volumes/T9/BlueSky/data_v2_full --env-path /Volumes/T9/BlueSky/auth.env --accept-language en-US --vantage-id-unauth unauth_enUS --vantage-id-auth auth_enUS --viewer-modes unauth,auth --posts-per-feed 10 --concurrency 4 --rps 8.0 --time-budget-minutes 1.0 --snapshot-hour-utc 2026-02-16T00:00:00Z
+Traceback (most recent call last):
+  File "/Volumes/T9/BlueSky/scripts/run_windowed_collection.py", line 177, in <module>
+    main()
+    ~~~~^^
+  File "/Volumes/T9/BlueSky/scripts/run_windowed_collection.py", line 81, in main
+    _run(
+    ~~~~^
+        [
+        ^
+    ...<27 lines>...
+        cwd=project_root,
+        ^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Volumes/T9/BlueSky/scripts/run_windowed_collection.py", line 25, in _run
+    subprocess.run(cmd, cwd=str(cwd), check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/Volumes/T9/BlueSky/.venv/bin/python', '-m', 'bsky_collector_v2', 'snapshot-panel', '--out-base', '/Volumes/T9/BlueSky/data_v2_full', '--env-path', '/Volumes/T9/BlueSky/auth.env', '--accept-language', 'en-US', '--vantage-id-unauth', 'unauth_enUS', '--vantage-id-auth', 'auth_enUS', '--viewer-modes', 'unauth,auth', '--posts-per-feed', '10', '--concurrency', '4', '--rps', '8.0', '--time-budget-minutes', '1.0', '--snapshot-hour-utc', '2026-02-16T00:00:00Z']' returned non-zero exit status 2.

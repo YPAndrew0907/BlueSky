@@ -1,0 +1,114 @@
+{
+  "study_id": "micro10_full_live_20260319",
+  "max_age_hours": 24.0,
+  "early_window_hours": 1.0,
+  "availability_anchor": "availability_time",
+  "feed_posts": 307562,
+  "valid_duplicate_clusters": 2115,
+  "riskset_contexts_ge2": 413,
+  "riskset_rows": 3495,
+  "riskset_zero_exposure_share": 0.6421,
+  "strict_cohort_summary": {
+    "posts_with_delay_measurement": 5658,
+    "posts_before_filter": 5658,
+    "rows_before_filter": 31120,
+    "exposure_before_filter": 3879.16545,
+    "max_first_monitor_delay_minutes": 10.0,
+    "posts_after_filter": 747,
+    "rows_after_filter": 3495,
+    "exposure_after_filter": 407.794684,
+    "post_retention_share": 0.132,
+    "row_retention_share": 0.1123,
+    "exposure_retention_share": 0.1051,
+    "contexts_after_filter_ge2": 413
+  },
+  "trajectory_feature_coverage": {
+    "has_any_early_trajectory_share": 0.8009,
+    "nonzero_early_exposure_share": 0.8009,
+    "nonzero_early_best_rank_share": 0.8009
+  },
+  "model_columns": {
+    "timing": [
+      "age_spline_0",
+      "age_spline_1",
+      "age_spline_2",
+      "age_spline_3"
+    ],
+    "timing_author": [
+      "age_spline_0",
+      "age_spline_1",
+      "age_spline_2",
+      "age_spline_3",
+      "log10_followers",
+      "log10_posts"
+    ],
+    "timing_trajectory": [
+      "age_spline_0",
+      "age_spline_1",
+      "age_spline_2",
+      "age_spline_3",
+      "early_prior_exposure_log",
+      "early_prior_appearances_log",
+      "early_prior_best_rank_weight"
+    ],
+    "timing_author_trajectory": [
+      "age_spline_0",
+      "age_spline_1",
+      "age_spline_2",
+      "age_spline_3",
+      "log10_followers",
+      "log10_posts",
+      "early_prior_exposure_log",
+      "early_prior_appearances_log",
+      "early_prior_best_rank_weight"
+    ]
+  },
+  "model_params": {
+    "timing": {
+      "age_spline_0": -0.0,
+      "age_spline_1": -1.014832,
+      "age_spline_2": -4.073009,
+      "age_spline_3": -6.95681
+    },
+    "timing_author": {
+      "age_spline_0": -0.0,
+      "age_spline_1": -1.029568,
+      "age_spline_2": -4.048787,
+      "age_spline_3": -6.98242,
+      "log10_followers": 0.047294,
+      "log10_posts": -0.004859
+    },
+    "timing_trajectory": {
+      "age_spline_0": -0.0,
+      "age_spline_1": 1.540844,
+      "age_spline_2": -4.063798,
+      "age_spline_3": -3.36437,
+      "early_prior_exposure_log": 5.820381,
+      "early_prior_appearances_log": -3.196598,
+      "early_prior_best_rank_weight": -2.71148
+    },
+    "timing_author_trajectory": {
+      "age_spline_0": -0.0,
+      "age_spline_1": 1.537357,
+      "age_spline_2": -3.949873,
+      "age_spline_3": -3.360747,
+      "log10_followers": 0.104437,
+      "log10_posts": 0.013504,
+      "early_prior_exposure_log": 5.866285,
+      "early_prior_appearances_log": -3.284694,
+      "early_prior_best_rank_weight": -2.678627
+    }
+  },
+  "gap_summary": {
+    "weighted_mean_gap_equal": 0.2718,
+    "weighted_mean_gap_timing": 0.1267,
+    "weighted_mean_gap_timing_author": 0.1269,
+    "weighted_mean_gap_timing_trajectory": 0.1224,
+    "weighted_mean_gap_timing_author_trajectory": 0.1217,
+    "timing_explained_share": 0.5337,
+    "author_extra_after_timing_share": -0.0008,
+    "trajectory_extra_after_timing_share": 0.0158,
+    "trajectory_extra_after_timing_author_share": 0.0195,
+    "final_unexplained_share": 0.4476
+  }
+}

@@ -1,0 +1,13 @@
+2026-02-18T02:33:16Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-02-18T02:33:16Z INFO bsky_collector_v2: job start subcommand=index-feed-generators dry_run=False resume=True
+2026-02-18T02:33:16Z ERROR bsky_collector_v2: job failed subcommand=index-feed-generators err=FileNotFoundError(2, 'No such file or directory')
+Traceback (most recent call last):
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/cli.py", line 263, in main
+    repo_root=Path.cwd(),
+              ~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 746, in cwd
+    return cls('').absolute()
+           ~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 649, in absolute
+    cwd = os.getcwd()
+FileNotFoundError: [Errno 2] No such file or directory

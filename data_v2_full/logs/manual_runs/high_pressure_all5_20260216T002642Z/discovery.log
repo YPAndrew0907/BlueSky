@@ -1,0 +1,41 @@
+2026-02-16T00:26:42Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-02-16T00:26:42Z INFO bsky_collector_v2: job start subcommand=refresh-discovery dry_run=False resume=True
+2026-02-16T00:26:49Z WARNING bsky_collector_v2.job.refresh_discovery: discovery surface failed surface=popular_feed_generators err=OperationalError('database is locked')
+2026-02-16T00:26:50Z WARNING bsky_collector_v2.job.refresh_discovery: discovery surface failed surface=suggested_feeds err=OperationalError('database is locked')
+2026-02-16T00:26:50Z WARNING bsky_collector_v2.job.refresh_discovery: discovery surface failed surface=suggested_accounts err=HttpError('InvalidRequest: must pass viewer')
+2026-02-16T00:26:50Z INFO bsky_collector_v2.job.refresh_discovery: starterpacks skeleton unsupported; falling back err=HttpError('XRPCNotSupported: XRPCNotSupported')
+2026-02-16T00:26:52Z INFO bsky_collector_v2.job.refresh_discovery: wrote feed_catalog.csv path=/Volumes/T9/BlueSky/data_v2_full/metadata/2026-02-16/feed_catalog.csv
+2026-02-16T00:27:02Z ERROR bsky_collector_v2: job failed subcommand=refresh-discovery err=OperationalError('database is locked')
+Traceback (most recent call last):
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/cli.py", line 194, in main
+    asyncio.run(
+    ~~~~~~~~~~~^
+        run_refresh_discovery(
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        )
+        ^
+    )
+    ^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/refresh_discovery.py", line 498, in run_refresh_discovery
+    state.finish_run(run_id=effective_run_id, finished_at_utc=format_utc(now_utc()), success=success)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 159, in finish_run
+    self.conn.execute(
+    ~~~~~~~~~~~~~~~~~^
+        "UPDATE runs SET finished_at_utc=?, success=? WHERE run_id=?",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (finished_at_utc, 1 if success else 0, str(run_id)),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+sqlite3.OperationalError: database is locked

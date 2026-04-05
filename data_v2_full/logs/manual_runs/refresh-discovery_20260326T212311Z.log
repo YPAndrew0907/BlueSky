@@ -1,0 +1,8 @@
+2026-03-26T21:23:11Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-03-26T21:23:11Z INFO bsky_collector_v2: job start subcommand=refresh-discovery dry_run=False resume=True
+2026-03-26T21:41:13Z INFO bsky_collector_v2.job.refresh_discovery: resume=true: skipping completed surface=popular_feed_generators
+2026-03-26T21:41:13Z INFO bsky_collector_v2.job.refresh_discovery: resume=true: skipping completed surface=suggested_feeds
+2026-03-26T21:41:14Z WARNING bsky_collector_v2.job.refresh_discovery: discovery surface failed surface=suggested_accounts err=HttpError('InvalidRequest: relativeToDid must be provided')
+2026-03-26T21:41:14Z INFO bsky_collector_v2.job.refresh_discovery: resume=true: skipping completed surface=onboarding_suggested_starterpacks
+2026-03-26T21:41:14Z INFO bsky_collector_v2.job.refresh_discovery: resume=true: skipping completed surface=feed_catalog_likecount_hydrate
+2026-03-26T21:41:15Z INFO bsky_collector_v2.job.refresh_discovery: wrote feed_catalog.csv path=/Volumes/T9/BlueSky/data_v2_full/metadata/2026-03-26/feed_catalog.csv

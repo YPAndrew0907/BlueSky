@@ -1,0 +1,459 @@
+{
+  "study_id": "micro10_full_live_20260319",
+  "max_age_hours": 72.0,
+  "riskset_definition": "same duplicate cluster, same feed/viewer/window, eligible if created_at <= window_end and age <= max_age_hours",
+  "feed_posts": 86593,
+  "text_coverage_ratio": 0.984,
+  "valid_duplicate_clusters": 445,
+  "author_profile_coverage": 0.9964,
+  "observed_duplicate_contexts": 2175,
+  "riskset_contexts_ge2": 1607,
+  "riskset_rows": 5585,
+  "riskset_zero_exposure_share": 0.3971,
+  "pair_rows": 24602,
+  "win_rate_summary": {
+    "all|all": {
+      "pairs": 24602,
+      "fresher_wins_rate": 0.5971,
+      "higher_followers_wins_rate": 0.519
+    },
+    "all|longtail_random": {
+      "pairs": 4180,
+      "fresher_wins_rate": 0.645,
+      "higher_followers_wins_rate": 0.4431
+    },
+    "all|popular_by_likecount": {
+      "pairs": 20422,
+      "fresher_wins_rate": 0.5873,
+      "higher_followers_wins_rate": 0.5346
+    },
+    "auth|all": {
+      "pairs": 13350,
+      "fresher_wins_rate": 0.5771,
+      "higher_followers_wins_rate": 0.5225
+    },
+    "auth|longtail_random": {
+      "pairs": 2284,
+      "fresher_wins_rate": 0.6112,
+      "higher_followers_wins_rate": 0.4689
+    },
+    "auth|popular_by_likecount": {
+      "pairs": 11066,
+      "fresher_wins_rate": 0.57,
+      "higher_followers_wins_rate": 0.5336
+    },
+    "unauth|all": {
+      "pairs": 11252,
+      "fresher_wins_rate": 0.6208,
+      "higher_followers_wins_rate": 0.5148
+    },
+    "unauth|longtail_random": {
+      "pairs": 1896,
+      "fresher_wins_rate": 0.6857,
+      "higher_followers_wins_rate": 0.4119
+    },
+    "unauth|popular_by_likecount": {
+      "pairs": 9356,
+      "fresher_wins_rate": 0.6076,
+      "higher_followers_wins_rate": 0.5357
+    }
+  },
+  "share_gap_models": {
+    "all:linear_timing": {
+      "n": 24602,
+      "r2": 0.0824,
+      "params": {
+        "const": 0.137942,
+        "d_age_log_hours": -3.158394
+      },
+      "pvalues": {
+        "const": 0.027751,
+        "d_age_log_hours": 0.0
+      }
+    },
+    "all:spline_timing": {
+      "n": 24602,
+      "r2": 0.1212,
+      "params": {
+        "const": 0.101409,
+        "d_age_spline_0": -0.0,
+        "d_age_spline_1": 11.384002,
+        "d_age_spline_2": -16.469251,
+        "d_age_spline_3": 18.372728
+      },
+      "pvalues": {
+        "const": 0.093069,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 0.0,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0
+      }
+    },
+    "all:spline_plus_author": {
+      "n": 24602,
+      "r2": 0.1381,
+      "params": {
+        "const": 0.123656,
+        "d_age_spline_0": -0.0,
+        "d_age_spline_1": 11.656074,
+        "d_age_spline_2": -16.784306,
+        "d_age_spline_3": 17.383685,
+        "d_log10_followers": 1.547064,
+        "d_log10_posts": -0.50407
+      },
+      "pvalues": {
+        "const": 0.039732,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 0.0,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0,
+        "d_log10_followers": 0.0,
+        "d_log10_posts": 0.0
+      }
+    },
+    "unauth:linear_timing": {
+      "n": 11252,
+      "r2": 0.1057,
+      "params": {
+        "const": 0.184771,
+        "d_age_log_hours": -3.755994
+      },
+      "pvalues": {
+        "const": 0.031969,
+        "d_age_log_hours": 0.0
+      }
+    },
+    "unauth:spline_timing": {
+      "n": 11252,
+      "r2": 0.1072,
+      "params": {
+        "const": 0.137658,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 4.043052,
+        "d_age_spline_2": -17.489286,
+        "d_age_spline_3": 12.220592
+      },
+      "pvalues": {
+        "const": 0.108958,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 1e-06,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0
+      }
+    },
+    "unauth:spline_plus_author": {
+      "n": 11252,
+      "r2": 0.1226,
+      "params": {
+        "const": 0.160966,
+        "d_age_spline_0": -0.0,
+        "d_age_spline_1": 4.567821,
+        "d_age_spline_2": -17.977137,
+        "d_age_spline_3": 11.64312,
+        "d_log10_followers": 1.398665,
+        "d_log10_posts": -0.337715
+      },
+      "pvalues": {
+        "const": 0.060143,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 0.0,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0,
+        "d_log10_followers": 0.0,
+        "d_log10_posts": 0.007758
+      }
+    },
+    "auth:linear_timing": {
+      "n": 13350,
+      "r2": 0.0598,
+      "params": {
+        "const": 0.078655,
+        "d_age_log_hours": -2.540886
+      },
+      "pvalues": {
+        "const": 0.385801,
+        "d_age_log_hours": 0.0
+      }
+    },
+    "auth:spline_timing": {
+      "n": 13350,
+      "r2": 0.1854,
+      "params": {
+        "const": 0.067404,
+        "d_age_spline_0": -0.0,
+        "d_age_spline_1": 19.098378,
+        "d_age_spline_2": -16.063032,
+        "d_age_spline_3": 24.855602
+      },
+      "pvalues": {
+        "const": 0.405937,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 0.0,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0
+      }
+    },
+    "auth:spline_plus_author": {
+      "n": 13350,
+      "r2": 0.2033,
+      "params": {
+        "const": 0.084658,
+        "d_age_spline_0": -0.0,
+        "d_age_spline_1": 19.006636,
+        "d_age_spline_2": -16.123277,
+        "d_age_spline_3": 23.37837,
+        "d_log10_followers": 1.669269,
+        "d_log10_posts": -0.68666
+      },
+      "pvalues": {
+        "const": 0.293941,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 0.0,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0,
+        "d_log10_followers": 0.0,
+        "d_log10_posts": 0.0
+      }
+    }
+  },
+  "win_models": {
+    "all:linear_timing": {
+      "n": 24602,
+      "r2": 0.1436,
+      "params": {
+        "const": 0.29936,
+        "d_age_log_hours": -0.264497
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_log_hours": 0.0
+      }
+    },
+    "all:spline_timing": {
+      "n": 24602,
+      "r2": 0.0737,
+      "params": {
+        "const": 0.305268,
+        "d_age_spline_0": -0.0,
+        "d_age_spline_1": 0.798446,
+        "d_age_spline_2": -0.645085,
+        "d_age_spline_3": 0.888382
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 0.0,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0
+      }
+    },
+    "all:spline_plus_author": {
+      "n": 24602,
+      "r2": 0.0847,
+      "params": {
+        "const": 0.306423,
+        "d_age_spline_0": -0.0,
+        "d_age_spline_1": 0.81124,
+        "d_age_spline_2": -0.66117,
+        "d_age_spline_3": 0.831941,
+        "d_log10_followers": 0.080845,
+        "d_log10_posts": -0.029329
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 0.0,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0,
+        "d_log10_followers": 0.0,
+        "d_log10_posts": 2e-06
+      }
+    },
+    "unauth:linear_timing": {
+      "n": 11252,
+      "r2": 0.1716,
+      "params": {
+        "const": 0.305489,
+        "d_age_log_hours": -0.299745
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_log_hours": 0.0
+      }
+    },
+    "unauth:spline_timing": {
+      "n": 11252,
+      "r2": 0.0632,
+      "params": {
+        "const": 0.310726,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 0.51347,
+        "d_age_spline_2": -0.76734,
+        "d_age_spline_3": 0.76494
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 0.0,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0
+      }
+    },
+    "unauth:spline_plus_author": {
+      "n": 11252,
+      "r2": 0.0726,
+      "params": {
+        "const": 0.311908,
+        "d_age_spline_0": -0.0,
+        "d_age_spline_1": 0.538115,
+        "d_age_spline_2": -0.791558,
+        "d_age_spline_3": 0.730523,
+        "d_log10_followers": 0.070506,
+        "d_log10_posts": -0.020527
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 0.0,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0,
+        "d_log10_followers": 0.0,
+        "d_log10_posts": 0.015522
+      }
+    },
+    "auth:linear_timing": {
+      "n": 13350,
+      "r2": 0.1158,
+      "params": {
+        "const": 0.291931,
+        "d_age_log_hours": -0.228072
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_log_hours": 0.0
+      }
+    },
+    "auth:spline_timing": {
+      "n": 13350,
+      "r2": 0.1062,
+      "params": {
+        "const": 0.299308,
+        "d_age_spline_0": -0.0,
+        "d_age_spline_1": 1.094224,
+        "d_age_spline_2": -0.548208,
+        "d_age_spline_3": 1.01751
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_spline_0": 0.0,
+        "d_age_spline_1": 0.0,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0
+      }
+    },
+    "auth:spline_plus_author": {
+      "n": 13350,
+      "r2": 0.1192,
+      "params": {
+        "const": 0.300248,
+        "d_age_spline_0": -0.0,
+        "d_age_spline_1": 1.088059,
+        "d_age_spline_2": -0.551213,
+        "d_age_spline_3": 0.931163,
+        "d_log10_followers": 0.092879,
+        "d_log10_posts": -0.040685
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_spline_0": 0.026631,
+        "d_age_spline_1": 0.0,
+        "d_age_spline_2": 0.0,
+        "d_age_spline_3": 0.0,
+        "d_log10_followers": 0.0,
+        "d_log10_posts": 4e-06
+      }
+    }
+  },
+  "top_clusters_by_riskset_rows": [
+    {
+      "cluster_text": "cats are such graceful, majestic creatures",
+      "unique_posts": 28,
+      "contexts_ge2": 34,
+      "riskset_rows": 858,
+      "shown_rows": 162,
+      "total_context_exposure": 40.9934
+    },
+    {
+      "cluster_text": "'umrisse' #fotovorschlag",
+      "unique_posts": 53,
+      "contexts_ge2": 9,
+      "riskset_rows": 354,
+      "shown_rows": 85,
+      "total_context_exposure": 21.8243
+    },
+    {
+      "cluster_text": "#art",
+      "unique_posts": 7,
+      "contexts_ge2": 32,
+      "riskset_rows": 215,
+      "shown_rows": 33,
+      "total_context_exposure": 8.7674
+    },
+    {
+      "cluster_text": "post a gif of who you wanted to be as a kid",
+      "unique_posts": 11,
+      "contexts_ge2": 19,
+      "riskset_rows": 162,
+      "shown_rows": 21,
+      "total_context_exposure": 4.7086
+    },
+    {
+      "cluster_text": "timeline cleanse",
+      "unique_posts": 9,
+      "contexts_ge2": 20,
+      "riskset_rows": 140,
+      "shown_rows": 70,
+      "total_context_exposure": 21.8344
+    },
+    {
+      "cluster_text": "#portfolioday",
+      "unique_posts": 6,
+      "contexts_ge2": 22,
+      "riskset_rows": 110,
+      "shown_rows": 105,
+      "total_context_exposure": 39.7797
+    },
+    {
+      "cluster_text": "the importance of #awareness in leadership and philosophy #criticalthinking #independentthinking #intellectualhumility #leadershipphilosophy #researchintegrity #servantleadership #",
+      "unique_posts": 10,
+      "contexts_ge2": 12,
+      "riskset_rows": 96,
+      "shown_rows": 93,
+      "total_context_exposure": 36.869
+    },
+    {
+      "cluster_text": "overheard",
+      "unique_posts": 21,
+      "contexts_ge2": 4,
+      "riskset_rows": 80,
+      "shown_rows": 61,
+      "total_context_exposure": 20.4903
+    },
+    {
+      "cluster_text": "lol",
+      "unique_posts": 3,
+      "contexts_ge2": 22,
+      "riskset_rows": 66,
+      "shown_rows": 22,
+      "total_context_exposure": 4.5367
+    },
+    {
+      "cluster_text": "cats are such graceful, majestic creatures.",
+      "unique_posts": 4,
+      "contexts_ge2": 19,
+      "riskset_rows": 59,
+      "shown_rows": 28,
+      "total_context_exposure": 7.3812
+    }
+  ]
+}

@@ -1,0 +1,951 @@
+2026-04-03T06:40:26Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-04-03T06:40:26Z INFO bsky_collector_v2: job start subcommand=wide-sweep dry_run=False resume=True
+2026-04-03T06:40:29Z INFO bsky_collector_v2.job.wide_sweep: wide-sweep start date=2026-04-03 workers=16 tasks=4742
+2026-04-03T07:33:06Z ERROR bsky_collector_v2: job failed subcommand=wide-sweep err=ConnectionRefusedError(10061, 'No connection could be made because the target machine actively refused it', None, 10061, None)
+  + Exception Group Traceback (most recent call last):
+  |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 459, in run_wide_sweep
+  |     async with asyncio.TaskGroup() as tg:
+  |                ^^^^^^^^^^^^^^^^^^^
+  |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\taskgroups.py", line 71, in __aexit__
+  |     return await self._aexit(et, exc)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\taskgroups.py", line 164, in _aexit
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (16 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 454, in worker
+    |     control.commit()
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 163, in _rpc
+    |     if not host or self.tcp_port is None:
+    |                     ^^^^^^^^^^^^^^^^
+    | ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 3 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    |     raise exc
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 76, in handle_async_request
+    |     async with self._request_lock:
+    |                ^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_synchronization.py", line 77, in __aenter__
+    |     await self._anyio_lock.acquire()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 1828, in acquire
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 4 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\http11.py", line 72, in handle_async_request
+    |     async with self._state_lock:
+    |                ^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_synchronization.py", line 77, in __aenter__
+    |     await self._anyio_lock.acquire()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 1828, in acquire
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 5 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\http11.py", line 72, in handle_async_request
+    |     async with self._state_lock:
+    |                ^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_synchronization.py", line 77, in __aenter__
+    |     await self._anyio_lock.acquire()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 1828, in acquire
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 6 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    |     raise exc
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    |     stream = await self._connect(request)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    |     stream = await self._network_backend.connect_tcp(**kwargs)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    |     return await self._backend.connect_tcp(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_backends\anyio.py", line 115, in connect_tcp
+    |     stream: anyio.abc.ByteStream = await anyio.connect_tcp(
+    |                                    ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_core\_sockets.py", line 215, in connect_tcp
+    |     gai_res = await getaddrinfo(
+    |               ^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_core\_sockets.py", line 649, in getaddrinfo
+    |     gai_res = await get_async_backend().getaddrinfo(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 2732, in getaddrinfo
+    |     return await get_running_loop().getaddrinfo(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    |     return await self.run_in_executor(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 7 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    |     raise exc
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    |     stream = await self._connect(request)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    |     stream = await self._network_backend.connect_tcp(**kwargs)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    |     return await self._backend.connect_tcp(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_backends\anyio.py", line 115, in connect_tcp
+    |     stream: anyio.abc.ByteStream = await anyio.connect_tcp(
+    |                                    ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_core\_sockets.py", line 215, in connect_tcp
+    |     gai_res = await getaddrinfo(
+    |               ^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_core\_sockets.py", line 649, in getaddrinfo
+    |     gai_res = await get_async_backend().getaddrinfo(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 2732, in getaddrinfo
+    |     return await get_running_loop().getaddrinfo(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    |     return await self.run_in_executor(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 8 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    |     raise exc
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 76, in handle_async_request
+    |     async with self._request_lock:
+    |                ^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_synchronization.py", line 77, in __aenter__
+    |     await self._anyio_lock.acquire()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 1828, in acquire
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 9 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    |     raise exc
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 76, in handle_async_request
+    |     async with self._request_lock:
+    |                ^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_synchronization.py", line 77, in __aenter__
+    |     await self._anyio_lock.acquire()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 1828, in acquire
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 10 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\http11.py", line 72, in handle_async_request
+    |     async with self._state_lock:
+    |                ^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_synchronization.py", line 77, in __aenter__
+    |     await self._anyio_lock.acquire()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 1828, in acquire
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 11 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    |     raise exc
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 76, in handle_async_request
+    |     async with self._request_lock:
+    |                ^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_synchronization.py", line 77, in __aenter__
+    |     await self._anyio_lock.acquire()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 1828, in acquire
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 12 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    |     raise exc
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 76, in handle_async_request
+    |     async with self._request_lock:
+    |                ^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_synchronization.py", line 77, in __aenter__
+    |     await self._anyio_lock.acquire()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 1828, in acquire
+    |     await fut
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 13 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    |     raise exc
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    |     stream = await self._connect(request)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    |     stream = await self._network_backend.connect_tcp(**kwargs)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    |     return await self._backend.connect_tcp(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_backends\anyio.py", line 115, in connect_tcp
+    |     stream: anyio.abc.ByteStream = await anyio.connect_tcp(
+    |                                    ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_core\_sockets.py", line 215, in connect_tcp
+    |     gai_res = await getaddrinfo(
+    |               ^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_core\_sockets.py", line 649, in getaddrinfo
+    |     gai_res = await get_async_backend().getaddrinfo(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 2732, in getaddrinfo
+    |     return await get_running_loop().getaddrinfo(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    |     return await self.run_in_executor(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 14 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    |     raise exc
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 76, in handle_async_request
+    |     async with self._request_lock:
+    |                ^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_synchronization.py", line 77, in __aenter__
+    |     await self._anyio_lock.acquire()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 1814, in acquire
+    |     await AsyncIOBackend.cancel_shielded_checkpoint()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 2382, in cancel_shielded_checkpoint
+    |     await sleep(0)
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 656, in sleep
+    |     await __sleep0()
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 650, in __sleep0
+    |     yield
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- 15 ----------------
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 431, in worker
+    |     await asyncio.wait_for(feed_coro, timeout=float(feed_time_budget_s))
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    |     return await fut
+    |            ^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 545, in _sweep_one_feed
+    |     resp = await http.xrpc_get(
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 534, in xrpc_get
+    |     return await self.request_json(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\bsky_collector_v2\http_client.py", line 294, in request_json
+    |     resp = await self._client.request(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1540, in request
+    |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\connection.py", line 103, in handle_async_request
+    |     return await self._connection.handle_async_request(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\http11.py", line 135, in handle_async_request
+    |     await self._response_closed()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_async\http11.py", line 239, in _response_closed
+    |     async with self._state_lock:
+    |                ^^^^^^^^^^^^^^^^
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\httpcore\_synchronization.py", line 77, in __aenter__
+    |     await self._anyio_lock.acquire()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 1814, in acquire
+    |     await AsyncIOBackend.cancel_shielded_checkpoint()
+    |   File "D:\BlueSky\.venv-win\Lib\site-packages\anyio\_backends\_asyncio.py", line 2382, in cancel_shielded_checkpoint
+    |     await sleep(0)
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 656, in sleep
+    |     await __sleep0()
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 650, in __sleep0
+    |     yield
+    | asyncio.exceptions.CancelledError
+    | 
+    | During handling of the above exception, another exception occurred:
+    | 
+    | Traceback (most recent call last):
+    |   File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 439, in worker
+    |     control.mark_wide_done(
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    |   File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    |     if b"\n" in chunk:
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    |     raise exceptions[0]
+    |   File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    |     sock.connect(sa)
+    | ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+    +---------------- ... ----------------
+    | and 1 more exception
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 513, in main
+    asyncio.run(
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\jobs\wide_sweep.py", line 474, in run_wide_sweep
+    control.finish_run(run_id=run_id, finished_at_utc=format_utc(now_utc()), success=success)
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    if b"\n" in chunk:
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it

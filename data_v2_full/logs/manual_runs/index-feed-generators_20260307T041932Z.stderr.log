@@ -1,0 +1,7 @@
+2026-03-07T04:19:33Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-03-07T04:19:33Z INFO bsky_collector_v2: job start subcommand=index-feed-generators dry_run=False resume=True
+2026-03-07T04:19:33Z INFO bsky_collector_v2.job.index_feed_generators: feed generator index hosts relay_host=https://bsky.network records_host=https://bsky.social auth=yes
+2026-03-07T04:20:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:eijywvlybnb6oxf64ciaztye err=HttpError('InvalidRequest: Could not find repo: did:plc:eijywvlybnb6oxf64ciaztye')
+2026-03-07T04:20:35Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:eijywvlybnb6oxf64ciaztye err=HttpError('InvalidRequest: Could not find repo: did:plc:eijywvlybnb6oxf64ciaztye')
+2026-03-07T04:20:36Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=1 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-03-07T04:25:18Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:tc4ketahmyke2brxyfsbjecl part=80 records=1 next_cursor=set

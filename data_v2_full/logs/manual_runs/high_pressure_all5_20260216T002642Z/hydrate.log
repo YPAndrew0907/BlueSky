@@ -1,0 +1,54 @@
+2026-02-16T00:26:42Z INFO bsky_collector_v2: out_base ok path=/Volumes/T9/BlueSky/data_v2_full mount=/Volumes/T9
+2026-02-16T00:26:42Z INFO bsky_collector_v2: job start subcommand=hydrate-authors dry_run=False resume=True
+2026-02-16T00:26:42Z INFO bsky_collector_v2.job.hydrate_authors: hydrate-authors start candidates=3552 batch_size=25
+2026-02-16T00:26:55Z ERROR bsky_collector_v2: job failed subcommand=hydrate-authors err=OperationalError('database is locked')
+Traceback (most recent call last):
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/hydrate_authors.py", line 143, in run_hydrate_authors
+    control.mark_authors_hydrated(author_dids=hydrated, hydrated_at_utc=captured_at_utc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 311, in mark_authors_hydrated
+    self.conn.executemany(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        "UPDATE author_registry SET last_hydrated_utc=? WHERE author_did=?",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        [(hydrated_at_utc, str(d)) for d in author_dids],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+sqlite3.OperationalError: database is locked
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/cli.py", line 316, in main
+    asyncio.run(
+    ~~~~~~~~~~~^
+        run_hydrate_authors(
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<15 lines>...
+        )
+        ^
+    )
+    ^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/jobs/hydrate_authors.py", line 150, in run_hydrate_authors
+    control.finish_run(run_id=run_id, finished_at_utc=format_utc(now_utc()), success=success)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/T9/BlueSky/bsky_collector_v2/state.py", line 159, in finish_run
+    self.conn.execute(
+    ~~~~~~~~~~~~~~~~~^
+        "UPDATE runs SET finished_at_utc=?, success=? WHERE run_id=?",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (finished_at_utc, 1 if success else 0, str(run_id)),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+sqlite3.OperationalError: database is locked

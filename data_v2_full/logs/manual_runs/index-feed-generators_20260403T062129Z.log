@@ -1,0 +1,29 @@
+2026-04-03T06:21:29Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-04-03T06:21:29Z INFO bsky_collector_v2: job start subcommand=index-feed-generators dry_run=False resume=True
+2026-04-03T06:21:29Z INFO bsky_collector_v2.job.index_feed_generators: feed generator index hosts relay_host=https://bsky.network records_host=https://bsky.social auth=yes
+2026-04-03T06:21:37Z ERROR bsky_collector_v2: job failed subcommand=index-feed-generators err=ConnectionRefusedError(10061, 'No connection could be made because the target machine actively refused it', None, 10061, None)
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 424, in main
+    asyncio.run(
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\jobs\index_feed_generators.py", line 563, in run_index_feed_generators
+    state.start_run(
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    return self._rpc(name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 159, in _rpc
+    with socket.create_connection((host, int(self.tcp_port)), timeout=10.0) as conn:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it

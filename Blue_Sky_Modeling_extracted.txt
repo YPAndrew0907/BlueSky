@@ -1,0 +1,157 @@
+--- PAGE 1 ---
+Blue Sky Modeling 
+Yipeng(Andrew) Wang
+
+--- PAGE 2 ---
+OVERVIEW
+Research questions
+1
+RQ1 RQ2
+Within monitored Bluesky and 
+custom-feed top-K panels, after 
+accounting for timing and panel 
+context, do semantically equivalent or 
+near-duplicate posts receive 
+systematically unequal observed 
+exposure opportunities? If so, which 
+observable post-, author-, feed-, and 
+viewer-level factors are associated 
+with the remaining divergence?
+Within defined political topics and 
+event clusters on Bluesky, do 
+monitored top-K feed panels allocate 
+observed, rank-weighted exposure 
+across frames in proportion to 
+observed frame supply? If not, how 
+much frame disparity remains after 
+timing and declared-objective 
+adjustments, and how much is more 
+consistent with dynamic or contestable 
+amplification?
+
+--- PAGE 3 ---
+Turn ranking position into exposure opportunity
+Front positions count more than 
+later positions.
+np is the number of monitored 
+top-K appearances of post p, and 
+rm is the rank of its mth 
+appearance. This is the main 
+exposure definition
+
+--- PAGE 4 ---
+RQ1: same content, different exposure？
+Take one duplicate or near-duplicate cluster and call it C. Its total observed 
+exposure is：
+The observed share of post p inside C is：
+
+
+--- PAGE 5 ---
+Example
+Suppose one duplicate cluster contains three posts A, B, C:
+● A appears three times, at ranks 1, 2, 6. 
+● B appears twice, at ranks 2, 3. 
+● C appears once, at rank 5.
+Using w(r) = 1/ log2 (1 + r), we have w(1) = 1, w(2) = 0.6309, w(3) = 0.5000, w(5) = 0.3869, 
+w(6) = 0.3562.
+EA = 1 + 0.6309 + 0.3562 = 1.9871
+EB = 0.6309 + 0.5000 = 1.1309
+EC = 0.3869
+
+--- PAGE 6 ---
+Example
+The cluster total is E(C) = EA + EB + EC = 1.9871 + 1.1309 + 0.3869 = 3.5049
+
+
+--- PAGE 7 ---
+Why different exposure? 
+Some factors are ok.
+Some are not….
+What are the factors that drives the different exposures among 
+near duplicate posts?
+● Is it post created time?
+● Is the author profile?
+● Is the the early trajectory of a post?
+● … and more
+There’s way too many factors
+
+--- PAGE 8 ---
+Do one decomposition at a time..
+  The model-implied share is
+The residual gap for one duplicate cluster is
+
+
+--- PAGE 9 ---
+one decomposition at a time..
+Ideally, same post A and B and C should have the same exposure
+
+
+--- PAGE 10 ---
+Maybe time is the factor that cause difference?
+Suppose the comparison time is such that the post ages are 10, 6, and 2 hours, 
+and use the simple timing score
+The New Gap:
+
+--- PAGE 11 ---
+Maybe some posts fits better in that particular feed?
+Let surface fit give a bonus only to post B, for example because B better matches 
+the surface’s stated objective. Set the surface bonuses to (0, 0.1, 0). Then:
+
+
+--- PAGE 12 ---
+Maybe author profile is a factor?
+Now let both A and B have stronger author-profile signals than C, for example 
+because they come from more established accounts. Use the simple author 
+bonuses (0.1, 0.1, 0). Then: 
+
+
+--- PAGE 13 ---
+Maybe post early trajectory ….
+…
+
+--- PAGE 14 ---
+RQ2: same topic, different frames
+Now move from duplicate posts to a political topic or event cluster and 
+call it H. Let F denote one frame inside that topic cluster:
+The total exposure of frame 
+F is
+
+--- PAGE 15 ---
+Example: Epstein
+Topic of Interest: Epstein-related content.
+Framing Perspectives:
+● Democrats aim to highlight evidence implicating Republican leaders (e.g., 
+Trump).
+● Republicans aim to highlight evidence implicating Democratic elites.
+Objective:
+● Quantify the share of total exposure received by each framing perspective 
+within the Epstein topic.
+
+
+--- PAGE 16 ---
+Exposure of a frame
+The total exposure of frame F 
+is: 
+The observed exposure share 
+of frame F is:
+
+
+--- PAGE 17 ---
+Supply of a frame
+How many post of frame F are there:
+The observed supply share of frame F is:
+
+--- PAGE 18 ---
+The frame disparity of exposure within a topic H
+
+
+--- PAGE 19 ---
+Hypothesis…
+H1(1): Even if timing is controlled, the duplicate conditional exposure gap is still 
+significantly greater than zero
+H1(2): Early trajectory and(or) author profile has a effects on a post’s future 
+exposure 
+H2(1): in the same event cluster, there is a systematic offset between frame 
+exposure share and frame supply share. 
+H2(2) the intensity of frame level discrimination is different under different feed 
+types, viewer modes or moderation environments.

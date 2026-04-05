@@ -1,0 +1,34 @@
+{
+  "collection_params_hash": "dd020816131d4503",
+  "generated_at_utc": "2026-03-16T07:45:59Z",
+  "issues": [
+    {
+      "code": "same_day_metadata_status_missing",
+      "message": "same-day discovery_status.json is missing",
+      "severity": "error"
+    }
+  ],
+  "job_name": "snapshot-panel",
+  "metrics": {
+    "drift_minutes": 20.333,
+    "expected_request_rows": 106,
+    "failure_ratio": 0.033898,
+    "feed_item_rows": 4941,
+    "feeds_done": 114,
+    "feeds_failed": 4,
+    "metadata_source_out_base": "/Volumes/T9/BlueSky/data_v2_full",
+    "post_label_rows": 2018,
+    "request_provenance_completeness": 1.0,
+    "request_provenance_rows": 106,
+    "same_day_discovery_status_exists": false,
+    "same_day_feed_catalog_exists": true
+  },
+  "quality_report_version": "2026-03-16.1",
+  "run_id": "0ad54fdb67914c0f912f936715240068",
+  "sample_family": "experimental_labelerexp_hourly",
+  "scope": {
+    "date_utc": "2026-03-01",
+    "snapshot_hour_utc": "2026-03-01T23:00:00Z"
+  },
+  "verdict": "quarantined"
+}

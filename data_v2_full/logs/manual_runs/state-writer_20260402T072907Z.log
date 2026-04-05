@@ -1,0 +1,19 @@
+2026-04-02T07:29:07Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-04-02T07:29:07Z INFO bsky_collector_v2: job start subcommand=state-writer dry_run=False resume=True
+2026-04-02T07:29:07Z ERROR bsky_collector_v2: job failed subcommand=state-writer err=RuntimeError('state-writer already running (lock=D:\\BlueSky\\data_v2_full\\control\\control_state.db.lock)')
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\state_writer.py", line 26, in _acquire_instance_lock
+    msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+PermissionError: [Errno 13] Permission denied
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 587, in main
+    run_state_writer(cfg=cfg)
+  File "D:\BlueSky\bsky_collector_v2\state_writer.py", line 91, in run_state_writer
+    instance_lock = _acquire_instance_lock(db_path=cfg.db_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\state_writer.py", line 28, in _acquire_instance_lock
+    raise RuntimeError(f"state-writer already running (lock={lock_path})") from err
+RuntimeError: state-writer already running (lock=D:\BlueSky\data_v2_full\control\control_state.db.lock)

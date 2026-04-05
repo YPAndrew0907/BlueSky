@@ -1,0 +1,310 @@
+{
+  "study_id": "micro10_full_live_20260319",
+  "feed_posts": 84260,
+  "text_coverage_ratio": 0.9837,
+  "valid_duplicate_clusters": 425,
+  "author_profile_coverage": 0.9963,
+  "contexts_ge2": 1232,
+  "pair_rows": 18535,
+  "win_rate_summary": {
+    "all|all": {
+      "pairs": 18535,
+      "fresher_wins_rate": 0.7998,
+      "higher_followers_wins_rate": 0.2113
+    },
+    "all|longtail_random": {
+      "pairs": 13732,
+      "fresher_wins_rate": 0.7323,
+      "higher_followers_wins_rate": 0.1711
+    },
+    "all|popular_by_likecount": {
+      "pairs": 4803,
+      "fresher_wins_rate": 0.9929,
+      "higher_followers_wins_rate": 0.3263
+    },
+    "auth|all": {
+      "pairs": 8232,
+      "fresher_wins_rate": 0.8133,
+      "higher_followers_wins_rate": 0.2207
+    },
+    "auth|longtail_random": {
+      "pairs": 5828,
+      "fresher_wins_rate": 0.74,
+      "higher_followers_wins_rate": 0.173
+    },
+    "auth|popular_by_likecount": {
+      "pairs": 2404,
+      "fresher_wins_rate": 0.9908,
+      "higher_followers_wins_rate": 0.3365
+    },
+    "unauth|all": {
+      "pairs": 10303,
+      "fresher_wins_rate": 0.7891,
+      "higher_followers_wins_rate": 0.2038
+    },
+    "unauth|longtail_random": {
+      "pairs": 7904,
+      "fresher_wins_rate": 0.7266,
+      "higher_followers_wins_rate": 0.1698
+    },
+    "unauth|popular_by_likecount": {
+      "pairs": 2399,
+      "fresher_wins_rate": 0.995,
+      "higher_followers_wins_rate": 0.316
+    }
+  },
+  "share_gap_models": {
+    "all:timing_only": {
+      "n": 18535,
+      "r2": 0.3911,
+      "params": {
+        "const": -0.080575,
+        "d_age_hours": -0.000103
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0
+      }
+    },
+    "all:timing_plus_author": {
+      "n": 18535,
+      "r2": 0.3924,
+      "params": {
+        "const": -0.0816,
+        "d_age_hours": -0.000102,
+        "d_log10_followers": -0.01398,
+        "d_log10_posts": 0.041876
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0,
+        "d_log10_followers": 0.226822,
+        "d_log10_posts": 0.0
+      }
+    },
+    "unauth:timing_only": {
+      "n": 10303,
+      "r2": 0.3943,
+      "params": {
+        "const": -0.078555,
+        "d_age_hours": -0.000103
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0
+      }
+    },
+    "unauth:timing_plus_author": {
+      "n": 10303,
+      "r2": 0.3961,
+      "params": {
+        "const": -0.079955,
+        "d_age_hours": -0.000102,
+        "d_log10_followers": -0.030961,
+        "d_log10_posts": 0.055081
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0,
+        "d_log10_followers": 0.052905,
+        "d_log10_posts": 0.0
+      }
+    },
+    "auth:timing_only": {
+      "n": 8232,
+      "r2": 0.387,
+      "params": {
+        "const": -0.083219,
+        "d_age_hours": -0.000102
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0
+      }
+    },
+    "auth:timing_plus_author": {
+      "n": 8232,
+      "r2": 0.3879,
+      "params": {
+        "const": -0.083831,
+        "d_age_hours": -0.000102,
+        "d_log10_followers": 0.008261,
+        "d_log10_posts": 0.02527
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0,
+        "d_log10_followers": 0.615986,
+        "d_log10_posts": 0.016268
+      }
+    }
+  },
+  "win_models": {
+    "all:timing_only": {
+      "n": 18535,
+      "r2": 0.0621,
+      "params": {
+        "const": 0.183781,
+        "d_age_hours": -3.5e-05
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0
+      }
+    },
+    "all:timing_plus_author": {
+      "n": 18535,
+      "r2": 0.0724,
+      "params": {
+        "const": 0.18104,
+        "d_age_hours": -3.4e-05,
+        "d_log10_followers": -0.052311,
+        "d_log10_posts": 0.10795
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0,
+        "d_log10_followers": 0.001078,
+        "d_log10_posts": 0.0
+      }
+    },
+    "unauth:timing_only": {
+      "n": 10303,
+      "r2": 0.0615,
+      "params": {
+        "const": 0.18329,
+        "d_age_hours": -3.4e-05
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0
+      }
+    },
+    "unauth:timing_plus_author": {
+      "n": 10303,
+      "r2": 0.0731,
+      "params": {
+        "const": 0.180239,
+        "d_age_hours": -3.4e-05,
+        "d_log10_followers": -0.069741,
+        "d_log10_posts": 0.119136
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0,
+        "d_log10_followers": 0.001222,
+        "d_log10_posts": 0.0
+      }
+    },
+    "auth:timing_only": {
+      "n": 8232,
+      "r2": 0.0628,
+      "params": {
+        "const": 0.184426,
+        "d_age_hours": -3.5e-05
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0
+      }
+    },
+    "auth:timing_plus_author": {
+      "n": 8232,
+      "r2": 0.072,
+      "params": {
+        "const": 0.182001,
+        "d_age_hours": -3.5e-05,
+        "d_log10_followers": -0.029455,
+        "d_log10_posts": 0.09384
+      },
+      "pvalues": {
+        "const": 0.0,
+        "d_age_hours": 0.0,
+        "d_log10_followers": 0.215726,
+        "d_log10_posts": 1e-06
+      }
+    }
+  },
+  "top_clusters_by_pair_rows": [
+    {
+      "cluster_text": "📌",
+      "unique_posts": 63,
+      "unique_authors": 2,
+      "contexts_ge2": 14,
+      "pair_rows": 8631,
+      "total_context_exposure": 126.6928
+    },
+    {
+      "cluster_text": "#見た人は無言でこめさんの安産を祈る",
+      "unique_posts": 30,
+      "unique_authors": 30,
+      "contexts_ge2": 7,
+      "pair_rows": 2961,
+      "total_context_exposure": 43.3273
+    },
+    {
+      "cluster_text": "#portfolioday",
+      "unique_posts": 16,
+      "unique_authors": 2,
+      "contexts_ge2": 21,
+      "pair_rows": 925,
+      "total_context_exposure": 55.127
+    },
+    {
+      "cluster_text": "#ぬるめた",
+      "unique_posts": 16,
+      "unique_authors": 6,
+      "contexts_ge2": 5,
+      "pair_rows": 600,
+      "total_context_exposure": 18.2817
+    },
+    {
+      "cluster_text": "'umrisse' #fotovorschlag",
+      "unique_posts": 53,
+      "unique_authors": 43,
+      "contexts_ge2": 7,
+      "pair_rows": 554,
+      "total_context_exposure": 21.3447
+    },
+    {
+      "cluster_text": "hunger and ignorance: a call for #humility in leadership #cognitivebias #criticalthinking #epistemichumility #groupdynamics #influence #leadershipethics #resilience #socialpsycholo",
+      "unique_posts": 11,
+      "unique_authors": 3,
+      "contexts_ge2": 10,
+      "pair_rows": 498,
+      "total_context_exposure": 25.8991
+    },
+    {
+      "cluster_text": "cats are such graceful, majestic creatures",
+      "unique_posts": 28,
+      "unique_authors": 28,
+      "contexts_ge2": 22,
+      "pair_rows": 480,
+      "total_context_exposure": 36.3953
+    },
+    {
+      "cluster_text": "overheard",
+      "unique_posts": 19,
+      "unique_authors": 14,
+      "contexts_ge2": 4,
+      "pair_rows": 452,
+      "total_context_exposure": 19.8593
+    },
+    {
+      "cluster_text": "the importance of #awareness in leadership and philosophy #criticalthinking #independentthinking #intellectualhumility #leadershipphilosophy #researchintegrity #servantleadership #",
+      "unique_posts": 10,
+      "unique_authors": 3,
+      "contexts_ge2": 12,
+      "pair_rows": 324,
+      "total_context_exposure": 36.869
+    },
+    {
+      "cluster_text": "#blueskyartshow #horizontal",
+      "unique_posts": 11,
+      "unique_authors": 4,
+      "contexts_ge2": 5,
+      "pair_rows": 275,
+      "total_context_exposure": 13.8211
+    }
+  ]
+}

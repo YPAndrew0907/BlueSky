@@ -1,0 +1,31 @@
+2026-03-31T05:26:27Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-03-31T05:26:27Z INFO bsky_collector_v2: job start subcommand=refresh-discovery dry_run=False resume=True
+2026-03-31T05:26:44Z WARNING bsky_collector_v2.session: cached session refresh failed; falling back to createSession err=HttpError("exhausted retries: ConnectError('All connection attempts failed')")
+2026-03-31T05:26:59Z ERROR bsky_collector_v2: job failed subcommand=refresh-discovery err=HttpError("exhausted retries: ConnectError('All connection attempts failed')")
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 270, in main
+    asyncio.run(
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\jobs\refresh_discovery.py", line 435, in run_refresh_discovery
+    tokens = await get_or_create_session(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\session.py", line 143, in get_or_create_session
+    created = await create_session(http, env=env, request_context=create_request_context)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\session.py", line 71, in create_session
+    resp = await http.xrpc_post(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\http_client.py", line 576, in xrpc_post
+    return await self.request_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\http_client.py", line 496, in request_json
+    raise HttpError(
+bsky_collector_v2.http_client.HttpError: exhausted retries: ConnectError('All connection attempts failed')

@@ -1,0 +1,11 @@
+endpoint_name,request_count,success_count,rate_limited_count,avg_latency_ms,p95_latency_ms
+app.bsky.actor.getProfiles,9,9,0,187.84588411088205,400.0
+app.bsky.feed.getActorFeeds,556,556,0,139.87302801832675,400.0
+app.bsky.feed.getFeed,73,15,0,5428.419110190191,30000.0
+app.bsky.feed.getFeedGenerators,8,8,0,141.02584362626658,400.0
+app.bsky.graph.getActorStarterPacks,53,53,0,137.35370433895918,400.0
+app.bsky.graph.getStarterPack,400,400,0,156.92636636340467,400.0
+app.bsky.graph.searchStarterPacks.probe,3,0,0,120.08733334369026,200.0
+app.bsky.unspecced.getPopularFeedGenerators,1,1,0,311.8067499890458,400.0
+com.atproto.sync.listReposByCollection,3,3,0,248.33101399902566,400.0
+starterpacks.relay_listReposByCollection,3,3,0,108.46469466923736,400.0

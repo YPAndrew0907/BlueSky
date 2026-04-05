@@ -1,0 +1,62 @@
+2026-04-02T07:19:35Z INFO bsky_collector_v2: out_base ok path=D:\BlueSky\data_v2_full mount=D:\
+2026-04-02T07:19:35Z INFO bsky_collector_v2: job start subcommand=index-feed-generators dry_run=False resume=True
+2026-04-02T07:19:36Z INFO bsky_collector_v2.job.index_feed_generators: feed generator index hosts relay_host=https://bsky.network records_host=https://bsky.social auth=yes
+2026-04-02T07:19:51Z WARNING bsky_collector_v2.job.index_feed_generators: repo processing failed repo=did:plc:ssvj7gogd6zkjut4e2yr62zp err=TimeoutError('timed out')
+2026-04-02T07:19:53Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:tq5puecrdedoqkksminfyphh err=HttpError('InvalidRequest: Could not find repo: did:plc:tq5puecrdedoqkksminfyphh')
+2026-04-02T07:20:14Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:yfnrzzo2igesy5tdh5leoh2s err=HttpError('InvalidRequest: Could not find repo: did:plc:yfnrzzo2igesy5tdh5leoh2s')
+2026-04-02T07:20:19Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:iuti6pfe6zfk7knmhqvkiqpi err=HttpError('InvalidRequest: Could not find repo: did:plc:iuti6pfe6zfk7knmhqvkiqpi')
+2026-04-02T07:20:19Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:logyi76zhdvh4czqjqs3jvfn err=HttpError('InvalidRequest: Could not find repo: did:plc:logyi76zhdvh4czqjqs3jvfn')
+2026-04-02T07:20:20Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:tq5puecrdedoqkksminfyphh err=HttpError('InvalidRequest: Could not find repo: did:plc:tq5puecrdedoqkksminfyphh')
+2026-04-02T07:20:20Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:yfnrzzo2igesy5tdh5leoh2s err=HttpError('InvalidRequest: Could not find repo: did:plc:yfnrzzo2igesy5tdh5leoh2s')
+2026-04-02T07:20:20Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:iuti6pfe6zfk7knmhqvkiqpi err=HttpError('InvalidRequest: Could not find repo: did:plc:iuti6pfe6zfk7knmhqvkiqpi')
+2026-04-02T07:20:20Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:logyi76zhdvh4czqjqs3jvfn err=HttpError('InvalidRequest: Could not find repo: did:plc:logyi76zhdvh4czqjqs3jvfn')
+2026-04-02T07:20:21Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:tq5puecrdedoqkksminfyphh err=HttpError('InvalidRequest: Could not find repo: did:plc:tq5puecrdedoqkksminfyphh')
+2026-04-02T07:20:21Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:yfnrzzo2igesy5tdh5leoh2s err=HttpError('InvalidRequest: Could not find repo: did:plc:yfnrzzo2igesy5tdh5leoh2s')
+2026-04-02T07:20:22Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=1 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-04-02T07:21:32Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:iaphaxdfrg5tihmcpvmxeakq err=HttpError('InvalidRequest: Could not find repo: did:plc:iaphaxdfrg5tihmcpvmxeakq')
+2026-04-02T07:23:25Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:iaphaxdfrg5tihmcpvmxeakq err=HttpError('InvalidRequest: Could not find repo: did:plc:iaphaxdfrg5tihmcpvmxeakq')
+2026-04-02T07:23:25Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:iaphaxdfrg5tihmcpvmxeakq err=HttpError('InvalidRequest: Could not find repo: did:plc:iaphaxdfrg5tihmcpvmxeakq')
+2026-04-02T07:23:26Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=2 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-04-02T07:24:44Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:dynqozk2nbf2opgkyje45yky err=HttpError('NotEnoughResources: NotEnoughResources')
+2026-04-02T07:25:42Z INFO bsky_collector_v2.job.index_feed_generators: indexed repo=did:plc:r5l63cwf3e6uyw34w67nf3ln part=0 records=3 next_cursor=set
+2026-04-02T07:26:27Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:dynqozk2nbf2opgkyje45yky err=HttpError('NotEnoughResources: NotEnoughResources')
+2026-04-02T07:27:02Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:dynqozk2nbf2opgkyje45yky err=HttpError("exhausted retries: ReadTimeout('')")
+2026-04-02T07:27:03Z INFO bsky_collector_v2.job.index_feed_generators: enqueued repos page=3 mode=listRepos inserted=500 repos_returned=500 next_cursor=set
+2026-04-02T07:27:39Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:c46qbkzb4wzxdcxyvl2vzmbw err=HttpError('InvalidRequest: Could not find repo: did:plc:c46qbkzb4wzxdcxyvl2vzmbw')
+2026-04-02T07:27:53Z WARNING bsky_collector_v2.job.index_feed_generators: listRecords failed repo=did:plc:g7bfklvdby4jkgxa4vrqgj6f err=HttpError('InvalidRequest: Could not find repo: did:plc:g7bfklvdby4jkgxa4vrqgj6f')
+2026-04-02T07:29:49Z ERROR bsky_collector_v2: job failed subcommand=index-feed-generators err=TimeoutError('timed out')
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\jobs\index_feed_generators.py", line 734, in run_index_feed_generators
+    global_row = state.get_feed_generator_index_global(collection=FEED_GENERATOR_COLLECTION)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    return self._rpc(name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 163, in _rpc
+    chunk = conn.recv(65536)
+            ^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 424, in main
+    asyncio.run(
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\jobs\index_feed_generators.py", line 1070, in run_index_feed_generators
+    state.finish_run(run_id=run_id, finished_at_utc=format_utc(now_utc()), success=success)
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 197, in _call
+    return self._rpc(name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 163, in _rpc
+    chunk = conn.recv(65536)
+            ^^^^^^^^^^^^^^^^
+TimeoutError: timed out
