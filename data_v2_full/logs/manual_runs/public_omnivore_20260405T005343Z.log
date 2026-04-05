@@ -4,3 +4,35 @@ COMMAND: /d/BlueSky/.venv-win/Scripts/python.exe -m bsky_collector_v2 collect-pu
 2026-04-05T00:53:43Z INFO bsky_collector_v2: job start subcommand=collect-public-omnibus dry_run=False resume=True
 2026-04-05T00:53:45Z INFO bsky_collector_v2.job.seed_post_registry: seed-post-registry start files=63360 include_hourly=True include_wide=True include_micro5=True include_posts_first_seen=True dry_run=False
 2026-04-05T00:56:02Z ERROR bsky_collector_v2.job.seed_post_registry: seed-post-registry control-state update failed path=D:\BlueSky\data_v2_full\hourly\2026-02-16\19\parts\feed_items_part_000.csv err=TimeoutError(10060, 'A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond', None, 10060, None)
+2026-04-05T00:56:03Z ERROR bsky_collector_v2: job failed subcommand=collect-public-omnibus err=TimeoutError(10060, 'A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond', None, 10060, None)
+Traceback (most recent call last):
+  File "D:\BlueSky\bsky_collector_v2\cli.py", line 628, in main
+    summary = asyncio.run(
+              ^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\jobs\public_omnibus.py", line 225, in run_public_omnibus
+    seed_summary = run_seed_post_registry(
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\jobs\seed_post_registry.py", line 260, in run_seed_post_registry
+    _flush_batch(control=control, posts=post_batch, actor_dids=actor_batch, seen_at_utc=seen_at_utc, cfg=cfg)
+  File "D:\BlueSky\bsky_collector_v2\jobs\seed_post_registry.py", line 138, in _flush_batch
+    control.upsert_post_registry_many(post_uris=dedup_posts, seen_at_utc=seen_at_utc)
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 219, in _call
+    return self._rpc(name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BlueSky\bsky_collector_v2\state.py", line 180, in _rpc
+    with socket.create_connection((host, int(self.tcp_port)), timeout=timeout_s) as conn:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 865, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Atom\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 850, in create_connection
+    sock.connect(sa)
+TimeoutError: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
