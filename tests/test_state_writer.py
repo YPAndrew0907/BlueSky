@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import sqlite3
 import socket
 import threading
 import time
@@ -222,6 +223,124 @@ def test_state_writer_instance_lock_prevents_dupes(tmp_path: Path) -> None:
     if proc_1.is_alive():
         proc_1.terminate()
         proc_1.join(timeout=5)
+
+
+def test_state_writer_survives_dispatch_exception(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    db_path = tmp_path / "control" / "control_state.db"
+    host = "127.0.0.1"
+    port = _pick_free_tcp_port()
+
+    original_dispatch = state_writer_module.dispatch_state_rpc
+    failure_counter = {"count": 0}
+
+    def flaky_dispatch(state, *, method, args, kwargs):  # noqa: ANN001
+        if method != "shutdown" and failure_counter["count"] == 0:
+            failure_counter["count"] += 1
+            raise sqlite3.OperationalError("simulated disk I/O error")
+        return original_dispatch(state, method=method, args=args, kwargs=kwargs)
+
+    monkeypatch.setattr(state_writer_module, "dispatch_state_rpc", flaky_dispatch)
+
+    thread = threading.Thread(
+        target=run_state_writer,
+        kwargs={"cfg": StateWriterConfig(db_path=db_path, tcp_host=host, tcp_port=port)},
+        daemon=True,
+    )
+    thread.start()
+    _wait_for_tcp(host, port)
+
+    remote = RemoteControlState(path=db_path, tcp_host=host, tcp_port=port)
+    ts = format_utc(now_utc())
+
+    with pytest.raises(RuntimeError, match="simulated disk I/O error"):
+        remote.start_run(run_id="first_failure", job_name="unit", started_at_utc=ts, params={"k": 1})
+
+    remote.start_run(run_id="after_failure", job_name="unit", started_at_utc=ts, params={"k": 2})
+    remote.commit()
+
+    remote._rpc("shutdown")
+    thread.join(timeout=5)
+    assert not thread.is_alive()
+
+    with ControlState.open_local(db_path) as local:
+        run = local.conn.execute(
+            "SELECT job_name FROM runs WHERE run_id=?",
+            ("after_failure",),
+        ).fetchone()
+        assert run is not None
+        assert str(run["job_name"]) == "unit"
+
+
+def test_state_writer_serializes_selected_post_rows(tmp_path: Path) -> None:
+    db_path = tmp_path / "control" / "control_state.db"
+    ts = format_utc(now_utc())
+    with ControlState.open_local(db_path) as local:
+        local.upsert_post_registry_many(
+            post_uris=[
+                PostUri("at://did:plc:a/app.bsky.feed.post/1"),
+                PostUri("at://did:plc:a/app.bsky.feed.post/2"),
+            ],
+            seen_at_utc=ts,
+        )
+        local.commit()
+
+    host = "127.0.0.1"
+    port = _pick_free_tcp_port()
+    thread = threading.Thread(
+        target=run_state_writer,
+        kwargs={"cfg": StateWriterConfig(db_path=db_path, tcp_host=host, tcp_port=port)},
+        daemon=True,
+    )
+    thread.start()
+    _wait_for_tcp(host, port)
+
+    remote = RemoteControlState(path=db_path, tcp_host=host, tcp_port=port)
+    rows = remote.select_posts_to_backfill_rows(limit=10)
+    assert rows == [
+        {"post_uri": "at://did:plc:a/app.bsky.feed.post/1", "first_seen_utc": ts},
+        {"post_uri": "at://did:plc:a/app.bsky.feed.post/2", "first_seen_utc": ts},
+    ]
+    assert remote._rpc("ping") == {"status": "ok"}
+
+    remote._rpc("shutdown")
+    thread.join(timeout=5)
+    assert not thread.is_alive()
+
+
+def test_state_writer_survives_unserializable_response(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    db_path = tmp_path / "control" / "control_state.db"
+    host = "127.0.0.1"
+    port = _pick_free_tcp_port()
+    thread_errors: list[Exception] = []
+
+    def _runner() -> None:
+        try:
+            run_state_writer(cfg=StateWriterConfig(db_path=db_path, tcp_host=host, tcp_port=port))
+        except Exception as err:  # noqa: BLE001
+            thread_errors.append(err)
+
+    def bad_dispatch(_state, *, method, args, kwargs):  # noqa: ANN001
+        if method == "shutdown":
+            return {"ok": True, "result": {"shutdown": True}}
+        return {"ok": True, "result": object()}
+
+    monkeypatch.setattr(state_writer_module, "dispatch_state_rpc", bad_dispatch)
+
+    thread = threading.Thread(target=_runner, daemon=True)
+    thread.start()
+    _wait_for_tcp(host, port)
+
+    remote = RemoteControlState(path=db_path, tcp_host=host, tcp_port=port)
+    with pytest.raises(RuntimeError, match="not JSON serializable"):
+        remote._rpc("ping")
+
+    assert thread.is_alive()
+    assert not thread_errors
+
+    remote._rpc("shutdown")
+    thread.join(timeout=5)
+    assert not thread.is_alive()
+    assert not thread_errors
 
 
 def test_state_writer_survives_client_disconnect_during_response(

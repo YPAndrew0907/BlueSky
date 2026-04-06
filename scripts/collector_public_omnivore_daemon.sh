@@ -83,6 +83,7 @@ MAX_POSTS_INTERACTIONS="${MAX_POSTS_INTERACTIONS:-200000}"
 MAX_POSTS_RQ1="${MAX_POSTS_RQ1:-200000}"
 BATCH_SIZE_INTERACTIONS="${BATCH_SIZE_INTERACTIONS:-25}"
 BATCH_SIZE_RQ1="${BATCH_SIZE_RQ1:-25}"
+RQ1_STAGE="${RQ1_STAGE:-core}"
 MAX_ITEMS_PER_ENDPOINT_INTERACTIONS="${MAX_ITEMS_PER_ENDPOINT_INTERACTIONS:-0}"
 MAX_ITEMS_PER_ENDPOINT_RQ1="${MAX_ITEMS_PER_ENDPOINT_RQ1:-0}"
 MAX_THREAD_DEPTH="${MAX_THREAD_DEPTH:-1000}"
@@ -220,6 +221,7 @@ run_cycle() {
     --max-posts-rq1 "$MAX_POSTS_RQ1"
     --batch-size-interactions "$BATCH_SIZE_INTERACTIONS"
     --batch-size-rq1 "$BATCH_SIZE_RQ1"
+    --rq1-stage "$RQ1_STAGE"
     --max-items-per-endpoint-interactions "$MAX_ITEMS_PER_ENDPOINT_INTERACTIONS"
     --max-items-per-endpoint-rq1 "$MAX_ITEMS_PER_ENDPOINT_RQ1"
     --max-thread-depth "$MAX_THREAD_DEPTH"
@@ -291,14 +293,21 @@ run_cycle() {
   fi
 
   log_msg "starting public omnivore cycle out_base=$OUT_BASE log=$cycle_log"
-  (
+  local exit_code=0
+  if (
     cd "$ROOT"
     printf 'COMMAND:'
     printf ' %q' "${cmd[@]}"
     printf '\n\n'
     "${cmd[@]}"
-  ) >> "$cycle_log" 2>&1
-  log_msg "completed public omnivore cycle log=$cycle_log"
+  ) >> "$cycle_log" 2>&1; then
+    log_msg "completed public omnivore cycle log=$cycle_log"
+    return 0
+  else
+    exit_code=$?
+    log_msg "public omnivore cycle failed exit_code=$exit_code log=$cycle_log"
+    return "$exit_code"
+  fi
 }
 
 cd "$ROOT"
@@ -307,14 +316,15 @@ log_msg "public omnivore daemon started root=$ROOT out_base=$OUT_BASE interval_s
 while true; do
   if is_due; then
     mark_started
-    if ! run_cycle; then
-      log_msg "public omnivore cycle failed"
-      if [[ "$RUN_ONCE" == "1" ]]; then
-        exit 1
-      fi
-    else
+    cycle_exit_code=0
+    if run_cycle; then
       if [[ "$RUN_ONCE" == "1" ]]; then
         exit 0
+      fi
+    else
+      cycle_exit_code=$?
+      if [[ "$RUN_ONCE" == "1" ]]; then
+        exit "$cycle_exit_code"
       fi
     fi
   fi

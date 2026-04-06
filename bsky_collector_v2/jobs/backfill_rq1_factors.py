@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import csv
 import hashlib
 import json
 import logging
@@ -9,14 +8,20 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable
 
+from bsky_collector_v2.appearance_file_index import iter_matching_feed_item_rows
 from bsky_collector_v2.did_resolver import DidResolver
 from bsky_collector_v2.fs_utils import atomic_write_json, ensure_dir
-from bsky_collector_v2.http_client import AsyncHttpClient, HttpRetryConfig, XrpcHosts
+from bsky_collector_v2.http_client import AsyncHttpClient, HttpError, HttpRetryConfig, XrpcHosts
 from bsky_collector_v2.instrumentation import enrich_manifest
 from bsky_collector_v2.layout import Layout
 from bsky_collector_v2.progress import ProgressReporter, ProgressState
 from bsky_collector_v2.public_views import extract_post_record_features, flatten_generator_view, json_compact
 from bsky_collector_v2.request_provenance import JobRequestContextFactory, RequestProvenanceWriter
+from bsky_collector_v2.rq1_stages import (
+    normalize_rq1_stage,
+    rq1_stage_includes_graph,
+    rq1_stage_includes_repo,
+)
 from bsky_collector_v2.rq1_factor_views import (
     extract_label_src_dids,
     flatten_actor_view,
@@ -31,7 +36,7 @@ from bsky_collector_v2.rq1_factor_views import (
     flatten_thread_node,
 )
 from bsky_collector_v2.rq1_stage_store import Rq1StageStore
-from bsky_collector_v2.state import ControlState
+from bsky_collector_v2.state import ControlState, coerce_selected_post_rows
 from bsky_collector_v2.time_utils import format_utc, now_utc, utc_date_str
 from bsky_collector_v2.types import PostUri, RunId
 from bsky_collector_v2.writers import CsvPartWriter
@@ -596,6 +601,7 @@ _ACTOR_FEED_CATALOG_STAGE = "actor_feed_catalog"
 class BackfillRq1FactorsConfig:
     max_posts: int = 10_000
     batch_size: int = 25
+    stage: str = "all"
     max_items_per_endpoint: int = 0
     max_thread_depth: int = 1000
     max_thread_parent_height: int = 1000
@@ -704,6 +710,7 @@ async def _fetch_paginated(
     captured_at_utc: str,
     max_items: int | None,
     list_keys: tuple[str, ...],
+    allow_missing_actor_not_found: bool = False,
 ) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     cursor: str | None = None
@@ -714,15 +721,30 @@ async def _fetch_paginated(
         req_params["limit"] = limit
         if cursor:
             req_params["cursor"] = cursor
-        resp = await http.xrpc_get(
-            endpoint=endpoint,
-            host=http.hosts.appview_host,
-            method=method,
-            params=req_params,
-            access_jwt=None,
-            feed_uri=feed_uri,
-            timestamp_utc=captured_at_utc,
-        )
+        try:
+            resp = await http.xrpc_get(
+                endpoint=endpoint,
+                host=http.hosts.appview_host,
+                method=method,
+                params=req_params,
+                access_jwt=None,
+                feed_uri=feed_uri,
+                timestamp_utc=captured_at_utc,
+            )
+        except HttpError as err:
+            msg = str(err).lower()
+            if allow_missing_actor_not_found and int(err.status_code or 0) == 400 and (
+                "actor not found" in msg or "profile not found" in msg
+            ):
+                logger.warning(
+                    "rq1 skip missing actor/profile endpoint=%s method=%s actor=%s err=%s",
+                    endpoint,
+                    method,
+                    str(params.get("actor") or ""),
+                    err,
+                )
+                return []
+            raise
         items = _as_list(resp.data, *list_keys)
         if not items:
             break
@@ -738,17 +760,20 @@ async def _fetch_paginated(
 
 
 def _iter_selected_post_rows(control: ControlState, *, cfg: BackfillRq1FactorsConfig) -> list[Any]:
-    return control.select_posts_to_backfill_rq1_rows(
-        limit=int(cfg.max_posts),
-        seen_after_utc=cfg.seen_after_utc,
-        seen_before_utc=cfg.seen_before_utc,
-        include_hydrated=bool(cfg.include_hydrated),
-        shard_index=int(cfg.shard_index),
-        shard_count=int(cfg.shard_count),
+    return coerce_selected_post_rows(
+        control.select_posts_to_backfill_rq1_rows(
+            limit=int(cfg.max_posts),
+            seen_after_utc=cfg.seen_after_utc,
+            seen_before_utc=cfg.seen_before_utc,
+            include_hydrated=bool(cfg.include_hydrated),
+            stage=str(cfg.stage),
+            shard_index=int(cfg.shard_index),
+            shard_count=int(cfg.shard_count),
+        )
     )
 
 
-def _selection_details(selected_rows: Iterable[Any]) -> dict[str, Any]:
+def _selection_details(selected_rows: Iterable[Any], *, rq1_stage: str) -> dict[str, Any]:
     rows = list(selected_rows)
     first_seen_values = sorted(
         {
@@ -759,6 +784,7 @@ def _selection_details(selected_rows: Iterable[Any]) -> dict[str, Any]:
     )
     return {
         "selection_order": "oldest_first",
+        "rq1_stage": rq1_stage,
         "selected_posts": len(rows),
         "selected_first_seen_min_utc": first_seen_values[0] if first_seen_values else None,
         "selected_first_seen_max_utc": first_seen_values[-1] if first_seen_values else None,
@@ -773,19 +799,8 @@ def _appearance_row(row: dict[str, str], source_family: str, source_path: Path) 
 
 
 def _iter_matching_appearances(layout: Layout, post_uris: set[str]) -> Iterable[dict[str, Any]]:
-    for source_family, root in (("hourly", layout.hourly_root), ("wide", layout.wide_root), ("micro5", layout.micro5_root)):
-        if not root.exists():
-            continue
-        for path in sorted(root.rglob("feed_items_part_*.csv")):
-            try:
-                with open(path, "r", encoding="utf-8", newline="") as f:
-                    reader = csv.DictReader(f)
-                    for row in reader:
-                        post_uri = str(row.get("post_uri") or "").strip()
-                        if post_uri and post_uri in post_uris:
-                            yield _appearance_row(row, source_family, path)
-            except OSError:
-                continue
+    for match in iter_matching_feed_item_rows(layout, post_uris):
+        yield _appearance_row(match.row, match.source_family, match.source_path)
 
 
 def _post_view_row(*, run_id: RunId, vantage_id: str, post: dict[str, Any], accept_labelers: str | None, labelers_included: str | None, captured_at_utc: str) -> dict[str, Any]:
@@ -1184,6 +1199,9 @@ async def run_backfill_rq1_factors(
     vantage_id: str,
 ) -> None:
     cfg = cfg or BackfillRq1FactorsConfig()
+    rq1_stage = normalize_rq1_stage(cfg.stage)
+    run_graph_stage = rq1_stage_includes_graph(rq1_stage)
+    run_repo_stage = rq1_stage_includes_repo(rq1_stage)
     shard_count = max(1, int(cfg.shard_count))
     shard_index = int(cfg.shard_index)
     if shard_index < 0 or shard_index >= shard_count:
@@ -1210,6 +1228,7 @@ async def run_backfill_rq1_factors(
         "params": {
             "max_posts": cfg.max_posts,
             "batch_size": cfg.batch_size,
+            "stage": rq1_stage,
             "max_items_per_endpoint": cfg.max_items_per_endpoint,
             "max_thread_depth": cfg.max_thread_depth,
             "max_thread_parent_height": cfg.max_thread_parent_height,
@@ -1244,7 +1263,7 @@ async def run_backfill_rq1_factors(
     )
     progress_state.rps_config = rps
     progress_state.concurrency = concurrency
-    progress_state.update_details({"phase": "selecting_posts", "selection_order": "oldest_first"})
+    progress_state.update_details({"phase": "selecting_posts", "selection_order": "oldest_first", "rq1_stage": rq1_stage})
     progress_reporter = ProgressReporter(progress_path, progress_state, write_interval_s=15.0)
     progress_reporter.start()
 
@@ -1338,7 +1357,7 @@ async def run_backfill_rq1_factors(
     try:
         with ControlState.open(layout.control_db_path) as control:
             selected_rows = _iter_selected_post_rows(control, cfg=cfg)
-            selection_details = _selection_details(selected_rows)
+            selection_details = _selection_details(selected_rows, rq1_stage=rq1_stage)
             manifest["selection"] = selection_details
             atomic_write_json(manifest_path, manifest)
             progress_state.update_details({**selection_details, "phase": "scanning_surface_appearances"})
@@ -1734,12 +1753,16 @@ async def run_backfill_rq1_factors(
         # actor_scopes also accumulates likers, quoters, reposters, thread actors,
         # feed creators, and other discovered accounts; using the whole map here
         # causes relationship and graph hydration to fan out on popular posts.
-        seed_actor_dids = sorted(
-            {
-                did
-                for did, scopes in actor_scopes.items()
-                if did and ("post_author" in scopes or "surface_author" in scopes)
-            }
+        seed_actor_dids = (
+            sorted(
+                {
+                    did
+                    for did, scopes in actor_scopes.items()
+                    if did and ("post_author" in scopes or "surface_author" in scopes)
+                }
+            )
+            if run_graph_stage
+            else []
         )
 
         async def _hydrate_actor_profiles(actor_dids: list[str]) -> None:
@@ -1774,7 +1797,7 @@ async def run_backfill_rq1_factors(
                 if did not in returned_rows:
                     _stage_write("actor_profiles", did, [])
 
-        if seed_actor_dids:
+        if run_graph_stage and seed_actor_dids:
             progress_state.set_detail("phase", "hydrating_seed_actor_profiles")
             await _hydrate_actor_profiles(seed_actor_dids)
 
@@ -1786,7 +1809,8 @@ async def run_backfill_rq1_factors(
                 return await fn(*args, **kwargs)
 
         # Full pairwise public relationship sweep over the seed actor set.
-        progress_state.set_detail("phase", "hydrating_seed_relationships")
+        if run_graph_stage:
+            progress_state.set_detail("phase", "hydrating_seed_relationships")
 
         async def _fetch_seed_actor_relationships(actor_did: str) -> dict[str, Any]:
             captured_at_utc = format_utc(now_utc())
@@ -1810,11 +1834,15 @@ async def run_backfill_rq1_factors(
                 "other_dids": [str(row.get("other_did") or "").strip() for row in rows],
             }
 
-        rel_missing = _replay_completed_stage(
-            stage_name="relationships",
-            entity_keys=seed_actor_dids,
-            apply_rows=_apply_relationship_rows,
-            progress_counter="relationships",
+        rel_missing = (
+            _replay_completed_stage(
+                stage_name="relationships",
+                entity_keys=seed_actor_dids,
+                apply_rows=_apply_relationship_rows,
+                progress_counter="relationships",
+            )
+            if run_graph_stage
+            else []
         )
         rel_tasks = [_bounded_call(_fetch_seed_actor_relationships, actor_did) for actor_did in rel_missing]
         for result in await asyncio.gather(*rel_tasks) if rel_tasks else []:
@@ -1826,7 +1854,8 @@ async def run_backfill_rq1_factors(
             _apply_relationship_rows(actor_did, rows)
 
         # First-hop graph for every seed actor.
-        progress_state.set_detail("phase", "hydrating_first_hop_graph")
+        if run_graph_stage:
+            progress_state.set_detail("phase", "hydrating_first_hop_graph")
 
         async def _fetch_seed_actor_graph(actor_did: str, *, need_followers: bool, need_follows: bool) -> dict[str, Any]:
             actor_scope_value = _actor_scope_value(actor_scopes, actor_did)
@@ -1846,6 +1875,7 @@ async def run_backfill_rq1_factors(
                     captured_at_utc=format_utc(now_utc()),
                     max_items=max_followers,
                     list_keys=("followers",),
+                    allow_missing_actor_not_found=True,
                 )
                 for follower in followers:
                     flat = flatten_actor_view(follower)
@@ -1886,6 +1916,7 @@ async def run_backfill_rq1_factors(
                     captured_at_utc=format_utc(now_utc()),
                     max_items=max_follows,
                     list_keys=("follows",),
+                    allow_missing_actor_not_found=True,
                 )
                 for subject in follows:
                     flat = flatten_actor_view(subject)
@@ -1925,21 +1956,29 @@ async def run_backfill_rq1_factors(
                 "graph_actor_dids": discovered_graph_dids,
             }
 
-        follower_missing = set(
-            _replay_completed_stage(
-                stage_name="followers",
-                entity_keys=seed_actor_dids,
-                apply_rows=_apply_follower_rows,
-                progress_counter="followers",
+        follower_missing = (
+            set(
+                _replay_completed_stage(
+                    stage_name="followers",
+                    entity_keys=seed_actor_dids,
+                    apply_rows=_apply_follower_rows,
+                    progress_counter="followers",
+                )
             )
+            if run_graph_stage
+            else set()
         )
-        follow_missing = set(
-            _replay_completed_stage(
-                stage_name="follows",
-                entity_keys=seed_actor_dids,
-                apply_rows=_apply_follow_rows,
-                progress_counter="follows",
+        follow_missing = (
+            set(
+                _replay_completed_stage(
+                    stage_name="follows",
+                    entity_keys=seed_actor_dids,
+                    apply_rows=_apply_follow_rows,
+                    progress_counter="follows",
+                )
             )
+            if run_graph_stage
+            else set()
         )
         graph_tasks = [
             _bounded_call(
@@ -1973,13 +2012,14 @@ async def run_backfill_rq1_factors(
             _apply_follow_rows(actor_did, follow_rows)
 
         # Hydrate newly discovered graph actor profiles too, so the graph nodes carry covariates.
-        graph_only_dids = sorted(graph_actor_dids - hydrated_actor_profiles)
-        if graph_only_dids:
+        graph_only_dids = sorted(graph_actor_dids - hydrated_actor_profiles) if run_graph_stage else []
+        if run_graph_stage and graph_only_dids:
             progress_state.set_detail("phase", "hydrating_graph_actor_profiles")
             await _hydrate_actor_profiles(graph_only_dids)
 
         # Author history and curation surfaces for the seed actor universe.
-        progress_state.set_detail("phase", "hydrating_author_history_and_curation")
+        if run_repo_stage:
+            progress_state.set_detail("phase", "hydrating_author_history_and_curation")
 
         async def _fetch_seed_actor_history(
             actor_did: str,
@@ -2009,6 +2049,7 @@ async def run_backfill_rq1_factors(
                     captured_at_utc=format_utc(now_utc()),
                     max_items=max_author_feed_items,
                     list_keys=("feed",),
+                    allow_missing_actor_not_found=True,
                 )
                 for item in items:
                     flat = flatten_author_feed_item(item)
@@ -2040,6 +2081,7 @@ async def run_backfill_rq1_factors(
                     captured_at_utc=format_utc(now_utc()),
                     max_items=max_actor_feeds,
                     list_keys=("feeds",),
+                    allow_missing_actor_not_found=True,
                 )
                 for feed in feed_rows:
                     feed_uri = str(feed.get("uri") or "").strip()
@@ -2059,6 +2101,7 @@ async def run_backfill_rq1_factors(
                     captured_at_utc=format_utc(now_utc()),
                     max_items=max_lists,
                     list_keys=("lists",),
+                    allow_missing_actor_not_found=True,
                 )
                 for list_view in lists:
                     flat = flatten_list_view(list_view)
@@ -2089,6 +2132,7 @@ async def run_backfill_rq1_factors(
                     captured_at_utc=format_utc(now_utc()),
                     max_items=max_starter_packs,
                     list_keys=("starterPacks",),
+                    allow_missing_actor_not_found=True,
                 )
                 for pack in packs:
                     flat = flatten_starter_pack_view(pack)
@@ -2124,36 +2168,52 @@ async def run_backfill_rq1_factors(
                 "labelers": labelers,
             }
 
-        author_feed_missing = set(
-            _replay_completed_stage(
-                stage_name="author_feed",
-                entity_keys=seed_actor_dids,
-                apply_rows=_apply_author_feed_rows,
-                progress_counter="author_feed_items",
+        author_feed_missing = (
+            set(
+                _replay_completed_stage(
+                    stage_name="author_feed",
+                    entity_keys=seed_actor_dids,
+                    apply_rows=_apply_author_feed_rows,
+                    progress_counter="author_feed_items",
+                )
             )
+            if run_repo_stage
+            else set()
         )
-        actor_feed_catalog_missing = set(
-            _replay_completed_stage(
-                stage_name=_ACTOR_FEED_CATALOG_STAGE,
-                entity_keys=seed_actor_dids,
-                apply_rows=_apply_actor_feed_catalog_rows,
+        actor_feed_catalog_missing = (
+            set(
+                _replay_completed_stage(
+                    stage_name=_ACTOR_FEED_CATALOG_STAGE,
+                    entity_keys=seed_actor_dids,
+                    apply_rows=_apply_actor_feed_catalog_rows,
+                )
             )
+            if run_repo_stage
+            else set()
         )
-        actor_lists_missing = set(
-            _replay_completed_stage(
-                stage_name="actor_lists",
-                entity_keys=seed_actor_dids,
-                apply_rows=_apply_actor_list_rows,
-                progress_counter="actor_lists",
+        actor_lists_missing = (
+            set(
+                _replay_completed_stage(
+                    stage_name="actor_lists",
+                    entity_keys=seed_actor_dids,
+                    apply_rows=_apply_actor_list_rows,
+                    progress_counter="actor_lists",
+                )
             )
+            if run_repo_stage
+            else set()
         )
-        starter_packs_missing = set(
-            _replay_completed_stage(
-                stage_name="starter_packs",
-                entity_keys=seed_actor_dids,
-                apply_rows=_apply_starter_pack_rows,
-                progress_counter="starter_packs",
+        starter_packs_missing = (
+            set(
+                _replay_completed_stage(
+                    stage_name="starter_packs",
+                    entity_keys=seed_actor_dids,
+                    apply_rows=_apply_starter_pack_rows,
+                    progress_counter="starter_packs",
+                )
             )
+            if run_repo_stage
+            else set()
         )
         history_tasks = [
             _bounded_call(
@@ -2209,7 +2269,8 @@ async def run_backfill_rq1_factors(
             _apply_starter_pack_rows(actor_did, starter_pack_rows)
 
         # Hydrate lists and starter packs in detail.
-        progress_state.set_detail("phase", "hydrating_lists_and_starter_packs")
+        if run_repo_stage:
+            progress_state.set_detail("phase", "hydrating_lists_and_starter_packs")
 
         async def _hydrate_list_members(list_uri: str) -> dict[str, Any]:
             resp_items = await _fetch_paginated(
@@ -2270,7 +2331,8 @@ async def run_backfill_rq1_factors(
                 _apply_list_member_rows(list_uri, rows)
             hydrated_list_uris.update(pending)
 
-        await _run_list_hydration(list_uris_to_fetch)
+        if run_repo_stage:
+            await _run_list_hydration(list_uris_to_fetch)
 
         async def _hydrate_starter_pack(starter_pack_uri: str) -> dict[str, Any]:
             resp = await http.xrpc_get(
@@ -2342,12 +2404,16 @@ async def run_backfill_rq1_factors(
                 "labelers": labelers,
             }
 
-        pending_starter_pack_uris = sorted(starter_pack_uris)
-        starter_pack_missing = _replay_completed_stage(
-            stage_name="starter_pack_contents",
-            entity_keys=pending_starter_pack_uris,
-            apply_rows=_apply_starter_pack_content_rows,
-            progress_counter="starter_pack_contents",
+        pending_starter_pack_uris = sorted(starter_pack_uris) if run_repo_stage else []
+        starter_pack_missing = (
+            _replay_completed_stage(
+                stage_name="starter_pack_contents",
+                entity_keys=pending_starter_pack_uris,
+                apply_rows=_apply_starter_pack_content_rows,
+                progress_counter="starter_pack_contents",
+            )
+            if run_repo_stage
+            else []
         )
         starter_pack_tasks = [_bounded_call(_hydrate_starter_pack, starter_pack_uri) for starter_pack_uri in starter_pack_missing]
         gathered_starter_packs = await asyncio.gather(*starter_pack_tasks) if starter_pack_tasks else []
@@ -2362,16 +2428,18 @@ async def run_backfill_rq1_factors(
                 progress_state.add_rows("starter_pack_contents", len(slot_rows))
             _apply_starter_pack_content_rows(starter_pack_uri, slot_rows)
 
-        await _run_list_hydration(list_uris_to_fetch)
+        if run_repo_stage:
+            await _run_list_hydration(list_uris_to_fetch)
 
         # Follow-record lane: resolve each repo to its PDS, describe it, then list app.bsky.graph.follow records.
-        progress_state.set_detail("phase", "hydrating_follow_records")
-        follow_record_actors = set(seed_actor_dids)
-        if bool(cfg.resolve_pds_endpoints) and str(cfg.follow_record_scope).strip().lower() in {"seed+graph", "all", "seed_and_graph"}:
+        if run_repo_stage:
+            progress_state.set_detail("phase", "hydrating_follow_records")
+        follow_record_actors = set(seed_actor_dids) if run_repo_stage else set()
+        if run_repo_stage and bool(cfg.resolve_pds_endpoints) and str(cfg.follow_record_scope).strip().lower() in {"seed+graph", "all", "seed_and_graph"}:
             follow_record_actors.update(graph_actor_dids)
         ordered_follow_record_actors = sorted(follow_record_actors)
 
-        if bool(cfg.resolve_pds_endpoints):
+        if run_repo_stage and bool(cfg.resolve_pds_endpoints):
             did_missing = set(
                 _replay_completed_stage(
                     stage_name="dids",
@@ -2381,21 +2449,29 @@ async def run_backfill_rq1_factors(
             )
         else:
             did_missing = set()
-        repo_desc_missing = set(
-            _replay_completed_stage(
-                stage_name="repo_desc",
-                entity_keys=ordered_follow_record_actors,
-                apply_rows=lambda _entity_key, _rows: None,
-                progress_counter="repo_descriptions",
+        repo_desc_missing = (
+            set(
+                _replay_completed_stage(
+                    stage_name="repo_desc",
+                    entity_keys=ordered_follow_record_actors,
+                    apply_rows=lambda _entity_key, _rows: None,
+                    progress_counter="repo_descriptions",
+                )
             )
+            if run_repo_stage
+            else set()
         )
-        follow_records_missing = set(
-            _replay_completed_stage(
-                stage_name="follow_records",
-                entity_keys=ordered_follow_record_actors,
-                apply_rows=_apply_follow_record_rows,
-                progress_counter="follow_records",
+        follow_records_missing = (
+            set(
+                _replay_completed_stage(
+                    stage_name="follow_records",
+                    entity_keys=ordered_follow_record_actors,
+                    apply_rows=_apply_follow_record_rows,
+                    progress_counter="follow_records",
+                )
             )
+            if run_repo_stage
+            else set()
         )
 
         async def _fetch_follow_record_lane(
@@ -2541,7 +2617,8 @@ async def run_backfill_rq1_factors(
             _apply_follow_record_rows(actor_did, follow_rows)
 
         # Final feed generator hydration after all discovery surfaces are scanned.
-        progress_state.set_detail("phase", "hydrating_feed_metadata")
+        if run_repo_stage:
+            progress_state.set_detail("phase", "hydrating_feed_metadata")
 
         async def _hydrate_feed_generator(feed_uri: str) -> dict[str, Any] | None:
             captured_at_utc = format_utc(now_utc())
@@ -2578,12 +2655,16 @@ async def run_backfill_rq1_factors(
             }
             return {"row": row, "scope_additions": scope_additions, "labelers": labelers}
 
-        ordered_feed_uris = sorted(feed_sources)
-        feed_missing = _replay_completed_stage(
-            stage_name="feed_generators",
-            entity_keys=ordered_feed_uris,
-            apply_rows=_apply_feed_generator_rows,
-            progress_counter="feed_generators",
+        ordered_feed_uris = sorted(feed_sources) if run_repo_stage else []
+        feed_missing = (
+            _replay_completed_stage(
+                stage_name="feed_generators",
+                entity_keys=ordered_feed_uris,
+                apply_rows=_apply_feed_generator_rows,
+                progress_counter="feed_generators",
+            )
+            if run_repo_stage
+            else []
         )
         feed_tasks = [_bounded_call(_hydrate_feed_generator, feed_uri) for feed_uri in feed_missing]
         for result in await asyncio.gather(*feed_tasks) if feed_tasks else []:
@@ -2601,13 +2682,13 @@ async def run_backfill_rq1_factors(
                 progress_state.add_rows("feed_generators", 1)
 
         # Final actor-profile sweep for actors discovered later in lists, follow records, and feed hydration.
-        final_actor_dids = sorted(set(actor_scopes) - hydrated_actor_profiles)
-        if final_actor_dids:
+        final_actor_dids = sorted(set(actor_scopes) - hydrated_actor_profiles) if run_repo_stage else []
+        if run_repo_stage and final_actor_dids:
             progress_state.set_detail("phase", "hydrating_final_actor_profiles")
             await _hydrate_actor_profiles(final_actor_dids)
 
         # Labeler service metadata for every label source DID we saw.
-        if labeler_dids:
+        if run_repo_stage and labeler_dids:
             progress_state.set_detail("phase", "hydrating_labeler_services")
 
             async def _fetch_labeler_batch(batch: list[str]) -> list[dict[str, Any]]:
@@ -2682,6 +2763,7 @@ async def run_backfill_rq1_factors(
                 control.mark_posts_rq1_factors_hydrated(
                     post_uris=[PostUri(uri) for uri in sorted(set(completed_focus_posts))],
                     hydrated_at_utc=format_utc(now_utc()),
+                    stage=rq1_stage,
                 )
                 control.commit()
 

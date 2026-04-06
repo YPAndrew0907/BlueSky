@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import csv
+import errno
+import json
 import os
 import signal
 import subprocess
@@ -9,6 +11,8 @@ import time
 from pathlib import Path
 
 import pytest
+
+from bsky_collector_v2.writers import CsvPartWriter, JsonlWriter
 
 
 def _wait_for_parseable_csv_row(path: Path, *, timeout_s: float = 10.0) -> None:
@@ -64,3 +68,112 @@ while True:
     with out.open("r", encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     assert len(rows) >= 1
+
+
+def test_csv_part_writer_retries_transient_open_error(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    out = tmp_path / "parts" / "feed_items_part_000.csv"
+    original_open = os.open
+    attempts = {"count": 0}
+
+    def flaky_open(path, flags, mode=0o777):  # noqa: ANN001
+        attempts["count"] += 1
+        if attempts["count"] <= 2:
+            raise OSError(errno.EBUSY, "simulated transient open failure")
+        return original_open(path, flags, mode)
+
+    monkeypatch.setattr("bsky_collector_v2.writers.os.open", flaky_open)
+
+    writer = CsvPartWriter(out, fieldnames=["a", "b"], io_retry_initial_backoff_s=0.0)
+    writer.write_rows([{"a": 1, "b": "x"}])
+    writer.close()
+
+    with out.open("r", encoding="utf-8", newline="") as f:
+        rows = list(csv.DictReader(f))
+    assert rows == [{"a": "1", "b": "x"}]
+    assert attempts["count"] >= 3
+
+
+def test_csv_part_writer_retries_partial_write_then_transient_error(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    out = tmp_path / "parts" / "feed_items_part_000.csv"
+    original_write = os.write
+    state = {"call": 0}
+
+    def flaky_write(fd, data):  # noqa: ANN001
+        state["call"] += 1
+        payload = bytes(data)
+        if state["call"] == 2:
+            first_chunk = payload[:5]
+            return original_write(fd, first_chunk)
+        if state["call"] == 3:
+            raise OSError(errno.EIO, "simulated transient write failure")
+        return original_write(fd, payload)
+
+    monkeypatch.setattr("bsky_collector_v2.writers.os.write", flaky_write)
+
+    with CsvPartWriter(out, fieldnames=["a", "b"], io_retry_initial_backoff_s=0.0) as writer:
+        writer.write_rows([{"a": 123, "b": "alpha"}])
+
+    with out.open("r", encoding="utf-8", newline="") as f:
+        rows = list(csv.DictReader(f))
+    assert rows == [{"a": "123", "b": "alpha"}]
+    assert state["call"] >= 4
+
+
+def test_jsonl_writer_retries_transient_write_error(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    out = tmp_path / "parts" / "objects.jsonl"
+    original_write = os.write
+    state = {"call": 0}
+
+    def flaky_write(fd, data):  # noqa: ANN001
+        state["call"] += 1
+        if state["call"] == 1:
+            raise OSError(errno.ETIMEDOUT, "simulated transient jsonl write failure")
+        return original_write(fd, bytes(data))
+
+    monkeypatch.setattr("bsky_collector_v2.writers.os.write", flaky_write)
+
+    with JsonlWriter(out, io_retry_initial_backoff_s=0.0) as writer:
+        writer.write_many([{"k": 1}, {"k": 2}])
+
+    lines = [json.loads(line) for line in out.read_text(encoding="utf-8").splitlines()]
+    assert lines == [{"k": 1}, {"k": 2}]
+    assert state["call"] >= 2
+
+
+def test_writer_raises_non_retryable_error(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    out = tmp_path / "parts" / "feed_items_part_000.csv"
+
+    def fatal_write(_fd, _data):  # noqa: ANN001
+        raise OSError(errno.ENOSPC, "disk full")
+
+    monkeypatch.setattr("bsky_collector_v2.writers.os.write", fatal_write)
+
+    with pytest.raises(OSError, match="disk full"):
+        with CsvPartWriter(out, fieldnames=["a", "b"], io_retry_initial_backoff_s=0.0) as writer:
+            writer.write_rows([{"a": 1, "b": "x"}])
+
+
+def test_writer_retries_transient_fsync_error(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    out = tmp_path / "parts" / "feed_items_part_000.csv"
+    original_fsync = os.fsync
+    attempts = {"count": 0}
+
+    def flaky_fsync(fd):  # noqa: ANN001
+        attempts["count"] += 1
+        if attempts["count"] <= 2:
+            raise OSError(errno.EIO, "simulated transient fsync failure")
+        return original_fsync(fd)
+
+    monkeypatch.setattr("bsky_collector_v2.writers.os.fsync", flaky_fsync)
+
+    with CsvPartWriter(out, fieldnames=["a", "b"], io_retry_initial_backoff_s=0.0) as writer:
+        writer.write_rows([{"a": 1, "b": "x"}])
+        writer.flush(force_fsync=True)
+
+    with out.open("r", encoding="utf-8", newline="") as f:
+        rows = list(csv.DictReader(f))
+    assert rows == [{"a": "1", "b": "x"}]
+    assert attempts["count"] >= 3

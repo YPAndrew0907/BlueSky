@@ -60,6 +60,7 @@ class PublicOmnibusConfig:
     max_posts_rq1: int = 200_000
     batch_size_interactions: int = 25
     batch_size_rq1: int = 25
+    rq1_stage: str = "core"
     max_items_per_endpoint_interactions: int = 0
     max_items_per_endpoint_rq1: int = 0
     max_thread_depth: int = 1000
@@ -190,6 +191,7 @@ async def run_public_omnibus(
             "max_feed_generators": int(cfg.max_feed_generators),
             "max_posts_interactions": int(cfg.max_posts_interactions),
             "max_posts_rq1": int(cfg.max_posts_rq1),
+            "rq1_stage": str(cfg.rq1_stage),
             "public_viewer_modes": list(public_viewer_modes),
             "accept_language": accept_language,
             "accept_labelers": accept_labelers,
@@ -452,6 +454,7 @@ async def run_public_omnibus(
                     cfg=BackfillRq1FactorsConfig(
                         max_posts=int(cfg.max_posts_rq1),
                         batch_size=int(cfg.batch_size_rq1),
+                        stage=str(cfg.rq1_stage),
                         max_items_per_endpoint=int(cfg.max_items_per_endpoint_rq1),
                         max_thread_depth=int(cfg.max_thread_depth),
                         max_thread_parent_height=int(cfg.max_thread_parent_height),

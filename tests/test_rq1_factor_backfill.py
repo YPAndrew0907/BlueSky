@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import csv
 import json
 import sqlite3
@@ -9,7 +10,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from bsky_collector_v2.jobs.backfill_rq1_factors import _walk_thread
+from bsky_collector_v2.http_client import HttpError
+from bsky_collector_v2.jobs.backfill_rq1_factors import _fetch_paginated, _walk_thread
 from bsky_collector_v2.layout import Layout
 from bsky_collector_v2.state import ControlState
 from bsky_collector_v2.time_utils import now_utc, utc_date_str
@@ -285,6 +287,143 @@ def test_walk_thread_handles_revisited_focus_without_infinite_recursion() -> Non
         edge["parent_post_uri"] == parent_uri and edge["child_post_uri"] == focus_uri
         for edge in out_edges
     )
+
+
+def test_fetch_paginated_missing_actor_returns_empty_when_allowed() -> None:
+    class _FakeHosts:
+        appview_host = "https://unit.test"
+
+    class _FakeHttp:
+        def __init__(self) -> None:
+            self.hosts = _FakeHosts()
+
+        async def xrpc_get(  # noqa: ANN202
+            self,
+            *,
+            endpoint: str,
+            host: str,
+            method: str,
+            params: dict[str, Any],
+            access_jwt: str | None,
+            feed_uri: str | None,
+            timestamp_utc: str,
+        ):
+            raise HttpError(
+                endpoint=endpoint,
+                method=method,
+                url=f"{host}/xrpc/{method}",
+                status_code=400,
+                error_type="http_400",
+                message="InvalidRequest: Actor not found: did:plc:missingactor",
+            )
+
+    rows = asyncio.run(
+        _fetch_paginated(
+            http=_FakeHttp(),  # type: ignore[arg-type]
+            endpoint="app.bsky.graph.getFollowers",
+            method="app.bsky.graph.getFollowers",
+            params={"actor": "did:plc:missingactor"},
+            feed_uri=None,
+            captured_at_utc="2026-04-05T00:00:00Z",
+            max_items=10,
+            list_keys=("followers",),
+            allow_missing_actor_not_found=True,
+        )
+    )
+
+    assert rows == []
+
+
+def test_fetch_paginated_missing_profile_returns_empty_when_allowed() -> None:
+    class _FakeHosts:
+        appview_host = "https://unit.test"
+
+    class _FakeHttp:
+        def __init__(self) -> None:
+            self.hosts = _FakeHosts()
+
+        async def xrpc_get(  # noqa: ANN202
+            self,
+            *,
+            endpoint: str,
+            host: str,
+            method: str,
+            params: dict[str, Any],
+            access_jwt: str | None,
+            feed_uri: str | None,
+            timestamp_utc: str,
+        ):
+            raise HttpError(
+                endpoint=endpoint,
+                method=method,
+                url=f"{host}/xrpc/{method}",
+                status_code=400,
+                error_type="http_400",
+                message="InvalidRequest: Profile not found",
+            )
+
+    rows = asyncio.run(
+        _fetch_paginated(
+            http=_FakeHttp(),  # type: ignore[arg-type]
+            endpoint="app.bsky.feed.getAuthorFeed",
+            method="app.bsky.feed.getAuthorFeed",
+            params={"actor": "did:plc:missingactor"},
+            feed_uri=None,
+            captured_at_utc="2026-04-05T00:00:00Z",
+            max_items=10,
+            list_keys=("feed",),
+            allow_missing_actor_not_found=True,
+        )
+    )
+
+    assert rows == []
+
+
+def test_fetch_paginated_missing_actor_still_raises_without_allow_flag() -> None:
+    class _FakeHosts:
+        appview_host = "https://unit.test"
+
+    class _FakeHttp:
+        def __init__(self) -> None:
+            self.hosts = _FakeHosts()
+
+        async def xrpc_get(  # noqa: ANN202
+            self,
+            *,
+            endpoint: str,
+            host: str,
+            method: str,
+            params: dict[str, Any],
+            access_jwt: str | None,
+            feed_uri: str | None,
+            timestamp_utc: str,
+        ):
+            raise HttpError(
+                endpoint=endpoint,
+                method=method,
+                url=f"{host}/xrpc/{method}",
+                status_code=400,
+                error_type="http_400",
+                message="InvalidRequest: Actor not found: did:plc:missingactor",
+            )
+
+    try:
+        asyncio.run(
+            _fetch_paginated(
+                http=_FakeHttp(),  # type: ignore[arg-type]
+                endpoint="app.bsky.graph.getFollowers",
+                method="app.bsky.graph.getFollowers",
+                params={"actor": "did:plc:missingactor"},
+                feed_uri=None,
+                captured_at_utc="2026-04-05T00:00:00Z",
+                max_items=10,
+                list_keys=("followers",),
+            )
+        )
+    except HttpError as err:
+        assert "Actor not found" in str(err)
+    else:
+        raise AssertionError("expected HttpError")
 
 
 def test_backfill_rq1_factors_full_integration(tmp_path: Path) -> None:
@@ -676,6 +815,26 @@ def _stage_registry_counts(db_path: Path) -> dict[str, int]:
     return {str(row["stage_name"]): int(row["n"]) for row in rows}
 
 
+def _rq1_registry_row(out_base: Path, post_uri: str) -> dict[str, Any]:
+    layout = Layout(out_base)
+    with ControlState.open(layout.control_db_path) as control:
+        assert isinstance(control, ControlState)
+        row = control.conn.execute(
+            """
+            SELECT
+              core_hydrated_at_utc,
+              graph_hydrated_at_utc,
+              repo_hydrated_at_utc,
+              last_hydrated_utc
+            FROM post_rq1_factor_registry
+            WHERE post_uri=?
+            """,
+            (post_uri,),
+        ).fetchone()
+    assert row is not None
+    return {key: row[key] for key in row.keys()}
+
+
 def _wait_until(predicate, *, timeout_s: float = 30.0, sleep_s: float = 0.1) -> None:
     deadline = time.time() + timeout_s
     while time.time() < deadline:
@@ -683,6 +842,106 @@ def _wait_until(predicate, *, timeout_s: float = 30.0, sleep_s: float = 0.1) -> 
             return
         time.sleep(sleep_s)
     raise AssertionError("condition not met before timeout")
+
+
+def test_backfill_rq1_factors_stage_sequence_core_graph_repo(tmp_path: Path) -> None:
+    post_uris = [
+        "at://did:plc:author000/app.bsky.feed.post/post000",
+        "at://did:plc:author001/app.bsky.feed.post/post001",
+    ]
+    _seed_posts_and_appearances(tmp_path, post_uris)
+
+    with FakeBskyRq1Server() as server:
+        core = _run_backfill_rq1(tmp_path, server, "--stage", "core", "--no-resolve-pds-endpoints")
+        assert core.returncode == 0, core.stdout
+
+        core_paths = {entry["path"] for entry in server.request_log}
+        for required in {
+            "/xrpc/app.bsky.feed.getPosts",
+            "/xrpc/app.bsky.feed.getLikes",
+            "/xrpc/app.bsky.feed.getQuotes",
+            "/xrpc/app.bsky.feed.getRepostedBy",
+            "/xrpc/app.bsky.feed.getPostThread",
+        }:
+            assert required in core_paths, required
+        for skipped in {
+            "/xrpc/app.bsky.graph.getRelationships",
+            "/xrpc/app.bsky.graph.getFollowers",
+            "/xrpc/app.bsky.graph.getFollows",
+            "/xrpc/app.bsky.feed.getAuthorFeed",
+            "/xrpc/app.bsky.feed.getActorFeeds",
+            "/xrpc/app.bsky.graph.getLists",
+            "/xrpc/app.bsky.graph.getList",
+            "/xrpc/app.bsky.graph.getActorStarterPacks",
+            "/xrpc/app.bsky.graph.getStarterPack",
+            "/xrpc/com.atproto.repo.describeRepo",
+            "/xrpc/com.atproto.repo.listRecords",
+            "/xrpc/app.bsky.feed.getFeedGenerator",
+            "/xrpc/app.bsky.labeler.getServices",
+        }:
+            assert skipped not in core_paths, skipped
+
+        core_row = _rq1_registry_row(tmp_path, post_uris[0])
+        assert core_row["core_hydrated_at_utc"]
+        assert core_row["graph_hydrated_at_utc"] is None
+        assert core_row["repo_hydrated_at_utc"] is None
+        assert core_row["last_hydrated_utc"] is None
+
+        server.request_log.clear()
+        graph = _run_backfill_rq1(tmp_path, server, "--stage", "graph", "--no-resolve-pds-endpoints")
+        assert graph.returncode == 0, graph.stdout
+
+        graph_paths = {entry["path"] for entry in server.request_log}
+        for required in {
+            "/xrpc/app.bsky.graph.getRelationships",
+            "/xrpc/app.bsky.graph.getFollowers",
+            "/xrpc/app.bsky.graph.getFollows",
+        }:
+            assert required in graph_paths, required
+        for skipped in {
+            "/xrpc/app.bsky.feed.getAuthorFeed",
+            "/xrpc/app.bsky.feed.getActorFeeds",
+            "/xrpc/app.bsky.graph.getLists",
+            "/xrpc/app.bsky.graph.getList",
+            "/xrpc/app.bsky.graph.getActorStarterPacks",
+            "/xrpc/app.bsky.graph.getStarterPack",
+            "/xrpc/com.atproto.repo.describeRepo",
+            "/xrpc/com.atproto.repo.listRecords",
+            "/xrpc/app.bsky.feed.getFeedGenerator",
+            "/xrpc/app.bsky.labeler.getServices",
+        }:
+            assert skipped not in graph_paths, skipped
+
+        graph_row = _rq1_registry_row(tmp_path, post_uris[0])
+        assert graph_row["core_hydrated_at_utc"]
+        assert graph_row["graph_hydrated_at_utc"]
+        assert graph_row["repo_hydrated_at_utc"] is None
+        assert graph_row["last_hydrated_utc"] is None
+
+        server.request_log.clear()
+        repo = _run_backfill_rq1(tmp_path, server, "--stage", "repo", "--no-resolve-pds-endpoints")
+        assert repo.returncode == 0, repo.stdout
+
+        repo_paths = {entry["path"] for entry in server.request_log}
+        for required in {
+            "/xrpc/app.bsky.feed.getAuthorFeed",
+            "/xrpc/app.bsky.feed.getActorFeeds",
+            "/xrpc/app.bsky.graph.getLists",
+            "/xrpc/app.bsky.graph.getList",
+            "/xrpc/app.bsky.graph.getActorStarterPacks",
+            "/xrpc/app.bsky.graph.getStarterPack",
+            "/xrpc/com.atproto.repo.describeRepo",
+            "/xrpc/com.atproto.repo.listRecords",
+            "/xrpc/app.bsky.feed.getFeedGenerator",
+            "/xrpc/app.bsky.labeler.getServices",
+        }:
+            assert required in repo_paths, required
+
+        repo_row = _rq1_registry_row(tmp_path, post_uris[0])
+        assert repo_row["core_hydrated_at_utc"]
+        assert repo_row["graph_hydrated_at_utc"]
+        assert repo_row["repo_hydrated_at_utc"]
+        assert repo_row["last_hydrated_utc"]
 
 
 def test_backfill_rq1_factors_crash_resume_rebuilds_stage_outputs_without_duplicates(tmp_path: Path) -> None:

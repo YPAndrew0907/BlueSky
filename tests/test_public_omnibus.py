@@ -138,6 +138,7 @@ def test_public_omnibus_orchestrates_public_only_pipeline(tmp_path: Path, monkey
     assert by_name["hydrate-authors"]["cfg"].max_authors == 200_000
     assert by_name["backfill-interactions"]["cfg"].include_hydrated is False
     assert by_name["backfill-rq1-factors"]["cfg"].include_hydrated is False
+    assert by_name["backfill-rq1-factors"]["cfg"].stage == "core"
     assert summary.success is True
     assert summary.studies_run == ["studyA"]
     assert [item["step"] for item in summary.step_results] == [

@@ -7,11 +7,17 @@ import socket
 import sqlite3
 import time
 from collections.abc import Iterator as AbcIterator
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass, is_dataclass
 from pathlib import Path
 from typing import Any, Iterable, Iterator, Sequence
 from urllib.parse import urlparse
 
+from bsky_collector_v2.rq1_stages import (
+    normalize_rq1_stage,
+    rq1_stage_completion_columns,
+    rq1_stage_pending_column,
+    rq1_stage_prerequisite_clauses,
+)
 from bsky_collector_v2.types import FeedUri, PostUri, RunId, ViewerMode
 
 
@@ -35,6 +41,22 @@ _STATE_WRITER_RPC_TIMEOUT_S = _state_writer_rpc_timeout_s()
 class SelectedPost:
     post_uri: str
     first_seen_utc: str
+
+
+def coerce_selected_post_row(value: Any) -> SelectedPost:
+    if isinstance(value, SelectedPost):
+        return value
+    if isinstance(value, dict):
+        post_uri = str(value.get("post_uri") or "").strip()
+        first_seen_utc = str(value.get("first_seen_utc") or "").strip()
+        if not post_uri or not first_seen_utc:
+            raise ValueError(f"invalid selected post row: {value!r}")
+        return SelectedPost(post_uri=post_uri, first_seen_utc=first_seen_utc)
+    raise TypeError(f"unsupported selected post row type: {type(value).__name__}")
+
+
+def coerce_selected_post_rows(values: Iterable[Any]) -> list[SelectedPost]:
+    return [coerce_selected_post_row(value) for value in values]
 
 
 def _stable_shard(value: str, shard_count: int) -> int:
@@ -101,6 +123,8 @@ def _serialize_rpc_value(value: Any) -> Any:
         return value
     if isinstance(value, sqlite3.Row):
         return {str(k): _serialize_rpc_value(value[k]) for k in value.keys()}
+    if not isinstance(value, type) and is_dataclass(value):
+        return {str(k): _serialize_rpc_value(v) for k, v in asdict(value).items()}
     if isinstance(value, Path):
         return str(value)
     if isinstance(value, dict):
@@ -293,6 +317,9 @@ class ControlState:
             CREATE TABLE IF NOT EXISTS post_rq1_factor_registry (
               post_uri TEXT PRIMARY KEY,
               first_enqueued_utc TEXT NOT NULL,
+              core_hydrated_at_utc TEXT,
+              graph_hydrated_at_utc TEXT,
+              repo_hydrated_at_utc TEXT,
               last_hydrated_utc TEXT,
               hydrated_count INTEGER NOT NULL DEFAULT 0,
               FOREIGN KEY(post_uri) REFERENCES post_registry(post_uri) ON DELETE CASCADE
@@ -383,9 +410,51 @@ class ControlState:
 
             CREATE INDEX IF NOT EXISTS idx_post_rq1_factor_registry_last_hydrated_post_uri
               ON post_rq1_factor_registry(last_hydrated_utc, post_uri);
+
+            """
+        )
+        self._migrate_post_rq1_factor_registry()
+        self.conn.executescript(
+            """
+            CREATE INDEX IF NOT EXISTS idx_post_rq1_factor_registry_core_hydrated_post_uri
+              ON post_rq1_factor_registry(core_hydrated_at_utc, post_uri);
+
+            CREATE INDEX IF NOT EXISTS idx_post_rq1_factor_registry_graph_hydrated_post_uri
+              ON post_rq1_factor_registry(graph_hydrated_at_utc, post_uri);
+
+            CREATE INDEX IF NOT EXISTS idx_post_rq1_factor_registry_repo_hydrated_post_uri
+              ON post_rq1_factor_registry(repo_hydrated_at_utc, post_uri);
             """
         )
         self.conn.commit()
+
+    def _table_columns(self, table_name: str) -> set[str]:
+        rows = self.conn.execute(f"PRAGMA table_info({table_name})").fetchall()
+        return {str(row["name"]) for row in rows}
+
+    def _migrate_post_rq1_factor_registry(self) -> None:
+        existing_columns = self._table_columns("post_rq1_factor_registry")
+        expected_columns = {
+            "core_hydrated_at_utc": "TEXT",
+            "graph_hydrated_at_utc": "TEXT",
+            "repo_hydrated_at_utc": "TEXT",
+        }
+        for column_name, column_type in expected_columns.items():
+            if column_name in existing_columns:
+                continue
+            self.conn.execute(
+                f"ALTER TABLE post_rq1_factor_registry ADD COLUMN {column_name} {column_type}"
+            )
+        self.conn.execute(
+            """
+            UPDATE post_rq1_factor_registry
+            SET
+              core_hydrated_at_utc = COALESCE(core_hydrated_at_utc, last_hydrated_utc),
+              graph_hydrated_at_utc = COALESCE(graph_hydrated_at_utc, last_hydrated_utc),
+              repo_hydrated_at_utc = COALESCE(repo_hydrated_at_utc, last_hydrated_utc)
+            WHERE last_hydrated_utc IS NOT NULL
+            """
+        )
 
     def start_run(self, *, run_id: RunId, job_name: str, started_at_utc: str, params: dict[str, Any]) -> None:
         _with_locked_retry(
@@ -667,8 +736,16 @@ class ControlState:
             return
         self.conn.executemany(
             """
-            INSERT OR IGNORE INTO post_rq1_factor_registry(post_uri, first_enqueued_utc, last_hydrated_utc, hydrated_count)
-            VALUES (?, ?, NULL, 0)
+            INSERT OR IGNORE INTO post_rq1_factor_registry(
+              post_uri,
+              first_enqueued_utc,
+              core_hydrated_at_utc,
+              graph_hydrated_at_utc,
+              repo_hydrated_at_utc,
+              last_hydrated_utc,
+              hydrated_count
+            )
+            VALUES (?, ?, NULL, NULL, NULL, NULL, 0)
             """,
             rows,
         )
@@ -680,12 +757,14 @@ class ControlState:
         seen_after_utc: str | None = None,
         seen_before_utc: str | None = None,
         include_hydrated: bool = False,
+        stage: str = "all",
         shard_index: int = 0,
         shard_count: int = 1,
     ) -> list[SelectedPost]:
         limit = int(limit)
         if limit <= 0:
             return []
+        stage = normalize_rq1_stage(stage)
         shard_count = max(1, int(shard_count))
         shard_index = int(shard_index)
         if shard_index < 0 or shard_index >= shard_count:
@@ -699,8 +778,9 @@ class ControlState:
         if seen_before_utc is not None:
             conditions.append("pr.first_seen_utc < ?")
             args.append(seen_before_utc)
+        conditions.extend(rq1_stage_prerequisite_clauses(stage))
         if not include_hydrated:
-            conditions.append("prr.last_hydrated_utc IS NULL")
+            conditions.append(f"{rq1_stage_pending_column(stage)} IS NULL")
 
         query = f"""
             SELECT pr.post_uri, pr.first_seen_utc
@@ -735,6 +815,7 @@ class ControlState:
         seen_after_utc: str | None = None,
         seen_before_utc: str | None = None,
         include_hydrated: bool = False,
+        stage: str = "all",
         shard_index: int = 0,
         shard_count: int = 1,
     ) -> list[str]:
@@ -743,24 +824,45 @@ class ControlState:
             seen_after_utc=seen_after_utc,
             seen_before_utc=seen_before_utc,
             include_hydrated=include_hydrated,
+            stage=stage,
             shard_index=shard_index,
             shard_count=shard_count,
         )
         return [row.post_uri for row in rows]
 
-    def mark_posts_rq1_factors_hydrated(self, *, post_uris: Sequence[PostUri], hydrated_at_utc: str) -> None:
+    def mark_posts_rq1_factors_hydrated(
+        self,
+        *,
+        post_uris: Sequence[PostUri],
+        hydrated_at_utc: str,
+        stage: str = "all",
+    ) -> None:
         rows = [(str(p), hydrated_at_utc) for p in post_uris if str(p)]
         if not rows:
             return
-        self.conn.executemany(
-            """
-            INSERT INTO post_rq1_factor_registry(post_uri, first_enqueued_utc, last_hydrated_utc, hydrated_count)
-            VALUES (?, ?, ?, 1)
+        stage = normalize_rq1_stage(stage)
+        completion_columns = rq1_stage_completion_columns(stage)
+        insert_columns = ["post_uri", "first_enqueued_utc", "hydrated_count"]
+        insert_values = ["?", "?", "1"]
+        update_assignments = ["hydrated_count = post_rq1_factor_registry.hydrated_count + 1"]
+        params: list[tuple[Any, ...]] = []
+        for column_name in completion_columns:
+            insert_columns.append(column_name)
+            insert_values.append("?")
+            update_assignments.append(f"{column_name} = excluded.{column_name}")
+        sql = f"""
+            INSERT INTO post_rq1_factor_registry({", ".join(insert_columns)})
+            VALUES ({", ".join(insert_values)})
             ON CONFLICT(post_uri) DO UPDATE SET
-              last_hydrated_utc = excluded.last_hydrated_utc,
-              hydrated_count = post_rq1_factor_registry.hydrated_count + 1
-            """,
-            [(post_uri, hydrated_at_utc, hydrated_at_utc) for post_uri, hydrated_at_utc in rows],
+              {", ".join(update_assignments)}
+        """
+        for post_uri, hydrated_value in rows:
+            param_values: list[Any] = [post_uri, hydrated_value]
+            param_values.extend([hydrated_value] * len(completion_columns))
+            params.append(tuple(param_values))
+        self.conn.executemany(
+            sql,
+            params,
         )
 
     def upsert_author_registry_many(self, *, author_dids: Sequence[str], seen_at_utc: str) -> None:

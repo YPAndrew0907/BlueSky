@@ -73,6 +73,24 @@ def _send_json_line(conn: socket.socket, obj: dict[str, Any]) -> None:
     conn.sendall(payload)
 
 
+def _send_response(conn: socket.socket, *, method: str, resp: dict[str, Any]) -> None:
+    try:
+        _send_json_line(conn, resp)
+        return
+    except OSError:
+        logger.warning("state-writer response send failed method=%s", method, exc_info=True)
+        return
+    except Exception as err:  # noqa: BLE001
+        logger.exception("state-writer response serialization failed method=%s", method)
+        fallback = {"ok": False, "error_type": type(err).__name__, "error": str(err)}
+        try:
+            _send_json_line(conn, fallback)
+        except OSError:
+            logger.warning("state-writer fallback response send failed method=%s", method, exc_info=True)
+        except Exception:  # noqa: BLE001
+            logger.exception("state-writer fallback response serialization failed method=%s", method)
+
+
 @dataclass(frozen=True)
 class StateWriterConfig:
     db_path: Path
@@ -149,8 +167,12 @@ def run_state_writer(*, cfg: StateWriterConfig) -> None:
                         if not isinstance(kwargs, dict):
                             kwargs = {}
 
-                        resp = dispatch_state_rpc(state, method=method, args=args, kwargs=kwargs)
-                        _send_json_line(conn, resp)
+                        try:
+                            resp = dispatch_state_rpc(state, method=method, args=args, kwargs=kwargs)
+                        except Exception as err:  # noqa: BLE001
+                            logger.exception("state-writer rpc failed method=%s", method)
+                            resp = {"ok": False, "error_type": type(err).__name__, "error": str(err)}
+                        _send_response(conn, method=method, resp=resp)
                         if method == "shutdown" and bool(resp.get("ok")):
                             logger.info("state-writer shutdown requested")
                             return

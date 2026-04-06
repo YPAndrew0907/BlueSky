@@ -11,7 +11,7 @@ from bsky_collector_v2.layout import Layout
 from bsky_collector_v2.progress import ProgressReporter, ProgressState
 from bsky_collector_v2.public_views import extract_post_record_features, flatten_profile_view_detailed
 from bsky_collector_v2.request_provenance import JobRequestContextFactory, RequestProvenanceWriter
-from bsky_collector_v2.state import ControlState
+from bsky_collector_v2.state import ControlState, coerce_selected_post_rows
 from bsky_collector_v2.time_utils import format_utc, now_utc, utc_date_str
 from bsky_collector_v2.types import PostUri, RunId
 from bsky_collector_v2.writers import CsvPartWriter
@@ -363,11 +363,13 @@ async def run_backfill_interactions(
                 },
             )
             try:
-                selected_rows = control.select_posts_to_backfill_rows(
-                    limit=cfg.max_posts,
-                    seen_after_utc=cfg.seen_after_utc,
-                    seen_before_utc=cfg.seen_before_utc,
-                    include_hydrated=bool(cfg.include_hydrated),
+                selected_rows = coerce_selected_post_rows(
+                    control.select_posts_to_backfill_rows(
+                        limit=cfg.max_posts,
+                        seen_after_utc=cfg.seen_after_utc,
+                        seen_before_utc=cfg.seen_before_utc,
+                        include_hydrated=bool(cfg.include_hydrated),
+                    )
                 )
                 selection_details = _selection_details(selected_rows)
                 manifest["selection"] = selection_details

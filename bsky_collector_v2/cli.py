@@ -16,6 +16,7 @@ from bsky_collector_v2.http_client import XrpcHosts
 from bsky_collector_v2.layout import Layout
 from bsky_collector_v2.logging_utils import LoggingPaths, add_run_log_file, configure_global_logging
 from bsky_collector_v2.manifest import new_run_id
+from bsky_collector_v2.rq1_stages import RQ1_STAGE_CHOICES
 from bsky_collector_v2.study import (
     CORE_SAMPLE_FAMILY,
     ceil_to_window_utc,
@@ -153,6 +154,7 @@ def build_parser() -> argparse.ArgumentParser:
     rq1 = sub.add_parser("backfill-rq1-factors", parents=[common], add_help=True)
     rq1.add_argument("--max-posts", type=int, default=10000)
     rq1.add_argument("--batch-size", type=int, default=25)
+    rq1.add_argument("--stage", choices=RQ1_STAGE_CHOICES, default="all")
     rq1.add_argument("--max-items-per-endpoint", type=int, default=0)
     rq1.add_argument("--max-thread-depth", type=int, default=1000)
     rq1.add_argument("--max-thread-parent-height", type=int, default=1000)
@@ -209,6 +211,7 @@ def build_parser() -> argparse.ArgumentParser:
     omnibus.add_argument("--max-posts-rq1", type=int, default=200000)
     omnibus.add_argument("--batch-size-interactions", type=int, default=25)
     omnibus.add_argument("--batch-size-rq1", type=int, default=25)
+    omnibus.add_argument("--rq1-stage", choices=RQ1_STAGE_CHOICES, default="core")
     omnibus.add_argument("--max-items-per-endpoint-interactions", type=int, default=0)
     omnibus.add_argument("--max-items-per-endpoint-rq1", type=int, default=0)
     omnibus.add_argument("--max-thread-depth", type=int, default=1000)
@@ -668,6 +671,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                             max_posts_rq1=int(args.max_posts_rq1),
                             batch_size_interactions=int(args.batch_size_interactions),
                             batch_size_rq1=int(args.batch_size_rq1),
+                            rq1_stage=str(args.rq1_stage),
                             max_items_per_endpoint_interactions=int(args.max_items_per_endpoint_interactions),
                             max_items_per_endpoint_rq1=int(args.max_items_per_endpoint_rq1),
                             max_thread_depth=int(args.max_thread_depth),
@@ -793,6 +797,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                         cfg=BackfillRq1FactorsConfig(
                             max_posts=int(args.max_posts),
                             batch_size=int(args.batch_size),
+                            stage=str(args.stage),
                             max_items_per_endpoint=int(args.max_items_per_endpoint),
                             max_thread_depth=int(args.max_thread_depth),
                             max_thread_parent_height=int(args.max_thread_parent_height),
